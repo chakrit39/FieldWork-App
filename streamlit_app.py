@@ -225,8 +225,8 @@ if st.button("Submit"):
         N = round((float(N1)+float(N2)+float(N3))/3,3)
         E = round((float(E1)+float(E2)+float(E3))/3,3)
         H = round((float(H1)+float(H2)+float(H3))/3,3)
-        image = []
         if image_1 and image_2 and image_3:
+            image_id = []
             image = [image_1,image_2,image_3]
             i = 0
             for i_parent in ["1HTrQBM08XN_q8DpGma72eeLhI8rJYbl9", "1MYq0n532WluOCcju_aMFlJWPPswA5IBU","1w2M2CNUNeAm4uIXb3BV6mA1wdPC72rE3"]:
