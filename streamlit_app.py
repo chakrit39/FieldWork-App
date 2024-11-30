@@ -21,11 +21,11 @@ scope = ['https://www.googleapis.com/auth/drive',
          'https://www.googleapis.com/auth/drive.file',
          'https://www.googleapis.com/auth/spreadsheets',
         ]
-def upload_image(service,parents):
+def upload_image(service,parents,image_i):
     file_name = str(UTMMAP1) + str(UTMMAP2) + str(UTMMAP3) + "-" + str(UTMMAP4) + "-" + str(Scale) + "-" + str(land_no) + "_" + BND_NAME + ".jpeg"
     path = "./Temp/" +  file_name
     temp_file = open(path, 'wb')
-    temp_file.write(image_1.getvalue())
+    temp_file.write(image_i.getvalue())
     temp_file.close()
     file_metadata = {"name": file_name,"parents": [parents]}
     media = MediaFileUpload(path, mimetype="image/jpeg")
@@ -225,10 +225,13 @@ if st.button("Submit"):
         N = round((float(N1)+float(N2)+float(N3))/3,3)
         E = round((float(E1)+float(E2)+float(E3))/3,3)
         H = round((float(H1)+float(H2)+float(H3))/3,3)
+        image = []
         if image_1 and image_2 and image_3:
-            image_id = []
+            image = [image_1,image_2,image_3]
+            i = 0
             for i_parent in ["1HTrQBM08XN_q8DpGma72eeLhI8rJYbl9", "1MYq0n532WluOCcju_aMFlJWPPswA5IBU","1w2M2CNUNeAm4uIXb3BV6mA1wdPC72rE3"]:
-                image_id.append(upload_image(service,i_parent))
+                image_id.append(upload_image(service,i_parent,image[i]))
+                i =+ 1
             create_report()
             row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME, N, E, H, Method, Name, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
             row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
