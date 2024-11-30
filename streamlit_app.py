@@ -216,7 +216,7 @@ remark = st.text_input("หมายเหตุ","")
 
 creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
 if st.button("Submit"):
-    import time 
+    #import time 
     #start = time.time()
     st.session_state["Submit"] = True
     if N1!="" and N2!="" and N3!="" and E1!="" and E2!="" and E3!="" and N3!="" and E1!="" and E2!="" and E3!="" and H1!="" and H2!=""and H3!="" and parcel_no!="" and survey_no!="" and land_no!="" and UTMMAP1!="" and UTMMAP3!="" and BND_NAME!="" :
