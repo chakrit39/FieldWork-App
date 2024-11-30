@@ -13,8 +13,6 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
-st.secrets["dol-mtd5-fieldwork"]
-
 if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
 if "uploader_key" not in st.session_state:
@@ -105,7 +103,7 @@ def create_report():
 @st.cache_resource 
 def get_service():
     #if "creds" not in globals() :
-    creds = ServiceAccountCredentials.from_json_keyfile_name('dol-mtd5-fieldwork.json', scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_name(st.secrets["dol-mtd5-fieldwork"], scope)
     gc = gspread.authorize(creds)
     service = build("drive", "v3", credentials=creds)
     sh = gc.open('องครักษ์')
