@@ -3,7 +3,6 @@ pandas
 numpy
 geopandas
 requests
-time
 datetime
 os
 
