@@ -232,10 +232,9 @@ if st.button("Submit"):
         if image_1 and image_2 and image_3:
             image_id = []
             image = [image_1,image_2,image_3]
-            i = 0
-            for i_parent in ["1HTrQBM08XN_q8DpGma72eeLhI8rJYbl9", "1MYq0n532WluOCcju_aMFlJWPPswA5IBU","1w2M2CNUNeAm4uIXb3BV6mA1wdPC72rE3"]:
-                image_id.append(upload_image(service,i_parent,image[i]))
-                i =+ 1
+            folder_id = ["1HTrQBM08XN_q8DpGma72eeLhI8rJYbl9", "1MYq0n532WluOCcju_aMFlJWPPswA5IBU","1w2M2CNUNeAm4uIXb3BV6mA1wdPC72rE3"]
+            for i in range(3):
+                image_id.append(upload_image(service,folder_id[i],image[i]))
             row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME, N, E, H, Method, Name, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
             row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
             DATE_temp = wks.acell('R'+row_update['updates']['updatedRange'][5:]).value.replace('\xa0',' ').split()
