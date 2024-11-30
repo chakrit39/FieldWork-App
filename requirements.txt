@@ -1,1 +1,16 @@
 streamlit
+pandas
+numpy
+streamlit_folium
+geopandas
+requests.auth
+time
+datetime
+os
+stqdm
+gspread
+oauth2client.service_account
+tempfile
+googleapiclient.discovery
+googleapiclient.errors
+googleapiclient.http
