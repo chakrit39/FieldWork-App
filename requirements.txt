@@ -3,13 +3,13 @@ pandas
 numpy
 streamlit_folium
 geopandas
-requests.auth
+requests
 time
 datetime
 os
 stqdm
 gspread
-oauth2client.service_account
+oauth2client
 tempfile
 googleapiclient.discovery
 googleapiclient.errors
