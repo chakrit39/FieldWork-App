@@ -11,6 +11,4 @@ stqdm
 gspread
 oauth2client
 tempfile
-googleapiclient.discovery
-googleapiclient.errors
-googleapiclient.http
+googleapiclient
