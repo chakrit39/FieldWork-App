@@ -229,11 +229,12 @@ if st.button("Submit"):
             image_id = []
             for i_parent in ["1HTrQBM08XN_q8DpGma72eeLhI8rJYbl9", "1MYq0n532WluOCcju_aMFlJWPPswA5IBU","1w2M2CNUNeAm4uIXb3BV6mA1wdPC72rE3"]:
                 image_id.append(upload_image(service,i_parent))
+            create_report()
             row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME, N, E, H, Method, Name, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
             row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
             DATE_temp = wks.acell('R'+row_update['updates']['updatedRange'][5:]).value.replace('\xa0',' ').split()
             DATE = DATE_temp[0] + " " + DATE_temp[1] + " " + str(int(DATE_temp[2])+543)
-            create_report()
+            
             del st.session_state[f"image_1-{st.session_state.uploader_key}"]
             del st.session_state[f"image_2-{st.session_state.uploader_key}"]
             del st.session_state[f"image_3-{st.session_state.uploader_key}"]
