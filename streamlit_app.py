@@ -103,7 +103,7 @@ def create_report():
 @st.cache_resource 
 def get_service():
     #if "creds" not in globals() :
-    creds = ServiceAccountCredentials.from_json_keyfile_name(st.secrets["dol-mtd5-fieldwork"], scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scope)
     gc = gspread.authorize(creds)
     service = build("drive", "v3", credentials=creds)
     sh = gc.open('องครักษ์')
