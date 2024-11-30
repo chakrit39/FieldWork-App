@@ -7,10 +7,8 @@ from requests.auth import HTTPBasicAuth
 import time
 import datetime
 import os
-from stqdm import stqdm
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from tempfile import NamedTemporaryFile
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
