@@ -44,9 +44,11 @@ def create_report():
     if count == 0:
         BND_NAME_ = BND_NAME
     else:
+        new = count+1
         while count != 0:
-            BND_NAME_ = BND_NAME + "_" + str(count+1)
+            BND_NAME_ = BND_NAME + "_" + str(new)
             count = List.count(BND_NAME_)
+            new += 1
     copiedSheet = wks_ref.copy_to(sh_report.id)
     dstSheet = sh_report.worksheet(copiedSheet['title'])
     dstSheet.update_title(BND_NAME_)
