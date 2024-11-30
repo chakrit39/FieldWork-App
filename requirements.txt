@@ -3,4 +3,4 @@ pandas
 geopandas
 numpy
 gspread
-oauth2client.service_account
+oauth2client
