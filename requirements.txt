@@ -4,4 +4,4 @@ geopandas
 numpy
 gspread
 oauth2client
-googleapiclient
+googleapiclient.discovery
