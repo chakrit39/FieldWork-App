@@ -157,7 +157,7 @@ tambon = col3.selectbox("ตำบล",pd.unique(df.T_NAME_T[df.A_NAME_T==amphoe
 cc1, cc2 = st.columns([0.5,0.5])
 BND_NAME = cc1.text_input("ชื่อหลักเขต","")
 Method = cc2.selectbox("เครื่องมือการรังวัด",["RTK GNSS","Total Station"])
-if st.checkbox("Upload a CSV file"):
+if st.checkbox("Upload a CSV file (Name,Code,N,E,H)"):
     Point = st.file_uploader("เลือกไฟล์ CSV", accept_multiple_files=False, type=['csv'])
     if Point is not None:
         data = pd.read_csv(Point)
