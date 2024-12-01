@@ -134,7 +134,7 @@ def pop_up():
 df,sc,df_name = get_data()  
 st.title("แบบกรอกข้อมูลงานภาคสนาม สาขาองครักษ์")
 
-c01, c02, c03 = st.columns([0.3,0.3,0.3])
+c01, c02, c03 = st.columns([0.35,0.35,0.3])
 parcel_no = c01.text_input("เลขที่โฉนด","")
 survey_no = c02.text_input("หน้าสำรวจ","")
 land_no = c03.text_input("เลขที่ดิน","")
