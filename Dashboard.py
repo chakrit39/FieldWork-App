@@ -41,7 +41,7 @@ def get_service():
 #icon_image = url("leaf-red.png")
 #icon = folium.CustomIcon(icon_image,icon_size=(38, 95),icon_anchor=(22, 94))
 @st.cache_data
-def get_data():    
+def get_map():    
     gdf_t = gpd.read_file('./Tambon/องครักษ์.shp')
     gdf_t = gdf_t.to_crs('EPSG:4326')
     map = fo.Map(location=[14.078746259525621, 101.02592277876519], zoom_start=10)
@@ -83,7 +83,7 @@ st.dataframe(
 
 
 st.header('Map')
-map = get_data()
+map = get_map()
 
 gdf = gpd.GeoDataFrame(wks.get_all_records())
 Name = st.selectbox("ผู้รังวัด",["ทั้งหมด","ชาคฤตย์", "กิตติพันธุ์", "สุริยา", "ณัฐพร", "ศรัณย์", "ฐณิตา", "ปณิดา", "ปฐพี"],)
