@@ -18,10 +18,9 @@ from googleapiclient.http import MediaFileUpload
 #st.markdown("# Work Sheet")
 #st.sidebar.header("Work Sheets")
 
-WorkSheet = st.Page("WorkSheet.py", title="Work Sheet")
-Dashboard = st.Page("Dashboard.py", title="Dashboard")
-pg = st.navigation([WorkSheet, Dashboard])
-st.set_page_config(page_title="WorkSheet")
+#WorkSheet = st.Page("WorkSheet.py", title="Work Sheet")
+#Dashboard = st.Page("Dashboard.py", title="Dashboard")
+pg = st.navigation([st.Page("WorkSheet.py"), st.Page("Dashboard.py")])
 pg.run()
 
 if "Submit" not in st.session_state:
