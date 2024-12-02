@@ -40,7 +40,25 @@ def get_service():
     return creds,gc,sh,wks,wks_result
 #icon_image = url("leaf-red.png")
 #icon = folium.CustomIcon(icon_image,icon_size=(38, 95),icon_anchor=(22, 94))
-               
+@st.cache_data
+def get_data():    
+    gdf_t = gpd.read_file('/tambon/องครักษ์.shp')
+    gdf_t = gdf_t.to_crs('EPSG:4326')
+    map = fo.Map(location=[14.078746259525621, 101.02592277876519], zoom_start=10)
+    round1 = ["บึงศาล","บางสมบูรณ์","ชุมพล","พระอาจารย์","บางลูกเสือ","ศีรษะกระบือ"]
+    for _, t in gdf_t.iterrows():
+        # Without simplifying the representation of each borough,
+        # the map might not be displayed
+        sim_geo = gpd.GeoSeries(t["geometry"]).simplify(tolerance=0.001)
+        geo_j = sim_geo.to_json()
+        if round1.count(t["T_NAME_T"])==1:
+            geo_j = fo.GeoJson(data=geo_j)
+        else:
+            geo_j = fo.GeoJson(data=geo_j,style_function=lambda x: {"fillOpacity": 0})
+        fo.Popup(t["T_NAME_T"]).add_to(geo_j)
+        geo_j.add_to(map)
+    return map
+    
 st.title("Dashboard")
 creds,gc,sh,wks,wks_result = get_service()
 
