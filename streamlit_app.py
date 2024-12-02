@@ -133,6 +133,7 @@ def pop_up():
     if st.button("ตกลง"):
         #st.session_state.vote = {"item": item, "reason": reason}
         st.rerun()    
+
 df,sc,df_name = get_data()
 creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
 
@@ -140,7 +141,7 @@ st.title("แบบกรอกข้อมูลงานภาคสนาม 
 
 if st.button("Refresh"):
     st.session_state["Refresh"] = True
-    creds,gc,sh,wks,wks_result = get_service()
+    creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
 else:
     st.session_state["Refresh"] = False
     
