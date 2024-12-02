@@ -32,7 +32,7 @@ scope = ['https://www.googleapis.com/auth/drive',
 @st.cache_resource 
 def get_service():
     #if "creds" not in globals() :
-    creds = ServiceAccountCredentials.from_json_keyfile_name('dol-mtd5-fieldwork.json', scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scope)
     gc = gspread.authorize(creds)
     sh = gc.open('องครักษ์')
     wks = sh.worksheet('Raw')
