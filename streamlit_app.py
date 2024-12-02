@@ -261,7 +261,7 @@ if c001.button("Submit"):
 else:
     st.session_state["Submit"] = False
 
-if c002.button("Refresh"):
+if c002.button("Refresh", type="primary",icon="⟳"):
     st.session_state["Refresh"] = True
     creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
 else:
