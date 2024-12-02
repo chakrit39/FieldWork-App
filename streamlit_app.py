@@ -22,7 +22,7 @@ WorkSheet = st.Page("streamlit_app.py", title="Work Sheet")
 Dashboard = st.Page("Dashboard.py", title="Dashboard")
 
 pg = st.navigation([WorkSheet, Dashboard])
-
+pg.run()
 if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
 if "uploader_key" not in st.session_state:
