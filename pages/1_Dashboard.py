@@ -17,7 +17,7 @@ from googleapiclient.http import MediaFileUpload
 
 st.set_page_config(page_title="Dashboard")
 
-st.markdown("# Dashboard")
+#st.markdown("# Dashboard")
 st.sidebar.header("Dashboard")
 
 if "Refresh" not in st.session_state:
