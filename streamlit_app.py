@@ -18,7 +18,7 @@ st.set_page_config(page_title="WorkSheet")
 #st.markdown("# Work Sheet")
 st.sidebar.header("Work Sheets")
 
-WorkSheet = st.Page("streamlit_app.py.py", title="Work Sheet")
+WorkSheet = st.Page("streamlit_app.py", title="Work Sheet")
 Dashboard = st.Page("Dashboard.py", title="Dashboard")
 
 pg = st.navigation([WorkSheet, Dashboard])
