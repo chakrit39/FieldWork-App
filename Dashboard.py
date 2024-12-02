@@ -43,7 +43,6 @@ def get_service():
 @st.cache_data
 def get_map():    
     gdf_t = gpd.read_file('/vsicurl/https://github.com/chakrit39/FieldWork-App/raw/refs/heads/main/Tambon/องครักษ์.shp')
-    st.write(gdf_t)
     gdf_t = gdf_t.to_crs('EPSG:4326')
     map = fo.Map(location=[14.078746259525621, 101.02592277876519], zoom_start=10)
     round1 = ["บึงศาล","บางสมบูรณ์","ชุมพล","พระอาจารย์","บางลูกเสือ","ศีรษะกระบือ"]
