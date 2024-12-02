@@ -16,7 +16,7 @@ from googleapiclient.http import MediaFileUpload
 
 
 #st.markdown("# Work Sheet")
-st.sidebar.header("Work Sheets")
+#st.sidebar.header("Work Sheets")
 
 WorkSheet = st.Page("WorkSheet.py", title="Work Sheet")
 Dashboard = st.Page("Dashboard.py", title="Dashboard")
