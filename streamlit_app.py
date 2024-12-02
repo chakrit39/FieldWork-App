@@ -223,7 +223,7 @@ date = st.date_input("วันที่ทำการรังวัด",forma
 remark = st.text_input("หมายเหตุ","")
 
 creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
-c001, c002 = st.columns([0.30,0.30])
+c001, c002 = st.columns([0.15,0.85])
 if c001.button("Submit"):
     #import time 
     #start = time.time()
