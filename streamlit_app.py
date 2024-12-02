@@ -135,15 +135,8 @@ def pop_up():
         st.rerun()    
 
 df,sc,df_name = get_data()
-creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
 
 st.title("แบบกรอกข้อมูลงานภาคสนาม สาขาองครักษ์")
-
-if st.button("Refresh"):
-    st.session_state["Refresh"] = True
-    creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
-else:
-    st.session_state["Refresh"] = False
     
 c01, c02, c03 = st.columns([0.35,0.35,0.3])
 parcel_no = c01.text_input("เลขที่โฉนด","")
@@ -229,6 +222,7 @@ Sig = df_name["Signature"][df_name.Name==Name].iloc[0]
 date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
 remark = st.text_input("หมายเหตุ","")
 
+creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
 if st.button("Submit"):
     #import time 
     #start = time.time()
@@ -265,6 +259,11 @@ if st.button("Submit"):
         st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
 else:
     st.session_state["Submit"] = False
-   
+
+if st.button("Refresh"):
+    st.session_state["Refresh"] = True
+    creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
+else:
+    st.session_state["Refresh"] = False   
 #st.session_state  
   
