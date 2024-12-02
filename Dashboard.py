@@ -43,7 +43,7 @@ def get_service():
 @st.cache_data
 def get_data():
     map = fo.Map(location=[14.078746259525621, 101.02592277876519], zoom_start=10)
-    gdf_tambon = gpd.read_file("./tambon/TH_Tambon.shp",engine="fiona")
+    gdf_tambon = gpd.read_file("./tambon/TH_Tambon.shp")
     geojson_tambon = gdf_tambon.to_json()
     geojson_tambon = fo.GeoJson(data=geojson_tambon, style_function=lambda x: {"fillColor": "orange"})
     #folium.Popup(r["BoroName"]).add_to(geojson_tambon)
