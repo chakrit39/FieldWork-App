@@ -40,15 +40,6 @@ def get_service():
     return creds,gc,sh,wks,wks_result
 #icon_image = url("leaf-red.png")
 #icon = folium.CustomIcon(icon_image,icon_size=(38, 95),icon_anchor=(22, 94))
-@st.cache_data
-def get_data():
-    map = fo.Map(location=[14.078746259525621, 101.02592277876519], zoom_start=10)
-    gdf_tambon = gpd.read_file("./tambon/TH_Tambon.shp")
-    geojson_tambon = gdf_tambon.to_json()
-    geojson_tambon = fo.GeoJson(data=geojson_tambon, style_function=lambda x: {"fillColor": "orange"})
-    #folium.Popup(r["BoroName"]).add_to(geojson_tambon)
-    geojson_tambon.add_to(map)
-    return map
                
 st.title("Dashboard")
 creds,gc,sh,wks,wks_result = get_service()
@@ -74,7 +65,7 @@ st.dataframe(
 
 
 st.header('Map')
-map = get_data()
+map = fo.Map(location=[14.078746259525621, 101.02592277876519], zoom_start=10)
 
 gdf = gpd.GeoDataFrame(wks.get_all_records())
 Name = st.selectbox("ผู้รังวัด",["ทั้งหมด","ชาคฤตย์", "กิตติพันธุ์", "สุริยา", "ณัฐพร", "ศรัณย์", "ฐณิตา", "ปณิดา", "ปฐพี"],)
