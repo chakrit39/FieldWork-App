@@ -40,7 +40,7 @@ def get_service():
     return creds,gc,sh,wks,wks_result
 #icon_image = url("leaf-red.png")
 #icon = folium.CustomIcon(icon_image,icon_size=(38, 95),icon_anchor=(22, 94))
-@st.cache_data
+@st.cache_resource 
 def get_map():    
     gdf_t = gpd.read_file('/vsicurl/https://github.com/chakrit39/FieldWork-App/raw/refs/heads/main/Tambon/องครักษ์.shp')
     gdf_t = gdf_t.to_crs('EPSG:4326')
