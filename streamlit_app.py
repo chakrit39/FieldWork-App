@@ -223,7 +223,8 @@ date = st.date_input("วันที่ทำการรังวัด",forma
 remark = st.text_input("หมายเหตุ","")
 
 creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
-if st.button("Submit"):
+c001, c002 = st.columns([0.30,0.30])
+if c001.button("Submit"):
     #import time 
     #start = time.time()
     st.session_state["Submit"] = True
@@ -260,7 +261,7 @@ if st.button("Submit"):
 else:
     st.session_state["Submit"] = False
 
-if st.button("Refresh"):
+if c002.button("Refresh"):
     st.session_state["Refresh"] = True
     creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
 else:
