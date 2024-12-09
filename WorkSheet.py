@@ -176,7 +176,8 @@ if chk1.checkbox("Upload a CSV file (Name,Code,N,E,H)"):
             df.rename(columns={"0": "Name", "1": "Code", "2": "N", "3": "E", "4": "H"})
         else:
             data = pd.read_csv(Point)
-        st.dataframe(data=data['Code'].unique,use_container_width=False)
+        data['Code'].unique()
+        st.dataframe(data=data['Code'].unique(),use_container_width=False)
         if BND_NAME != "" :
             data_point = data[['Code','N','E','H']][data.Code==BND_NAME]
             data_point = data_point.reset_index(drop=True)
