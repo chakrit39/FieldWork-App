@@ -173,7 +173,7 @@ if chk1.checkbox("Upload a CSV file (Name,Code,N,E,H)"):
     if Point is not None:
         if Noneheader == True:
             data = pd.read_csv(Point,header=None)
-            data.rename(columns={"0": "Name", "1": "Code", "2": "N", "3": "E", "4": "H"}, inplace=True)
+            data = data.rename(columns={0: "Name", 1: "Code", 2: "N", 3: "E", 4: "H"})
         else:
             data = pd.read_csv(Point)
         st.dataframe(data=data,use_container_width=True)
