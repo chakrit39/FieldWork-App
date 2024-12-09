@@ -176,6 +176,7 @@ if chk1.checkbox("Upload a CSV file (Name,Code,N,E,H)"):
         else:
             data = pd.read_csv(Point)
         st.dataframe(data=data,use_container_width=False)
+        """
         if BND_NAME != "" :
             data_point = data[['Code','N','E','H']][data.Code==BND_NAME]
             data_point = data_point.reset_index(drop=True)
@@ -197,6 +198,7 @@ if chk1.checkbox("Upload a CSV file (Name,Code,N,E,H)"):
                 st.warning("ไม่พบชื่อหมุดหลักเขต")
             else:
                 st.warning("จำนวนค่าพิกัดหมุดหลักเขตไม่ครบหรือเกิน 3 ค่า")
+                """
         else:
             st.warning("โปรดใส่ชื่อหมุดหลักเขต")
 else:
