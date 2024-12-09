@@ -170,6 +170,7 @@ if st.checkbox("Upload a CSV file (Name,Code,N,E,H)"):
     Point = st.file_uploader("เลือกไฟล์ CSV", accept_multiple_files=False, type=['csv'])
     if Point is not None:
         data = pd.read_csv(Point)
+        st.dataframe(data=data,use_container_width=False)
         if BND_NAME != "" :
             data_point = data[['Code','N','E','H']][data.Code==BND_NAME]
             data_point = data_point.reset_index(drop=True)
