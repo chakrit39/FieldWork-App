@@ -1,22 +1,17 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-#from streamlit_folium import folium_static
 import geopandas as gpd
-from requests.auth import HTTPBasicAuth
-import time
-import datetime
-import os
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
-from googleapiclient.http import MediaFileUpload
+from sqlalchemy import create_engine
 
-st.set_page_config(page_title="WorkSheet")
+HOSTNAME = '122.155.131.34'
+USER = "postgres"
+PASSWD = "KTP5Admin"
+engine = create_engine( f"postgresql://{USER}:{PASSWD}@{HOSTNAME}:7001/Data1")
 
-#st.markdown("# Work Sheet")
-st.sidebar.header("Work Sheets")
+st.set_page_config(page_title="Upload CSV to Postgis")
+
+st.sidebar.header("Upload CSV to Postgis")
 
 if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
@@ -28,89 +23,7 @@ scope = ['https://www.googleapis.com/auth/drive',
          'https://www.googleapis.com/auth/drive.file',
          'https://www.googleapis.com/auth/spreadsheets',
         ]
-def upload_image(service,parents,image_i):
-    file_name = str(UTMMAP1) + str(UTMMAP2) + str(UTMMAP3) + "-" + str(UTMMAP4) + "-" + str(Scale) + "-" + str(land_no) + "_" + BND_NAME + ".jpeg"
-    path = "./Temp/" +  file_name
-    temp_file = open(path, 'wb')
-    temp_file.write(image_i.getvalue())
-    temp_file.close()
-    file_metadata = {"name": file_name,"parents": [parents]}
-    media = MediaFileUpload(path, mimetype="image/jpeg")
-    file = (service.files().create(body=file_metadata, media_body=media, fields="id").execute() )
-    file_id = file['id']
-    del media
-    del file
-    del file_metadata
-    os.remove(path)
-    return file_id
-def create_report():
-    List = []
-    for i_wks in sh_report.worksheets():
-        List.append(i_wks.title)
-    count = List.count(BND_NAME)
-    if count == 0:
-        BND_NAME_ = BND_NAME
-    else:
-        new = count+1
-        while count != 0:
-            BND_NAME_ = BND_NAME + "_" + str(new)
-            count = List.count(BND_NAME_)
-            new += 1
-    copiedSheet = wks_ref.copy_to(sh_report.id)
-    dstSheet = sh_report.worksheet(copiedSheet['title'])
-    dstSheet.update_title(BND_NAME_)
-    dstSheet.update([[BND_NAME],[parcel_no],[UTMMAP1+" "+UTMMAP2+" "+UTMMAP3+"-"+UTMMAP4],[tambon]], 'H4:H7',value_input_option="USER_ENTERED")
-    dstSheet.update_acell('S6',"1 : " + str(Scale))
-    dstSheet.update_acell('S7',amphoe)
-    dstSheet.update([[DATE],[survey_no],[land_no],[province]], 'AF4:AF7',value_input_option="USER_ENTERED")
-    
-    #dstSheet.update_acell('H4',BND_NAME)
-    #dstSheet.update_acell('H6',UTMMAP1+" "+UTMMAP2+" "+UTMMAP3+"-"+UTMMAP4)
-    #dstSheet.update_acell('O6',"1 : " + str(Scale))
-    #dstSheet.update_acell('AF6',LANDNO)
-    #dstSheet.update_acell('H5',PARCEL_NO)
-    #dstSheet.update_acell('AF5',SURVEY_NO)
-    #dstSheet.update_acell('H7',tambon)
-    #dstSheet.update_acell('S7',amphoe)
-    #dstSheet.update_acell('AF7',province)
-    #dstSheet.update_acell('AF4',DATE)
-    dstSheet.update_acell('K39',N, value_input_option="USER_ENTERED")
-    dstSheet.update_acell('U39',E, value_input_option="USER_ENTERED")
-    dstSheet.update_acell('AE39',H, value_input_option="USER_ENTERED")
-    dstSheet.update_acell('F40',remark)
-    dstSheet.update_acell('Y43',full_name)
-    dstSheet.update([[N1],[N2],[N3]], 'K34:K36', value_input_option="USER_ENTERED")
-    dstSheet.update([[E1],[E2],[E3]], 'U34:UE36', value_input_option="USER_ENTERED")
-    dstSheet.update([[H1],[H2],[H3]], 'AE34:AE36', value_input_option="USER_ENTERED")
-    dstSheet.update('A11', [['=image("https://drive.google.com/uc?export=download&id=' + image_id[0] + '")']], value_input_option="USER_ENTERED")
-    dstSheet.update('U11', [['=image("https://drive.google.com/uc?export=download&id=' + image_id[1] + '")']], value_input_option="USER_ENTERED")
-    dstSheet.update('K22', [['=image("https://drive.google.com/uc?export=download&id=' + image_id[2] + '")']], value_input_option="USER_ENTERED")
-    dstSheet.update('Y40', [['=image("https://drive.google.com/uc?export=download&id=' + Sig + '")']], value_input_option="USER_ENTERED")
-    body = {
-      "requests": [
-          {
-              "copyPaste": {
-                  "source": {
-                      "sheetId": dstSheet.id,
-                      "startRowIndex": 10,
-                      "endRowIndex": 44,
-                      "startColumnIndex": 0,
-                      "endColumnIndex": 39
-                  },
-                  "destination": {
-                      "sheetId": dstSheet.id,
-                      "startRowIndex": 10,
-                      "endRowIndex": 44,
-                      "startColumnIndex": 0,
-                      "endColumnIndex": 39
-                  },
-                  "pasteType": "PASTE_VALUES"
-                            }
-          }
-                   ]
-            }
-    res = sh_report.batch_update(body)
-    
+
 @st.cache_resource 
 def get_service():
     #if "creds" not in globals() :
