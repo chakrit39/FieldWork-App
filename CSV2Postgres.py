@@ -19,10 +19,7 @@ if "uploader_key" not in st.session_state:
     st.session_state.uploader_key = 0
 if "Refresh" not in st.session_state:
     st.session_state["Refresh"] = False
-scope = ['https://www.googleapis.com/auth/drive',
-         'https://www.googleapis.com/auth/drive.file',
-         'https://www.googleapis.com/auth/spreadsheets',
-        ]
+
     
 @st.dialog("สำเร็จ !!", width="small")
 def pop_up():
@@ -35,7 +32,7 @@ def pop_up():
 st.title("Upload CSV file to PostGIS")
 chk1, chk2 = st.columns([0.50,0.50])    
 Noneheader = chk2.checkbox("None header")
-Point = chk1.file_uploader("เลือกไฟล์ CSV", accept_multiple_files=False, type=['csv'])
+Point = chk1.file_uploader("Upload a CSV file (Name,Code,N,E,H)", accept_multiple_files=False, type=['csv'])
 if Point is not None:
     if Noneheader == True:
         data = pd.read_csv(Point,header=None)
