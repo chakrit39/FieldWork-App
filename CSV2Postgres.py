@@ -41,7 +41,7 @@ if Point is not None:
     else:
         data = pd.read_csv(Point)
         st.dataframe(data,use_container_width=True)
-        data.iloc[[0, -1]]
+        data.tail(1)
 
 """
 -----------------
