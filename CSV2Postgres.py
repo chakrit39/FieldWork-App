@@ -37,10 +37,10 @@ if Point is not None:
     if Noneheader == True:
         data = pd.read_csv(Point,header=None)
         data = data.rename(columns={0: "Name", 1: "Code", 2: "N", 3: "E", 4: "h"})
-        st.write(data)
+        st.dataframe(data,use_container_width=True)
     else:
         data = pd.read_csv(Point)
-        st.write(data)
+        st.dataframe(data,use_container_width=True)
 
 
 """
