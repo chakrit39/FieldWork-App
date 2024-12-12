@@ -41,7 +41,7 @@ if Point is not None:
     else:
         data = pd.read_csv(Point)
         st.dataframe(data,use_container_width=True)
-
+        data.iloc[[0, -1]]
 
 """
 -----------------
@@ -50,7 +50,6 @@ Name = st.selectbox("ผู้รังวัด",["ชาคฤตย์", "ก
 date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
 date_2 = str(date).split("-")
 date_2 = int(str(int(date_2[0])+543)[-2:] + date_2[1] + date_2[2])
-date_2
 """
 -----------------
 """
@@ -64,8 +63,9 @@ if c001.button("Submit"):
             df = data
             df['Remark'] = df['Code']
             df['ผู้รังวัด'] = Name
-            
-            df['Date'] = '671212'
+            df['Date'] = date_2
+            gdf = gpd.GeoDataFrame(df,geometry=gpd.points_from_xy(df['E'],df['N']) , crs="EPSG:24047")
+            gdf = gdf.set_index(gdf.index + len(gdf_postgis))
         else:
             st.warning("ไม่มีข้อมูลในไฟล์ที่เลือก")
     else:
