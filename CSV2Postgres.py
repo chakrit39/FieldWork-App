@@ -62,7 +62,7 @@ if c001.button("Submit"):
     st.session_state["Submit"] = True
     if Point is not None :
         if len(data) > 0:
-            sql = f"SELECT * FROM BND_Points ;"
+            sql = f'SELECT * FROM "public"."BND_Points"'
             gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
             df = data
             df['Remark'] = df['Code']
