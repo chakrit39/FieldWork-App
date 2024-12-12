@@ -83,6 +83,7 @@ else:
 
 if c002.button("Refresh", type="primary"):
     st.session_state["Refresh"] = True
+    engine = get_service()
 else:
     st.session_state["Refresh"] = False   
 #st.session_state  
