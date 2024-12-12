@@ -37,8 +37,10 @@ if Point is not None:
     if Noneheader == True:
         data = pd.read_csv(Point,header=None)
         data = data.rename(columns={0: "Name", 1: "Code", 2: "N", 3: "E", 4: "h"})
+        st.wrtie(data)
     else:
         data = pd.read_csv(Point)
+        st.wrtie(data)
 
 
 """
