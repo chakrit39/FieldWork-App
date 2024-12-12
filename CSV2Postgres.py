@@ -62,7 +62,7 @@ if c001.button("Submit"):
     st.session_state["Submit"] = True
     if Point is not None :
         if len(data) > 0:
-            sql = f"SELECT * FROM Points ;"
+            sql = f"SELECT * FROM BND_Points ;"
             gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
             df = data
             df['Remark'] = df['Code']
@@ -70,7 +70,7 @@ if c001.button("Submit"):
             df['Date'] = date_2
             gdf = gpd.GeoDataFrame(df,geometry=gpd.points_from_xy(df['E'],df['N']) , crs="EPSG:24047")
             gdf = gdf.set_index(gdf.index + gdf_postgis.tail(1)['Name'].iloc[0])
-            gdf.to_postgis('test_points', engine, if_exists='append', index=True, index_label='Index')
+            gdf.to_postgis('BND_Points', engine, if_exists='append', index=True, index_label='Index')
         else:
             st.warning("ไม่มีข้อมูลในไฟล์ที่เลือก")
     else:
