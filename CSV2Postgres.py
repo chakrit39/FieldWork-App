@@ -30,9 +30,9 @@ def pop_up():
         st.rerun()    
 
 st.title("Upload CSV file to PostGIS")
-chk1, chk2 = st.columns([0.50,0.50])    
-Noneheader = chk2.checkbox("None header")
-Point = chk1.file_uploader("Upload a CSV file (Name,Code,N,E,H)", accept_multiple_files=False, type=['csv'])
+
+Noneheader = st.checkbox("None header")
+Point = st.file_uploader("Upload a CSV file (Name,Code,N,E,H)", accept_multiple_files=False, type=['csv'])
 if Point is not None:
     if Noneheader == True:
         data = pd.read_csv(Point,header=None)
