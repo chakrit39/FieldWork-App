@@ -34,7 +34,7 @@ def pop_up():
 
 st.title("Upload CSV file to PostGIS")
     
-if chk1.checkbox("Upload a CSV file (Name,Code,N,E,h)"):
+if st.checkbox("Upload a CSV file (Name,Code,N,E,h)"):
     Noneheader = chk2.checkbox("None header")
     Point = st.file_uploader("เลือกไฟล์ CSV", accept_multiple_files=False, type=['csv'])
     if Point is not None:
