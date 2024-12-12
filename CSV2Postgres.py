@@ -41,7 +41,6 @@ if Point is not None:
     else:
         data = pd.read_csv(Point)
         st.dataframe(data,use_container_width=True)
-        data.tail(1)['Name'].iloc[0]
 
 """
 -----------------
@@ -65,7 +64,8 @@ if c001.button("Submit"):
             df['ผู้รังวัด'] = Name
             df['Date'] = date_2
             gdf = gpd.GeoDataFrame(df,geometry=gpd.points_from_xy(df['E'],df['N']) , crs="EPSG:24047")
-            gdf = gdf.set_index(gdf.index + len(gdf_postgis))
+            gdf = gdf.set_index(gdf.index + gdf_postgis.tail(1)['Name'].iloc[0])
+            gdf.to_postgis('test_points', engine, if_exists='append', index=True, index_label='Index')
         else:
             st.warning("ไม่มีข้อมูลในไฟล์ที่เลือก")
     else:
