@@ -3,6 +3,9 @@ import pandas as pd
 import numpy as np
 import geopandas as gpd
 from sqlalchemy import create_engine
+st.set_page_config(page_title="Upload CSV to Postgis")
+
+st.sidebar.header("Upload CSV to Postgis")
 
 @st.cache_resource 
 def get_service():
@@ -14,9 +17,6 @@ def get_service():
             
 
 engine = get_service()
-st.set_page_config(page_title="Upload CSV to Postgis")
-
-st.sidebar.header("Upload CSV to Postgis")
 
 if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
