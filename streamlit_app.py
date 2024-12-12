@@ -20,7 +20,7 @@ from googleapiclient.http import MediaFileUpload
 
 #WorkSheet = st.Page("WorkSheet.py", title="Work Sheet")
 #Dashboard = st.Page("Dashboard.py", title="Dashboard")
-pg = st.navigation([st.Page("WorkSheet.py"), st.Page("Dashboard.py")])
+pg = st.navigation([st.Page("WorkSheet.py"), st.Page("Dashboard.py"), st.Page("CSV2Postgres.py")])
 pg.run()
 
 
