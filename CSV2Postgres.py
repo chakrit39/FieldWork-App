@@ -4,11 +4,16 @@ import numpy as np
 import geopandas as gpd
 from sqlalchemy import create_engine
 
-HOSTNAME = '122.155.131.34'
-USER = "postgres"
-PASSWD = "KTP5Admin"
-engine = create_engine( f"postgresql://{USER}:{PASSWD}@{HOSTNAME}:7001/Data1")
+@st.cache_resource 
+def get_service():
+    HOSTNAME = '122.155.131.34'
+    USER = "postgres"
+    PASSWD = "KTP5Admin"
+    engine = create_engine( f"postgresql://{USER}:{PASSWD}@{HOSTNAME}:7001/Data1")
+    return engine
+            
 
+engine = get_service()
 st.set_page_config(page_title="Upload CSV to Postgis")
 
 st.sidebar.header("Upload CSV to Postgis")
