@@ -46,7 +46,8 @@ if Point is not None:
 """
 Name = st.selectbox("ผู้รังวัด",["ชาคฤตย์", "กิตติพันธุ์", "สุริยา", "ณัฐพร", "ศรัณย์", "ฐณิตา", "ปณิดา", "ปฐพี"],)
 date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
-date
+date_2 = date.split("-")
+date_2
 """
 -----------------
 """
@@ -60,6 +61,7 @@ if c001.button("Submit"):
             df = data
             df['Remark'] = df['Code']
             df['ผู้รังวัด'] = Name
+            
             df['Date'] = '671212'
         else:
             st.warning("ไม่มีข้อมูลในไฟล์ที่เลือก")
