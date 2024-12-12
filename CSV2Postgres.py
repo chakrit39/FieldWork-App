@@ -47,7 +47,7 @@ if Point is not None:
 Name = st.selectbox("ผู้รังวัด",["ชาคฤตย์", "กิตติพันธุ์", "สุริยา", "ณัฐพร", "ศรัณย์", "ฐณิตา", "ปณิดา", "ปฐพี"],)
 date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
 date_2 = str(date).split("-")
-date_2 = str(int(date_2[0])+543)[-2:]
+date_2 = int(str(int(date_2[0])+543)[-2:] + date_2[1] + date_2[2])
 date_2
 """
 -----------------
