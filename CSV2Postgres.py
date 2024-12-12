@@ -69,8 +69,9 @@ if c001.button("Submit"):
             df['ผู้รังวัด'] = Name
             df['Date'] = date_2
             gdf = gpd.GeoDataFrame(df,geometry=gpd.points_from_xy(df['E'],df['N']) , crs="EPSG:24047")
-            gdf = gdf.set_index(gdf.index + gdf_postgis.tail(1)['Name'].iloc[0])
+            gdf = gdf.set_index(gdf.index + gdf_postgis.tail(1)['Index'].iloc[0])
             gdf.to_postgis('BND_Points', engine, if_exists='append', index=True, index_label='Index')
+            pop_up()
         else:
             st.warning("ไม่มีข้อมูลในไฟล์ที่เลือก")
     else:
