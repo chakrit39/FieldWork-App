@@ -167,6 +167,7 @@ cc1, cc2 = st.columns([0.5,0.5])
 BND_NAME = cc1.text_input("ชื่อหลักเขต","")
 Method = cc2.selectbox("เครื่องมือการรังวัด",["RTK GNSS","Total Station"])
 chk1, chk2 = st.columns([0.5,0.5])
+chk1.selectbox(,["ป้อนค่าพิกัด","Upload a CSV file (Name,Code,N,E,h)","Import from PostGIS"])
 if chk1.checkbox("Upload a CSV file (Name,Code,N,E,h)"):
     Noneheader = chk2.checkbox("None header")
     Point = st.file_uploader("เลือกไฟล์ CSV", accept_multiple_files=False, type=['csv'])
