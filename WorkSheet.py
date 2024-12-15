@@ -231,7 +231,7 @@ elif upload_method == "Import from PostGIS":
     sql = f'SELECT * FROM "public"."BND_Points"'
     gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
     Name
-    gdf_postgis_new = gdf_postgis[gdf_postgis['ผู้รังวัด']==Name]
+    gdf_postgis_new = gdf_postgis #[gdf_postgis['ผู้รังวัด']==Name]
     gdf_postgis_new
 else:
     st.warning("โปรดเลือกวิธีนำเข้า")
