@@ -183,6 +183,7 @@ if upload_method == "ป้อนค่าพิกัด":
     H2 = c3.text_input("H2","")
     H3 = c3.text_input("H3","")    
 if upload_method == "Upload a CSV file (Name,Code,N,E,h)":
+    chk2.write("")
     Noneheader = chk2.checkbox("None header")
     Point = st.file_uploader("เลือกไฟล์ CSV", accept_multiple_files=False, type=['csv'])
     if Point is not None:
