@@ -182,7 +182,7 @@ if upload_method == "ป้อนค่าพิกัด":
     H1 = c3.text_input("H1","")
     H2 = c3.text_input("H2","")
     H3 = c3.text_input("H3","")    
-if upload_method == "Upload a CSV file (Name,Code,N,E,h)":
+elif upload_method == "Upload a CSV file (Name,Code,N,E,h)":
     chk2.write("")
     chk2.write("")
     Noneheader = chk1.checkbox("None header")
