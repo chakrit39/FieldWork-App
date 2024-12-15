@@ -9,6 +9,9 @@ st.sidebar.header("Upload CSV to Postgis")
 
 @st.cache_resource 
 def get_service():
+    HOSTNAME = st.secrets["HOSTNAME"]
+    USER = st.secrets["USER"]
+    PASSWD = st.secrets["PASSWD"]
     engine = create_engine( f"postgresql://{USER}:{PASSWD}@{HOSTNAME}:7001/Data1")
     return engine
             
