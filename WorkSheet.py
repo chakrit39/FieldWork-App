@@ -246,7 +246,7 @@ elif upload_method == "Import from PostGIS":
              H1 = c3.text_input("H1",data_point.iloc[0,4])
              H2 = c3.text_input("H2",data_point.iloc[1,4])
              H3 = c3.text_input("H3",data_point.iloc[2,4])
-        elif len(data_point)==0
+        elif len(data_point)==0:
              st.warning("ไม่พบชื่อหมุดหลักเขต")
         else:
              st.dataframe(data=data_point,use_container_width=True)
