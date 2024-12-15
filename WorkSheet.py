@@ -185,7 +185,7 @@ if upload_method == "ป้อนค่าพิกัด":
 if upload_method == "Upload a CSV file (Name,Code,N,E,h)":
     chk2.write("")
     chk2.write("")
-    Noneheader = chk2.checkbox("None header")
+    Noneheader = chk1.checkbox("None header")
     Point = st.file_uploader("เลือกไฟล์ CSV", accept_multiple_files=False, type=['csv'])
     if Point is not None:
         if Noneheader == True:
