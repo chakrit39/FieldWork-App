@@ -219,7 +219,7 @@ elif upload_method == "Import from PostGIS":
     "test"
 else:
     st.warning("โปรดเลือกวิธีนำเข้า")
-    
+upload_method    
 """
 --------------
 """
