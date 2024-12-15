@@ -237,17 +237,17 @@ elif upload_method == "Import from PostGIS":
         if len(data_point)==3:
              st.dataframe(data=data_point,use_container_width=True)
              c1, c2, c3 = st.columns([0.4,0.4,0.2])
-             N1 = c1.text_input("N1",data_point.iloc[0,1])
-             N2 = c1.text_input("N2",data_point.iloc[1,1])
-             N3 = c1.text_input("N3",data_point.iloc[2,1])
+             N1 = c1.text_input("N1",data_point.iloc[0,2])
+             N2 = c1.text_input("N2",data_point.iloc[1,2])
+             N3 = c1.text_input("N3",data_point.iloc[2,2])
     
-             E1 = c2.text_input("E1",data_point.iloc[0,2])
-             E2 = c2.text_input("E2",data_point.iloc[1,2])
-             E3 = c2.text_input("E3",data_point.iloc[2,2])
+             E1 = c2.text_input("E1",data_point.iloc[0,3])
+             E2 = c2.text_input("E2",data_point.iloc[1,3])
+             E3 = c2.text_input("E3",data_point.iloc[2,3])
     
-             H1 = c3.text_input("H1",data_point.iloc[0,3])
-             H2 = c3.text_input("H2",data_point.iloc[1,3])
-             H3 = c3.text_input("H3",data_point.iloc[2,3])
+             H1 = c3.text_input("H1",data_point.iloc[0,4])
+             H2 = c3.text_input("H2",data_point.iloc[1,4])
+             H3 = c3.text_input("H3",data_point.iloc[2,4])
          #elif len(data_point)==0:
          #    st.warning("ไม่พบชื่อหมุดหลักเขต")
          #else:
