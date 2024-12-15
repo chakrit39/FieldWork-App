@@ -167,8 +167,22 @@ cc1, cc2 = st.columns([0.5,0.5])
 BND_NAME = cc1.text_input("ชื่อหลักเขต","")
 Method = cc2.selectbox("เครื่องมือการรังวัด",["RTK GNSS","Total Station"])
 chk1, chk2 = st.columns([0.5,0.5])
-chk1.selectbox("test",["ป้อนค่าพิกัด","Upload a CSV file (Name,Code,N,E,h)","Import from PostGIS"])
-if chk1.checkbox("Upload a CSV file (Name,Code,N,E,h)"):
+upload_method = chk1.selectbox("เลือกวิธีการนำเข้า",["ป้อนค่าพิกัด","Upload a CSV file (Name,Code,N,E,h)","Import from PostGIS"])
+
+if upload_method == "ป้อนค่าพิกัด":
+    c1, c2, c3 = st.columns([0.4,0.4,0.2])
+    N1 = c1.text_input("N1","")
+    N2 = c1.text_input("N2","")
+    N3 = c1.text_input("N3","")
+
+    E1 = c2.text_input("E1","")
+    E2 = c2.text_input("E2","")
+    E3 = c2.text_input("E3","")
+
+    H1 = c3.text_input("H1","")
+    H2 = c3.text_input("H2","")
+    H3 = c3.text_input("H3","")    
+if upload_method == "Upload a CSV file (Name,Code,N,E,h)":
     Noneheader = chk2.checkbox("None header")
     Point = st.file_uploader("เลือกไฟล์ CSV", accept_multiple_files=False, type=['csv'])
     if Point is not None:
@@ -201,19 +215,10 @@ if chk1.checkbox("Upload a CSV file (Name,Code,N,E,h)"):
                 st.warning("จำนวนค่าพิกัดหมุดหลักเขตไม่ครบหรือเกิน 3 ค่า")
         else:
             st.warning("โปรดใส่ชื่อหมุดหลักเขต")
+if upload_method == "Import from PostGIS":
+    "test"
 else:
-    c1, c2, c3 = st.columns([0.4,0.4,0.2])
-    N1 = c1.text_input("N1","")
-    N2 = c1.text_input("N2","")
-    N3 = c1.text_input("N3","")
-
-    E1 = c2.text_input("E1","")
-    E2 = c2.text_input("E2","")
-    E3 = c2.text_input("E3","")
-
-    H1 = c3.text_input("H1","")
-    H2 = c3.text_input("H2","")
-    H3 = c3.text_input("H3","")
+    st.warning("โปรดเลือกวิธีนำเข้า")
     
 """
 --------------
