@@ -234,9 +234,8 @@ elif upload_method == "Import from PostGIS":
     if BND_NAME != "" :
         data_point = gdf_postgis_new[['Name','Code','N','E','h','Remark']][gdf_postgis_new.Code==BND_NAME]
         data_point = data_point.reset_index(drop=True)
-        st.dataframe(data=data_point,use_container_width=True)
         if len(data_point)==3:
-             #st.dataframe(data=data_point,use_container_width=False)
+             st.dataframe(data=data_point,use_container_width=True)
              c1, c2, c3 = st.columns([0.4,0.4,0.2])
              N1 = c1.text_input("N1",data_point.iloc[0,1])
              N2 = c1.text_input("N2",data_point.iloc[1,1])
@@ -252,6 +251,7 @@ elif upload_method == "Import from PostGIS":
          elif len(data_point)==0:
              st.warning("ไม่พบชื่อหมุดหลักเขต")
          else:
+             st.dataframe(data=data_point,use_container_width=True)
              st.warning("จำนวนค่าพิกัดหมุดหลักเขตไม่ครบหรือเกิน 3 ค่า")
     else:
         st.dataframe(data=gdf_postgis_new,use_container_width=True)
