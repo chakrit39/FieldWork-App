@@ -215,7 +215,7 @@ if upload_method == "Upload a CSV file (Name,Code,N,E,h)":
                 st.warning("จำนวนค่าพิกัดหมุดหลักเขตไม่ครบหรือเกิน 3 ค่า")
         else:
             st.warning("โปรดใส่ชื่อหมุดหลักเขต")
-if upload_method == "Import from PostGIS":
+elif upload_method == "Import from PostGIS":
     "test"
 else:
     st.warning("โปรดเลือกวิธีนำเข้า")
