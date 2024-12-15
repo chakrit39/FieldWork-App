@@ -248,8 +248,8 @@ elif upload_method == "Import from PostGIS":
              H1 = c3.text_input("H1",data_point.iloc[0,3])
              H2 = c3.text_input("H2",data_point.iloc[1,3])
              H3 = c3.text_input("H3",data_point.iloc[2,3])
-         elif len(data_point)==0:
-             st.warning("ไม่พบชื่อหมุดหลักเขต")
+         #elif len(data_point)==0:
+         #    st.warning("ไม่พบชื่อหมุดหลักเขต")
          else:
              st.dataframe(data=data_point,use_container_width=True)
              st.warning("จำนวนค่าพิกัดหมุดหลักเขตไม่ครบหรือเกิน 3 ค่า")
