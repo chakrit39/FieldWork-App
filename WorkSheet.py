@@ -240,16 +240,14 @@ elif upload_method == "Import from PostGIS":
              N1 = c1.text_input("N1",data_point.iloc[0,2])
              N2 = c1.text_input("N2",data_point.iloc[1,2])
              N3 = c1.text_input("N3",data_point.iloc[2,2])
-    
              E1 = c2.text_input("E1",data_point.iloc[0,3])
              E2 = c2.text_input("E2",data_point.iloc[1,3])
              E3 = c2.text_input("E3",data_point.iloc[2,3])
-    
              H1 = c3.text_input("H1",data_point.iloc[0,4])
              H2 = c3.text_input("H2",data_point.iloc[1,4])
              H3 = c3.text_input("H3",data_point.iloc[2,4])
-         #elif len(data_point)==0:
-         #    st.warning("ไม่พบชื่อหมุดหลักเขต")
+         elif len(data_point)==0:
+             st.warning("ไม่พบชื่อหมุดหลักเขต")
          #else:
          #    st.dataframe(data=data_point,use_container_width=True)
          #    st.warning("จำนวนค่าพิกัดหมุดหลักเขตไม่ครบหรือเกิน 3 ค่า")
@@ -257,8 +255,7 @@ elif upload_method == "Import from PostGIS":
         st.dataframe(data=gdf_postgis_new,use_container_width=True)
         st.warning("โปรดใส่ชื่อหมุดหลักเขต")
 else:
-    st.warning("โปรดเลือกวิธีนำเข้า")
-upload_method    
+    st.warning("โปรดเลือกวิธีนำเข้า")   
 """
 --------------
 """
