@@ -8,7 +8,7 @@ st.set_page_config(page_title="Upload CSV to Postgis")
 st.sidebar.header("Upload CSV to Postgis")
 
 @st.cache_resource 
-def get_service():
+def get_postgis():
     HOSTNAME = st.secrets["HOSTNAME"]
     USER = st.secrets["USER"]
     PASSWD = st.secrets["PASSWD"]
@@ -16,7 +16,7 @@ def get_service():
     return engine
             
 
-engine = get_service()
+engine = get_postgis()
 
 if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
@@ -83,7 +83,7 @@ else:
 
 if c002.button("Refresh", type="primary"):
     st.session_state["Refresh"] = True
-    engine = get_service()
+    engine = get_postgis()
 else:
     st.session_state["Refresh"] = False   
 #st.session_state  
