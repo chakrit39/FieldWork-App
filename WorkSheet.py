@@ -123,7 +123,15 @@ def get_service():
     wks_ref = sh_ref.worksheet('Ref')
     sh_report = gc.open(Name+'-Report')
     return creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report
-            
+    
+@st.cache_resource 
+def get_postgis():
+    HOSTNAME = st.secrets["HOSTNAME"]
+    USER = st.secrets["USER"]
+    PASSWD = st.secrets["PASSWD"]
+    engine = create_engine( f"postgresql://{USER}:{PASSWD}@{HOSTNAME}:7001/Data1")
+    return engine
+    
 @st.cache_data
 def get_data():
     df = pd.read_csv('./ONGKHARAK.csv',header=0)
@@ -218,7 +226,11 @@ elif upload_method == "Upload a CSV file (Name,Code,N,E,h)":
         else:
             st.warning("โปรดใส่ชื่อหมุดหลักเขต")
 elif upload_method == "Import from PostGIS":
-    "test"
+    engine = get_service()
+    sql = f'SELECT * FROM "public"."BND_Points"'
+    gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
+    gdf_postgis_new = gdf_postgis[gdf_postgis['ผู้รังวัด']==Name]
+    gdf_postgis_new
 else:
     st.warning("โปรดเลือกวิธีนำเข้า")
 upload_method    
