@@ -226,7 +226,7 @@ elif upload_method == "Upload a CSV file (Name,Code,N,E,h)":
         else:
             st.warning("โปรดใส่ชื่อหมุดหลักเขต")
 elif upload_method == "Import from PostGIS":
-    engine = get_service()
+    engine = get_postgis()
     sql = f'SELECT * FROM "public"."BND_Points"'
     gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
     gdf_postgis_new = gdf_postgis[gdf_postgis['ผู้รังวัด']==Name]
