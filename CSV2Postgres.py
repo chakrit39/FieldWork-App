@@ -52,6 +52,7 @@ gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
 df = data
 gdf = gpd.GeoDataFrame(df,geometry=gpd.points_from_xy(df['E'],df['N']) , crs="EPSG:24047")
 gdf = gdf.set_index(gdf.index + (gdf_postgis.tail(1)['Index'].iloc[0] + 1))
+gdf_postgis.tail(1)
 st.dataframe(gdf,use_container_width=True)
 
 """
