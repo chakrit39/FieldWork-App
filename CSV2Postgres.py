@@ -69,7 +69,7 @@ if c001.button("Submit"):
             df['ผู้รังวัด'] = Name
             df['Date'] = date_2
             gdf = gpd.GeoDataFrame(df,geometry=gpd.points_from_xy(df['E'],df['N']) , crs="EPSG:24047")
-            gdf = gdf.set_index(gdf.index + gdf_postgis.tail(1)['Index'].iloc[0] + 1)
+            gdf = gdf.set_index(gdf.index + (gdf_postgis.tail(1)['Index'].iloc[0] + 1))
             gdf.to_postgis("BND_Points", engine, if_exists='append', index=True, index_label='Index')
             del st.session_state[f"upload_{st.session_state.uploader_key}"]
             st.session_state.uploader_key += 1
