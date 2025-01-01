@@ -278,6 +278,14 @@ remark = st.text_input("หมายเหตุ","")
 
 creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
 c001, c002 = st.columns([0.12,0.88])
+
+if c002.button("Refresh", type="primary"):
+    st.session_state["Refresh"] = True
+    get_service.clear()
+    creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
+else:
+    st.session_state["Refresh"] = False   
+    
 if c001.button("Submit"):
     #import time 
     #start = time.time()
@@ -315,10 +323,6 @@ if c001.button("Submit"):
 else:
     st.session_state["Submit"] = False
 
-if c002.button("Refresh", type="primary"):
-    st.session_state["Refresh"] = True
-    creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
-else:
-    st.session_state["Refresh"] = False   
+
 #st.session_state  
   
