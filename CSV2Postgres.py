@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 st.set_page_config(page_title="Upload CSV to Postgis")
 
 st.sidebar.header("Upload CSV to Postgis")
-
+st.sidebar.markdown("แอปพลิเคชันนำเข้าข้อมูลภาคสนามเพื่อนำไปแก้ไขใน QGIS")
 @st.cache_resource 
 def get_postgis():
     HOSTNAME = st.secrets["HOSTNAME"]
