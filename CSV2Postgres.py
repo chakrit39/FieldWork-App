@@ -46,6 +46,11 @@ if Point is not None:
     else:
         data = pd.read_csv(Point)
         st.dataframe(data,use_container_width=True)
+        
+gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
+gdf = gpd.GeoDataFrame(df,geometry=gpd.points_from_xy(df['E'],df['N']) , crs="EPSG:24047")
+gdf = gdf.set_index(gdf.index + (gdf_postgis.tail(1)['Index'].iloc[0] + 1))
+st.dataframe(gdf,use_container_width=True)
 
 """
 -----------------
