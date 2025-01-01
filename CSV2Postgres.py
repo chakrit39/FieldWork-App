@@ -70,6 +70,7 @@ date_2 = int(str(int(date_2[0])+543)[-2:] + date_2[1] + date_2[2])
 c001, c002 = st.columns([0.12,0.88])
 if c002.button("Refresh", type="primary"):
     st.session_state["Refresh"] = True
+    get_postgis.clear()
     engine = get_postgis()
 else:
     st.session_state["Refresh"] = False   
