@@ -49,7 +49,7 @@ if Point is not None:
         
 sql = f'SELECT * FROM "public"."BND_Points"'        
 gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
-gdf_postgis.sort_values(by=['Index'])
+gdf_postgis = gdf_postgis.sort_values(by=['Index'])
 gdf_postgis = gdf_postgis.reset_index(drop=True)
 df = data
 gdf = gpd.GeoDataFrame(df,geometry=gpd.points_from_xy(df['E'],df['N']) , crs="EPSG:24047")
