@@ -47,15 +47,15 @@ if Point is not None:
         data = pd.read_csv(Point)
         st.dataframe(data,use_container_width=True)
         
-sql = f'SELECT * FROM "public"."BND_Points"'        
-gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
-gdf_postgis = gdf_postgis.sort_values(by=['Index'])
-gdf_postgis = gdf_postgis.reset_index(drop=True)
-df = data
-gdf = gpd.GeoDataFrame(df,geometry=gpd.points_from_xy(df['E'],df['N']) , crs="EPSG:24047")
-gdf = gdf.set_index(gdf.index + (gdf_postgis.tail(1)['Index'].iloc[0] + 1))
-st.dataframe(gdf_postgis.tail(1),use_container_width=True)
-st.dataframe(gdf,use_container_width=True)
+#sql = f'SELECT * FROM "public"."BND_Points"'        
+#gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
+#gdf_postgis = gdf_postgis.sort_values(by=['Index'])
+#gdf_postgis = gdf_postgis.reset_index(drop=True)
+#df = data
+#gdf = gpd.GeoDataFrame(df,geometry=gpd.points_from_xy(df['E'],df['N']) , crs="EPSG:24047")
+#gdf = gdf.set_index(gdf.index + (gdf_postgis.tail(1)['Index'].iloc[0] + 1))
+#st.dataframe(gdf_postgis.tail(1),use_container_width=True)
+#st.dataframe(gdf,use_container_width=True)
 
 """
 -----------------
@@ -74,6 +74,8 @@ if c001.button("Submit"):
         if len(data) > 0:
             sql = f'SELECT * FROM "public"."BND_Points"'
             gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
+            gdf_postgis = gdf_postgis.sort_values(by=['Index'])
+            gdf_postgis = gdf_postgis.reset_index(drop=True)
             df = data
             df['Remark'] = df['Code']
             df['ผู้รังวัด'] = Name
