@@ -90,9 +90,11 @@ gdf = gpd.GeoDataFrame(wks.get_all_records())
 Name = st.selectbox("ผู้รังวัด",["ทั้งหมด","ชาคฤตย์", "กิตติพันธุ์", "สุริยา", "ณัฐพร", "ศรัณย์", "ฐณิตา", "ปณิดา", "ปฐพี"],)
 if st.button("Refresh"):
     st.session_state["Refresh"] = True
+    map = get_map()
     creds,gc,sh,wks,wks_result = get_service()
 else:
     st.session_state["Refresh"] = False
+    
 if len(gdf)!=0:  
     if Name != "ทั้งหมด":
         gdf = gdf[gdf['ผู้รังวัด']==Name]
