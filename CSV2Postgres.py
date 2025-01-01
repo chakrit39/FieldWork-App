@@ -68,6 +68,12 @@ date_2 = int(str(int(date_2[0])+543)[-2:] + date_2[1] + date_2[2])
 -----------------
 """
 c001, c002 = st.columns([0.12,0.88])
+if c002.button("Refresh", type="primary"):
+    st.session_state["Refresh"] = True
+    engine = get_postgis()
+else:
+    st.session_state["Refresh"] = False   
+    
 if c001.button("Submit"):
     st.session_state["Submit"] = True
     if Point is not None :
@@ -93,10 +99,5 @@ if c001.button("Submit"):
 else:
     st.session_state["Submit"] = False
 
-if c002.button("Refresh", type="primary"):
-    st.session_state["Refresh"] = True
-    engine = get_postgis()
-else:
-    st.session_state["Refresh"] = False   
 #st.session_state  
   
