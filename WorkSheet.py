@@ -17,7 +17,7 @@ from googleapiclient.http import MediaFileUpload
 st.set_page_config(page_title="WorkSheet")
 
 st.sidebar.header("Work Sheets")
-st.sidebar.markdown("# Work Sheet")
+st.sidebar.markdown("Work Sheet")
 
 if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
