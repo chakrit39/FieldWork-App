@@ -105,7 +105,7 @@ if len(gdf)!=0:
     st.dataframe(data=gdf)
     lat = gdf.geometry.y
     lon = gdf.geometry.x
-    st.dataframe(data=lat)
-    st.dataframe(data=lon)
+    lat
+    lon
     fo.CircleMarker([lat, lon],radius = 3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
 folium_static(map)
