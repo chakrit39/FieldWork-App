@@ -57,7 +57,7 @@ def get_map():
             geo_j = fo.GeoJson(data=geo_j,style_function=lambda x: {"fillOpacity": 0})
         fo.Popup(t["T_NAME_T"]).add_to(geo_j)
         geo_j.add_to(map)
-        tile = fo.TileLayer(tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',attr = 'Esri',name = 'Esri Satellite',overlay = False,control = True).add_to(map)
+        #tile = fo.TileLayer(tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',attr = 'Esri',name = 'Esri Satellite',overlay = False,control = True).add_to(map)
     return map
 def get_Refresh():    
     get_map.clear()
@@ -104,6 +104,7 @@ if len(gdf)!=0:
     if Name != "ทั้งหมด":
         gdf = gdf[gdf['ผู้รังวัด']==Name]
     gdf = gdf.set_geometry(gpd.points_from_xy(gdf.E,gdf.N),crs='EPSG:24047')
+    st.dataframe(data=gdf)
     gdf = gdf.to_crs('EPSG:4326')
     #st.dataframe(data=gdf)
     #lat = gdf.geometry.y
