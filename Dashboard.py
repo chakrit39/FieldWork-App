@@ -106,6 +106,6 @@ if len(gdf)!=0:
     #lat = gdf.geometry.y
     #lon = gdf.geometry.x
     #fo.CircleMarker([lat,lon],radius = 3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
-    for lat,lon in zip(gdf.geometry.y,gdf.geometry.x)
+    for lat,lon in zip(gdf.geometry.y,gdf.geometry.x):
         fo.CircleMarker([lat,lon],radius = 3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
 folium_static(map)
