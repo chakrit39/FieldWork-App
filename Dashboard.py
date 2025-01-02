@@ -106,7 +106,7 @@ if len(gdf)!=0:
     gdf = gdf.set_geometry(gpd.points_from_xy(gdf.E,gdf.N),crs='EPSG:24047')
     st.dataframe(data=gdf)
     gdf.crs
-    gdf = gdf.to_crs('EPSG:4326')
+    gdf = gdf.to_crs('EPSG:3857')
     st.dataframe(data=gdf)
     gdf.crs
     #lat = gdf.geometry.y
