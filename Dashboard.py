@@ -104,10 +104,10 @@ if len(gdf)!=0:
     if Name != "ทั้งหมด":
         gdf = gdf[gdf['ผู้รังวัด']==Name]
     gdf = gdf.set_geometry(gpd.points_from_xy(gdf.E,gdf.N),crs='EPSG:24047')
-    st.dataframe(data=gdf)
+    #st.dataframe(data=gdf)
     gdf = gdf.to_crs(4326)
-    st.dataframe(data=gdf)
-    gdf.crs
+    #st.dataframe(data=gdf)
+    #gdf.crs
     #lat = gdf.geometry.y
     #lon = gdf.geometry.x
     #fo.CircleMarker([lat,lon],radius = 3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
