@@ -107,7 +107,8 @@ if len(gdf)!=0:
     st.dataframe(data=gdf)
     gdf.crs
     gdf = gdf.to_crs('EPSG:4326')
-    #st.dataframe(data=gdf)
+    st.dataframe(data=gdf)
+    gdf.crs
     #lat = gdf.geometry.y
     #lon = gdf.geometry.x
     #fo.CircleMarker([lat,lon],radius = 3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
