@@ -104,6 +104,7 @@ if len(gdf)!=0:
     gdf = gdf.to_crs('EPSG:4326')
     #st.dataframe(data=gdf)
     lat = gdf.geometry.y
-    lon = gdf.geometry.x
-    fo.CircleMarker([lat,lon],radius = 3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
+    long = gdf.geometry.x
+    fo.CircleMarker([lat,long],radius = 3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
+    #for lat,long
 folium_static(map)
