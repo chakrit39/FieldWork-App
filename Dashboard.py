@@ -59,7 +59,11 @@ def get_map():
         geo_j.add_to(map)
         tile = fo.TileLayer(tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',attr = 'Esri',name = 'Esri Satellite',overlay = False,control = True).add_to(map)
     return map
-    
+def get_Refresh():    
+    get_map.clear()
+    get_service.clear()
+    map = get_map()
+    creds,gc,sh,wks,wks_result = get_service()
 st.title("Dashboard")
 creds,gc,sh,wks,wks_result = get_service()
 
@@ -87,7 +91,7 @@ st.header('Map')
 map = get_map()
 
 gdf = gpd.GeoDataFrame(wks.get_all_records())
-Name = st.selectbox("ผู้รังวัด",["ทั้งหมด","ชาคฤตย์", "กิตติพันธุ์", "สุริยา", "ณัฐพร", "ศรัณย์", "ฐณิตา", "ปณิดา", "ปฐพี"],)
+Name = st.selectbox("ผู้รังวัด",["ทั้งหมด","ชาคฤตย์", "กิตติพันธุ์", "สุริยา", "ณัฐพร", "ศรัณย์", "ฐณิตา", "ปณิดา", "ปฐพี"],on_change=get_Refresh())
 if st.button("Refresh"):
     st.session_state["Refresh"] = True
     get_map.clear()
@@ -107,5 +111,5 @@ if len(gdf)!=0:
     #lon = gdf.geometry.x
     #fo.CircleMarker([lat,lon],radius = 3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
     for lat,lon in zip(gdf.geometry.y,gdf.geometry.x):
-        fo.CircleMarker([lat,lon],radius = 3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
+        fo.CircleMarker([lat,lon],radius=3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
 folium_static(map)
