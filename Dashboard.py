@@ -103,11 +103,8 @@ else:
 if len(gdf)!=0:  
     if Name != "ทั้งหมด":
         gdf = gdf[gdf['ผู้รังวัด']==Name]
-    gdf = gdf.set_geometry(gpd.points_from_xy(gdf.E,gdf.N))
-    gdf = gdf.set_crs('EPSG:24047')
-    st.dataframe(data=gdf)
-    gdf.crs
-    gdf = gdf.to_crs('EPSG:4326')
+    gdf = gdf.set_geometry(gpd.points_from_xy(gdf.E,gdf.N),crs='EPSG:24047')
+    gdf['geometry'] = gdf['geometry'].to_crs('EPSG:4326')
     st.dataframe(data=gdf)
     gdf.crs
     #lat = gdf.geometry.y
