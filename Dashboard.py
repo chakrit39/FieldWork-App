@@ -57,7 +57,7 @@ def get_map():
             geo_j = fo.GeoJson(data=geo_j,style_function=lambda x: {"fillOpacity": 0})
         fo.Popup(t["T_NAME_T"]).add_to(geo_j)
         geo_j.add_to(map)
-        tile = fo.TileLayer(tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',attr = 'Esri',name = 'Esri Satellite',overlay = False,control = True).add_to(map)
+        #tile = fo.TileLayer(tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',attr = 'Esri',name = 'Esri Satellite',overlay = False,control = True).add_to(map)
     return map
     
 st.title("Dashboard")
