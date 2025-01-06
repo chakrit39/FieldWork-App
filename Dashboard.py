@@ -100,8 +100,8 @@ if st.button("Refresh"):
 else:
     st.session_state["Refresh"] = False
     
+gdf = gpd.GeoDataFrame(wks.get_all_records())    
 if len(gdf)!=0:  
-    gdf = gpd.GeoDataFrame(wks.get_all_records())
     if Name != "ทั้งหมด":
         gdf = gdf[gdf['ผู้รังวัด']==Name]
     gdf = gdf.set_geometry(gpd.points_from_xy(gdf.E,gdf.N),crs='EPSG:24047')
