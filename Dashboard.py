@@ -89,7 +89,7 @@ st.dataframe(
 st.header('Map')
 map = get_map()
 
-gdf = gpd.GeoDataFrame(wks.get_all_records())
+
 Name = st.selectbox("ผู้รังวัด",["ทั้งหมด","ชาคฤตย์", "กิตติพันธุ์", "สุริยา", "ณัฐพร", "ศรัณย์", "ฐณิตา", "ปณิดา", "ปฐพี"],on_change=get_Refresh())
 if st.button("Refresh"):
     st.session_state["Refresh"] = True
@@ -101,6 +101,7 @@ else:
     st.session_state["Refresh"] = False
     
 if len(gdf)!=0:  
+    gdf = gpd.GeoDataFrame(wks.get_all_records())
     if Name != "ทั้งหมด":
         gdf = gdf[gdf['ผู้รังวัด']==Name]
     gdf = gdf.set_geometry(gpd.points_from_xy(gdf.E,gdf.N),crs='EPSG:24047')
