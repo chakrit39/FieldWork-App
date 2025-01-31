@@ -260,9 +260,9 @@ else:
 --------------
 """
 
-image_1 = st.file_uploader("เลือกรูปขณะรับสัญญาณ", accept_multiple_files=False, type=['png', 'jpeg', 'jpg'],key=f"image_1-{st.session_state.uploader_key}")
-image_2 = st.file_uploader("เลือกรูปหมุดหลักเขต", accept_multiple_files=False, type=['png', 'jpeg', 'jpg'],key=f"image_2-{st.session_state.uploader_key}")
-image_3 = st.file_uploader("เลือกรูปตำแหน่งรับสัญญาณ", accept_multiple_files=False, type=['png', 'jpeg', 'jpg'],key=f"image_3-{st.session_state.uploader_key}")
+image_1 = st.file_uploader("เลือกรูปขณะรับสัญญาณ", accept_multiple_files=False, type=['png', 'jpeg', 'jpg', 'HEIC'],key=f"image_1-{st.session_state.uploader_key}")
+image_2 = st.file_uploader("เลือกรูปหมุดหลักเขต", accept_multiple_files=False, type=['png', 'jpeg', 'jpg', 'HEIC'],key=f"image_2-{st.session_state.uploader_key}")
+image_3 = st.file_uploader("เลือกรูปตำแหน่งรับสัญญาณ", accept_multiple_files=False, type=['png', 'jpeg', 'jpg', 'HEIC'],key=f"image_3-{st.session_state.uploader_key}")
 
 """
 -----------------
