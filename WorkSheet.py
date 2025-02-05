@@ -87,30 +87,30 @@ def create_report():
     dstSheet.update('U11', [['=image("https://drive.google.com/uc?export=download&id=' + image_id[1] + '")']], value_input_option="USER_ENTERED")
     dstSheet.update('K22', [['=image("https://drive.google.com/uc?export=download&id=' + image_id[2] + '")']], value_input_option="USER_ENTERED")
     dstSheet.update('Y40', [['=image("https://drive.google.com/uc?export=download&id=' + Sig + '")']], value_input_option="USER_ENTERED")
-    body = {
-      "requests": [
-          {
-              "copyPaste": {
-                  "source": {
-                      "sheetId": dstSheet.id,
-                      "startRowIndex": 10,
-                      "endRowIndex": 44,
-                      "startColumnIndex": 0,
-                      "endColumnIndex": 39
-                  },
-                  "destination": {
-                      "sheetId": dstSheet.id,
-                      "startRowIndex": 10,
-                      "endRowIndex": 44,
-                      "startColumnIndex": 0,
-                      "endColumnIndex": 39
-                  },
-                  "pasteType": "PASTE_VALUES"
-                            }
-          }
-                   ]
-            }
-    res = sh_report.batch_update(body)
+    #body = {
+    #  "requests": [
+    #      {
+    #          "copyPaste": {
+    #              "source": {
+    #                  "sheetId": dstSheet.id,
+    #                  "startRowIndex": 10,
+    #                  "endRowIndex": 44,
+    #                  "startColumnIndex": 0,
+    #                  "endColumnIndex": 39
+    #              },
+    #              "destination": {
+    #                  "sheetId": dstSheet.id,
+    #                  "startRowIndex": 10,
+    #                  "endRowIndex": 44,
+    #                  "startColumnIndex": 0,
+    #                  "endColumnIndex": 39
+    #              },
+    #              "pasteType": "PASTE_VALUES"
+    #                        }
+    #      }
+    #               ]
+    #        }
+    #res = sh_report.batch_update(body)
     
 @st.cache_resource 
 def get_service():
