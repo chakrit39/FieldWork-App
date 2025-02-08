@@ -310,16 +310,14 @@ if st.session_state["Login"]:
     if sh.title != office_select:
         get_service.clear()
         creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
-    sh.title
+        
     c001, c002 = st.columns([0.12,0.88])
-    
     if c002.button("Refresh", type="primary"):
         st.session_state["Refresh"] = True
         get_service.clear()
         creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
     else:
         st.session_state["Refresh"] = False   
-        
     if c001.button("Submit"):
         #import time 
         #start = time.time()
