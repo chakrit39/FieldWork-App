@@ -157,13 +157,14 @@ with placeholder.form("login"):
     st.markdown("#### โปรดเลือก")
     office_select = st.selectbox("สำนักงานที่ดิน",Office)
     round = st.selectbox("รอบที่",["1","2"])
-    submit_office = st.form_submit_button("Login")
-    if submit_office:
+    Login = st.form_submit_button("Login")
+    if Login:
         st.session_state["Login"] = True
     else:
         st.session_state["Login"] = False
     #placeholder_check = placeholder
-if submit_office:
+if Login:
+    st.session_state["Login"] = True
     office_select = office_select
     round = "รอบที่" + round
     placeholder.empty()
@@ -173,7 +174,7 @@ if submit_office:
 if st.session_state["Login"]:    
     df,sc,df_name,df_fol = get_data()
     engine = get_postgis()
-    df_fol[df_fol.Name==office_select]
+    #df_fol[df_fol.Name==office_select]
     folder_id = []
     
     st.title("แบบกรอกข้อมูลงานภาคสนาม")
