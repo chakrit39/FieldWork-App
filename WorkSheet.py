@@ -158,16 +158,21 @@ with placeholder.form("login"):
     office_select = st.selectbox("สำนักงานที่ดิน",Office)
     round = st.selectbox("รอบที่",["1","2"])
     submit_office = st.form_submit_button("Login")
-placeholder == st.empty()
+    if submit_office:
+        st.session_state["Login"] = True
+    else:
+        st.session_state["Login"] = False
+    #placeholder_check = placeholder
 if submit_office:
-    st.session_state["submit_office"] = True
+    st.session_state["Login"] = True
     placeholder.empty()
-if placeholder == st.empty():
-    st.session_state["submit_office"] = True
+    #placeholder_check = placeholder
+    st.success("Login successful")
+#if 0:
+
     office_select = office_select
     round = "รอบที่" + round
-    st.success("Login successful")
-    
+
     df,sc,df_name,df_fol = get_data()
     engine = get_postgis()
     df_fol[df_fol.Name==office_select]
@@ -346,10 +351,7 @@ if placeholder == st.empty():
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
     else:
         st.session_state["Submit"] = False
-elif submit_office == False:
-    st.error("Login failed")
-else:
-    pass        
+     
 st.session_state         
 #else:    
 #    st.error("Login failed")
