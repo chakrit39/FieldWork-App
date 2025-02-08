@@ -21,6 +21,8 @@ st.sidebar.markdown("แอปพลิเคชันสร้างราย�
 
 if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
+if "Login" not in st.session_state:
+    st.session_state["Login"] = False
 if "uploader_key" not in st.session_state:
     st.session_state.uploader_key = 0
 if "Refresh" not in st.session_state:
@@ -159,6 +161,7 @@ with placeholder.form("login"):
 if submit_office:
     # If the form is submitted and the email and password are correct,
     # clear the form/container and display a success message
+    st.session_state["Login"] = True
     office_select = office_select
     round = "รอบที่" + round
     placeholder.empty()
@@ -166,9 +169,12 @@ if submit_office:
 
     df,sc,df_name,df_fol = get_data()
     engine = get_postgis()
+    df_fol
+    folder_id = []
     
-    st.title("แบบกรอกข้อมูลงานภาคสนาม สาขา"+office_select)
-        
+    st.title("แบบกรอกข้อมูลงานภาคสนาม")
+    st.title("สาขา"+office_select)  
+    
     c01, c02, c03 = st.columns([0.35,0.35,0.3])
     parcel_no = c01.text_input("เลขที่โฉนด","")
     survey_no = c02.text_input("หน้าสำรวจ","")
@@ -339,10 +345,9 @@ if submit_office:
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
     else:
         st.session_state["Submit"] = False
-    
-
+        
+else:    
+    st.error("Login failed")
+    st.session_state["Login"] = False
 #st.session_state  
-#elif submit_office and email != actual_email and password != actual_password:
-#    st.error("Login failed")
-#else:
-#    pass 
+
