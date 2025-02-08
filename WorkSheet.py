@@ -165,7 +165,7 @@ if submit_office:
     placeholder.empty()
     st.success("Login successful")
     
-if st.session_state["submit_office"]:
+#if st.session_state["submit_office"]:
     df,sc,df_name,df_fol = get_data()
     engine = get_postgis()
     df_fol[df_fol.Name==office_select]
@@ -344,7 +344,10 @@ if st.session_state["submit_office"]:
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
     else:
         st.session_state["Submit"] = False
-        
+elif submit_office == False:
+    st.error("Login failed")
+else:
+    pass        
 st.session_state         
 #else:    
 #    st.error("Login failed")
