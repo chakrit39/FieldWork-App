@@ -161,7 +161,7 @@ with placeholder.form("login"):
     if Login:
         st.session_state["Login"] = True
     else:
-        st.session_state["Login"] = False
+        #st.session_state["Login"] = False
     #placeholder_check = placeholder
 if st.session_state["Login"]:
     st.session_state["Login"] = True
