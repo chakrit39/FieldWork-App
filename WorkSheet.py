@@ -165,14 +165,13 @@ with placeholder.form("login"):
     #placeholder_check = placeholder
 if submit_office:
     st.session_state["Login"] = True
+    office_select = office_select
+    round = "รอบที่" + round
     placeholder.empty()
     #placeholder_check = placeholder
     st.success("Login successful")
 #if 0:
-
-    office_select = office_select
-    round = "รอบที่" + round
-
+    
     df,sc,df_name,df_fol = get_data()
     engine = get_postgis()
     df_fol[df_fol.Name==office_select]
