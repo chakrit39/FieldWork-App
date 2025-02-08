@@ -160,6 +160,7 @@ with placeholder.form("login"):
     Login = st.form_submit_button("Login")
     if Login:
         st.session_state["Login"] = True
+        st.success("Login successful")
     #else:
         #st.session_state["Login"] = False
     #placeholder_check = placeholder
@@ -168,7 +169,7 @@ if st.session_state["Login"]:
     round = "รอบที่" + round
     placeholder.empty()
     #placeholder_check = placeholder
-    st.success("Login successful")
+    
  
     df,sc,df_name,df_fol = get_data()
     engine = get_postgis()
@@ -349,7 +350,7 @@ if st.session_state["Login"]:
     else:
         st.session_state["Submit"] = False
      
-st.session_state         
+#st.session_state         
 #else:    
 #    st.error("Login failed")
 #    st.session_state["Login"] = False
