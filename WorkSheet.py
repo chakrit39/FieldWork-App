@@ -173,6 +173,7 @@ if st.session_state["Login"]:
     
  
     df,sc,df_name,df_fol = get_data()
+    sh.__dict__
     engine = get_postgis()
     df_fol_ = df_fol[df_fol.Name==office_select]
     df_fol_ = df_fol_.reset_index(drop=True)
