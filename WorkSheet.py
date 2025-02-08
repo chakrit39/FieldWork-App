@@ -150,7 +150,6 @@ def pop_up():
         st.rerun()    
 
 df,sc,df_name,df_fol = get_data()
-creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
 engine = get_postgis()
 
 st.title("แบบกรอกข้อมูลงานภาคสนาม สาขาองครักษ์")
@@ -279,7 +278,7 @@ Sig = df_name["Signature"][df_name.Name==Name].iloc[0]
 date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
 remark = st.text_input("หมายเหตุ","")
 
-
+creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
 c001, c002 = st.columns([0.12,0.88])
 
 if c002.button("Refresh", type="primary"):
