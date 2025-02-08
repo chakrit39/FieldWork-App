@@ -163,7 +163,7 @@ with placeholder.form("login"):
     else:
         st.session_state["Login"] = False
     #placeholder_check = placeholder
-if Login:
+if st.session_state["Login"]:
     st.session_state["Login"] = True
     office_select = office_select
     round = "รอบที่" + round
