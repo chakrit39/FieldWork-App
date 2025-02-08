@@ -158,7 +158,7 @@ with placeholder.form("login"):
     office_select = st.selectbox("สำนักงานที่ดิน",Office)
     round = st.selectbox("รอบที่",["1","2"])
     submit_office = st.form_submit_button("Login")
-placeholder
+placeholder == st.empty()
 if submit_office:
     st.session_state["submit_office"] = True
 if st.session_state["submit_office"]:
@@ -166,7 +166,6 @@ if st.session_state["submit_office"]:
     office_select = office_select
     round = "รอบที่" + round
     placeholder.empty()
-    placeholder
     st.success("Login successful")
     
     df,sc,df_name,df_fol = get_data()
