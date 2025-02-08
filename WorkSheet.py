@@ -342,7 +342,7 @@ if submit_office:
     
 
 #st.session_state  
-elif submit and email != actual_email and password != actual_password:
-    st.error("Login failed")
-else:
-    pass 
+#elif submit_office and email != actual_email and password != actual_password:
+#    st.error("Login failed")
+#else:
+#    pass 
