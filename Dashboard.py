@@ -19,7 +19,10 @@ st.set_page_config(page_title="Dashboard")
 
 #st.markdown("# Dashboard")
 st.sidebar.header("Dashboard")
-
+if "Login" not in st.session_state:
+    st.session_state["Login"] = False
+else:
+    st.session_state["Login"] = False
 if "Refresh" not in st.session_state:
     st.session_state["Refresh"] = False
 if "uploader_key" not in st.session_state:
