@@ -18,6 +18,10 @@ def get_postgis():
 
 engine = get_postgis()
 
+if "Login" not in st.session_state:
+    st.session_state["Login"] = False
+else:
+    st.session_state["Login"] = False
 if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
 if "uploader_key" not in st.session_state:
