@@ -23,6 +23,7 @@ if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
 if "submit_office" not in st.session_state:
     st.session_state["submit_office"] = False
+st.session_state["Submit"] = False
 if "uploader_key" not in st.session_state:
     st.session_state.uploader_key = 0
 if "Refresh" not in st.session_state:
