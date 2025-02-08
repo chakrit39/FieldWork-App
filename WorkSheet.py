@@ -164,6 +164,7 @@ if st.session_state["submit_office"]:
     office_select = office_select
     round = "รอบที่" + round
     placeholder.empty()
+    placeholder
     st.success("Login successful")
     
     df,sc,df_name,df_fol = get_data()
