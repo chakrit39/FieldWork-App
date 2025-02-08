@@ -23,6 +23,8 @@ if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
 if "Login" not in st.session_state:
     st.session_state["Login"] = False
+if "Login_alert" not in st.session_state:
+    st.session_state["Login_alert"] = False
 if "uploader_key" not in st.session_state:
     st.session_state.uploader_key = 0
 if "Refresh" not in st.session_state:
@@ -160,15 +162,14 @@ with placeholder.form("login"):
     Login = st.form_submit_button("Login")
     if Login:
         st.session_state["Login"] = True
-        st.success("Login successful")
-    #else:
-        #st.session_state["Login"] = False
-    #placeholder_check = placeholder
+        st.session_state["Login_alert"] = True
+        
 if st.session_state["Login"]:
     office_select = office_select
     round = "รอบที่" + round
     placeholder.empty()
-    #placeholder_check = placeholder
+    if st.session_state["Login_alert"]:
+        st.success("Login successful")
     
  
     df,sc,df_name,df_fol = get_data()
@@ -317,6 +318,7 @@ if st.session_state["Login"]:
         #import time 
         #start = time.time()
         st.session_state["Submit"] = True
+        st.session_state["Login_alert"] = False
         if N1!="" and N2!="" and N3!="" and E1!="" and E2!="" and E3!="" and N3!="" and E1!="" and E2!="" and E3!="" and H1!="" and H2!=""and H3!="" and parcel_no!="" and survey_no!="" and land_no!="" and UTMMAP1!="" and UTMMAP3!="" and BND_NAME!="" :
             if sh_report.title != Name+'-Report':
                 sh_report = gc.open(Name+'-Report_'+office_select)
