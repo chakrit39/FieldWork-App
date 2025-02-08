@@ -161,11 +161,11 @@ with placeholder.form("login"):
 placeholder == st.empty()
 if submit_office:
     st.session_state["submit_office"] = True
-if st.session_state["submit_office"]:
+    placeholder.empty()
+if placeholder == st.empty():
     st.session_state["submit_office"] = True
     office_select = office_select
     round = "รอบที่" + round
-    placeholder.empty()
     st.success("Login successful")
     
     df,sc,df_name,df_fol = get_data()
