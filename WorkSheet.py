@@ -158,14 +158,13 @@ with placeholder.form("login"):
     office_select = st.selectbox("สำนักงานที่ดิน",Office)
     round = st.selectbox("รอบที่",["1","2"])
     submit_office = st.form_submit_button("Login")
-if submit_office:
+if st.session_state["submit_office"]:
     st.session_state["submit_office"] = True
     office_select = office_select
     round = "รอบที่" + round
     placeholder.empty()
     st.success("Login successful")
     
-#if st.session_state["submit_office"]:
     df,sc,df_name,df_fol = get_data()
     engine = get_postgis()
     df_fol[df_fol.Name==office_select]
