@@ -160,17 +160,15 @@ with placeholder.form("login"):
     submit_office = st.form_submit_button("Login")
 if submit_office:
     st.session_state["Login"] = True
-if st.session_state["Login"]:
-    # If the form is submitted and the email and password are correct,
-    # clear the form/container and display a success message
     office_select = office_select
     round = "รอบที่" + round
     placeholder.empty()
     st.success("Login successful")
-
+    
+if st.session_state["Login"]:
     df,sc,df_name,df_fol = get_data()
     engine = get_postgis()
-    df_fol
+    df_fol[df.fol_Name==office_select]
     folder_id = []
     
     st.title("แบบกรอกข้อมูลงานภาคสนาม")
