@@ -267,8 +267,8 @@ image_3 = st.file_uploader("เลือกรูปตำแหน่งรั�
 """
 -----------------
 """
-
-Name = st.selectbox("ผู้รังวัด",df_name["Name"],)
+Name_list = df_name["Name"].to_list()
+Name = st.selectbox("ผู้รังวัด",Name_list)
 f_name = df_name["F_Name-th"][df_name.Name==Name].iloc[0]
 l_name = df_name["L_Name-th"][df_name.Name==Name].iloc[0]
 full_name = "(" + f_name + "  " + l_name + ")"
