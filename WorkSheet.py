@@ -168,7 +168,9 @@ if st.session_state["Login"]:
     office_select = office_select
     round = "รอบที่" + round
     placeholder.empty()
-    if st.session_state["Login_alert"]:
+    office_select
+    round
+    if st.session_state["Login_alert"] = True:
         st.success("Login successful")
     
  
