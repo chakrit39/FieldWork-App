@@ -138,7 +138,8 @@ def get_data():
     df = pd.read_csv('./ONGKHARAK.csv',header=0)
     sc = pd.read_csv('./UTMMAP4.csv',header=0,dtype={'UTMMAP4': str})
     df_name = pd.read_csv("https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv",header=0)
-    return df,sc,df_name
+    df_fol = pd.read_csv("https://docs.google.com/spreadsheets/d/1j0m_zhMDIXrqjsqyRMCczHjm6quwVS4Km0M7WqZ_s2M/export?gid=0&format=csv",header=0)
+    return df,sc,df_name,df_fol
     
 @st.dialog("สำเร็จ !!", width="small")
 def pop_up():
@@ -148,7 +149,9 @@ def pop_up():
         #st.session_state.vote = {"item": item, "reason": reason}
         st.rerun()    
 
-df,sc,df_name = get_data()
+df,sc,df_name,df_fol = get_data()
+creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
+engine = get_postgis()
 
 st.title("แบบกรอกข้อมูลงานภาคสนาม สาขาองครักษ์")
     
@@ -227,7 +230,6 @@ elif upload_method == "Upload a CSV file (Name,Code,N,E,h)":
         else:
             st.warning("โปรดใส่ชื่อหมุดหลักเขต")
 elif upload_method == "Import from PostGIS":
-    engine = get_postgis()
     sql = f'SELECT * FROM "public"."BND_Points"'
     gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
     gdf_postgis_new = gdf_postgis[['Name','Code','N','E','h','Remark','Date']] #[gdf_postgis['ผู้รังวัด']==Name]
@@ -277,7 +279,7 @@ Sig = df_name["Signature"][df_name.Name==Name].iloc[0]
 date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
 remark = st.text_input("หมายเหตุ","")
 
-creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
+
 c001, c002 = st.columns([0.12,0.88])
 
 if c002.button("Refresh", type="primary"):
