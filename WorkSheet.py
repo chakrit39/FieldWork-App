@@ -168,16 +168,16 @@ if st.session_state["Login"]:
     office_select = office_select
     round = "รอบที่" + round
     placeholder.empty()
-    office_select
-    round
     if st.session_state["Login_alert"] == True:
         st.success("Login successful")
     
  
     df,sc,df_name,df_fol = get_data()
     engine = get_postgis()
-    #df_fol[df_fol.Name==office_select]
-    folder_id = []
+    df_fol_ = df_fol[df_fol.Name==office_select]
+    df_fol_ = df_fol_.reset_index(drop=True)
+    folder_id = [df_fol_.iloc[0,1], df_fol_.iloc[0,2],df_fol_.iloc[0,3]]
+    folder_id
     
     st.title("แบบกรอกข้อมูลงานภาคสนาม")
     st.title("สาขา"+office_select)  
