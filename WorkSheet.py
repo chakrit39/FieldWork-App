@@ -159,6 +159,8 @@ with placeholder.form("login"):
     round = st.selectbox("รอบที่",["1","2"])
     submit_office = st.form_submit_button("Login")
 placeholder
+if submit_office:
+    st.session_state["submit_office"] = True
 if st.session_state["submit_office"]:
     st.session_state["submit_office"] = True
     office_select = office_select
