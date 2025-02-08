@@ -173,7 +173,6 @@ if st.session_state["Login"]:
     
  
     df,sc,df_name,df_fol = get_data()
-    sh.__dict__
     engine = get_postgis()
     df_fol_ = df_fol[df_fol.Name==office_select]
     df_fol_ = df_fol_.reset_index(drop=True)
@@ -308,6 +307,7 @@ if st.session_state["Login"]:
     remark = st.text_input("หมายเหตุ","")
     
     creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
+    sh.__dict__
     c001, c002 = st.columns([0.12,0.88])
     
     if c002.button("Refresh", type="primary"):
