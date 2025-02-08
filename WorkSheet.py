@@ -307,10 +307,9 @@ if st.session_state["Login"]:
     remark = st.text_input("หมายเหตุ","")
     
     creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
-    sh.title
-    #if sh['_properties']['name'] != office_select
-    #    get_service.clear()
-    #    creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
+    if sh.title != office_select
+        get_service.clear()
+        creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
 
     c001, c002 = st.columns([0.12,0.88])
     
