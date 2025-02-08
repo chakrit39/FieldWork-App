@@ -159,9 +159,10 @@ with placeholder.form("login"):
     round = st.selectbox("รอบที่",["1","2"])
     submit_office = st.form_submit_button("Login")
 if submit_office:
+    st.session_state["Login"] = True
+if st.session_state["Login"]:
     # If the form is submitted and the email and password are correct,
     # clear the form/container and display a success message
-    st.session_state["Login"] = True
     office_select = office_select
     round = "รอบที่" + round
     placeholder.empty()
