@@ -160,7 +160,7 @@ with placeholder.form("login"):
     Login = st.form_submit_button("Login")
     if Login:
         st.session_state["Login"] = True
-    else:
+    #else:
         #st.session_state["Login"] = False
     #placeholder_check = placeholder
 if st.session_state["Login"]:
