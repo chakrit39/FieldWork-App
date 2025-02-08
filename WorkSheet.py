@@ -122,7 +122,7 @@ def get_service():
     wks = sh.worksheet('Raw')
     sh_ref = gc.open('Report') 
     wks_ref = sh_ref.worksheet('Ref')
-    sh_report = gc.open(Name+'-Report')
+    sh_report = gc.open(Name+'-Report_องครักษ์')
     return creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report
     
 @st.cache_resource 
@@ -295,7 +295,7 @@ if c001.button("Submit"):
     st.session_state["Submit"] = True
     if N1!="" and N2!="" and N3!="" and E1!="" and E2!="" and E3!="" and N3!="" and E1!="" and E2!="" and E3!="" and H1!="" and H2!=""and H3!="" and parcel_no!="" and survey_no!="" and land_no!="" and UTMMAP1!="" and UTMMAP3!="" and BND_NAME!="" :
         if sh_report.title != Name+'-Report':
-            sh_report = gc.open(Name+'-Report')
+            sh_report = gc.open(Name+'-Report_องครักษ์')
         N = round((float(N1)+float(N2)+float(N3))/3,3)
         E = round((float(E1)+float(E2)+float(E3))/3,3)
         H = round((float(H1)+float(H2)+float(H3))/3,3)
