@@ -305,7 +305,7 @@ if st.session_state["Login"]:
     
     date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
     remark = st.text_input("หมายเหตุ","")
-    
+    sh.title
     creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
     if sh.title != office_select:
         get_service.clear()
