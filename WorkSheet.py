@@ -21,8 +21,8 @@ st.sidebar.markdown("แอปพลิเคชันสร้างราย�
 
 if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
-if "submit_office" not in st.session_state:
-    st.session_state["submit_office"] = False
+if "Login" not in st.session_state:
+    st.session_state["Login"] = False
 if "uploader_key" not in st.session_state:
     st.session_state.uploader_key = 0
 if "Refresh" not in st.session_state:
@@ -163,13 +163,14 @@ with placeholder.form("login"):
     else:
         st.session_state["Login"] = False
     #placeholder_check = placeholder
-if st.session_state["Login"]:
+if submit_office:
     office_select = office_select
     round = "รอบที่" + round
     placeholder.empty()
     #placeholder_check = placeholder
     st.success("Login successful")
     
+if st.session_state["Login"]:    
     df,sc,df_name,df_fol = get_data()
     engine = get_postgis()
     df_fol[df_fol.Name==office_select]
