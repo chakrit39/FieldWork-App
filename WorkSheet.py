@@ -158,7 +158,7 @@ placeholder = st.empty()
 with placeholder.form("login"):
     st.markdown("#### โปรดเลือก")
     office_select = st.selectbox("สำนักงานที่ดิน",Office)
-    round = st.selectbox("รอบที่",["1","2"])
+    round_ = st.selectbox("รอบที่",["1","2"])
     Login = st.form_submit_button("Login")
     if Login:
         st.session_state["Login"] = True
@@ -166,7 +166,7 @@ with placeholder.form("login"):
         
 if st.session_state["Login"]:
     office_select = office_select
-    round = "รอบที่ " + round
+    round_ = "รอบที่ " + round_
     placeholder.empty()
     if st.session_state["Login_alert"] == True:
         st.success("Login successful")
@@ -174,7 +174,7 @@ if st.session_state["Login"]:
  
     df,sc,df_name,df_fol = get_data()
     engine = get_postgis()
-    df_name_ = df_name[df_name[round]==True]
+    df_name_ = df_name[df_name[round_]==True]
     df_fol_ = df_fol[df_fol.Name==office_select]
     df_fol_ = df_fol_.reset_index(drop=True)
     folder_id = [df_fol_.iloc[0,1], df_fol_.iloc[0,2],df_fol_.iloc[0,3]]
@@ -335,7 +335,7 @@ if st.session_state["Login"]:
                 image = [image_1,image_2,image_3]
                 for i in range(3):
                     image_id.append(upload_image(service,folder_id[i],image[i]))
-                row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, Name, round, BND_NAME, N, E, H, Method, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
+                row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, Name, round_, BND_NAME, N, E, H, Method, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
                 row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
                 DATE_temp = wks.acell('R'+row_update['updates']['updatedRange'][5:]).value.replace('\xa0',' ').split()
                 DATE = DATE_temp[0] + " " + DATE_temp[1] + " " + str(int(DATE_temp[2])+543)
