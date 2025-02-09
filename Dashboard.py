@@ -52,7 +52,8 @@ def get_map():
               "รอบที่ 2" : ["บางลูกเสือ","องครักษ์"]
              }
     if Round == "":
-        round = round_["รอบที่ 1"].extend(round_["รอบที่ 2"])
+        round = round_["รอบที่ 1"]
+        round = round.extend(round_["รอบที่ 2"])
     else:
         round = round_[Round]
     round
