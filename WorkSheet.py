@@ -41,10 +41,10 @@ def upload_image(service,parents,image_i):
     size = img._size
     sc = size[0]/2000
     new_img = img.resize( ( int(round(size[0]/sc,0)) , int(round(size[1]/sc,0)) ) )
-    
-    temp_file = open(path, 'wb')
-    temp_file.write(new_img.getvalue())
-    temp_file.close()
+    new_img.save(path)
+    #temp_file = open(path, 'wb')
+    #temp_file.write(new_img.getvalue())
+    #temp_file.close()
     file_metadata = {"name": file_name,"parents": [parents]}
     media = MediaFileUpload(path, mimetype="image/jpeg")
     file = (service.files().create(body=file_metadata, media_body=media, fields="id").execute() )
