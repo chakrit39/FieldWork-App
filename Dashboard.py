@@ -52,17 +52,17 @@ def get_map():
               "รอบที่ 2" : ["บางลูกเสือ","องครักษ์"]
              }
     if Round == "":
-        round = round_["รอบที่ 1"]
-        round.extend(round_["รอบที่ 2"])
-        round = list(set(round))
+        round_field = round_["รอบที่ 1"]
+        round_field.extend(round_["รอบที่ 2"])
+        round_field = list(set(round_field))
     else:
-        round = round_[Round]
+        round_field = round_[Round]
     for _, t in gdf_t.iterrows():
         # Without simplifying the representation of each borough,
         # the map might not be displayed
         sim_geo = gpd.GeoSeries(t["geometry"]).simplify(tolerance=0.001)
         geo_j = sim_geo.to_json()
-        if round.count(t["T_NAME_T"])==1:
+        if round_field.count(t["T_NAME_T"])==1:
             geo_j = fo.GeoJson(data=geo_j)
         else:
             geo_j = fo.GeoJson(data=geo_j,style_function=lambda x: {"fillOpacity": 0})
