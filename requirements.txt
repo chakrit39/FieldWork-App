@@ -1,3 +1,4 @@
+PIL
 streamlit
 pandas
 geopandas
@@ -11,4 +12,4 @@ streamlit_folium
 sqlalchemy
 psycopg2-binary
 geoalchemy2
-PIL
+
