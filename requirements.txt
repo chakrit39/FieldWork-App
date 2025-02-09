@@ -11,4 +11,4 @@ streamlit_folium
 sqlalchemy
 psycopg2-binary
 geoalchemy2
-
+Pillow
