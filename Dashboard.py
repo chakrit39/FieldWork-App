@@ -69,8 +69,9 @@ def get_Refresh():
 st.title("Dashboard")
 creds,gc,sh,wks,wks_result = get_service()
 
-df =  pd.DataFrame(wks_result.get_all_records())  
-df['Progress'] = round(100/ df['เป้าหมาย'] * df['จำนวนแปลง'],2)
+df_ =  pd.DataFrame(wks_result.get_all_records())  
+df = df_[['Name','จำนวนแปลง รอบที่ 1','เป้าหมาย รอบที่ 1']]
+df['Progress'] = round(100/ df['เป้าหมาย รอบที่ 1'] * df['จำนวนแปลง รอบที่ 1'],2)
 #df_ = df.tail(1).copy()
 #df = df.drop([df_.index[0]])
 st.dataframe(
