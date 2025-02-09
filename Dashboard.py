@@ -71,11 +71,13 @@ def get_map():
 def get_Refresh():    
     get_map.clear()
     map = get_map()
+def get_Refresh2():    
+    get_map.clear()
     
 st.title("Dashboard")
 creds,gc,sh,wks,wks_result = get_service()
 
-Round_ = st.selectbox("เลือกรอบ ",["รอบที่ 1","รอบที่ 2", "ทั้งหมด"])
+Round_ = st.selectbox("เลือกรอบ ",["รอบที่ 1","รอบที่ 2", "ทั้งหมด"],on_change=get_Refresh2())
 if Round_ == "ทั้งหมด":
     Round = ""
 else:
