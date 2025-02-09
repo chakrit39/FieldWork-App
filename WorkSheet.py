@@ -39,7 +39,8 @@ def upload_image(service,parents,image_i):
     
     img = Image.open(image_i)
     size = img._size
-    new_img = img.resize((int(round(size[0]/sc,0)),int(round(size[1]/sc,0))))
+    sc = size[0]/2000
+    new_img = img.resize( ( int(round(size[0]/sc,0)) , int(round(size[1]/sc,0)) ) )
     
     temp_file = open(path, 'wb')
     temp_file.write(new_img.getvalue())
