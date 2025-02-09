@@ -108,7 +108,7 @@ st.dataframe(
 
 
 st.header('Map')
-#map = get_map()
+map = get_map()
 
 
 Name = st.selectbox("ผู้รังวัด",["ทั้งหมด","ชาคฤตย์", "กิตติพันธุ์", "สุริยา", "ณัฐพร", "ศรัณย์", "ฐณิตา", "ปณิดา", "ปฐพี"],on_change=get_Refresh())
