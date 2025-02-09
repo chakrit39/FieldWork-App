@@ -56,7 +56,6 @@ def get_map():
         round.extend(round_["รอบที่ 2"])
     else:
         round = round_[Round]
-    round
     for _, t in gdf_t.iterrows():
         # Without simplifying the representation of each borough,
         # the map might not be displayed
