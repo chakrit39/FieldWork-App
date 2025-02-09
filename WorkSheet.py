@@ -37,7 +37,7 @@ def upload_image(service,parents,image_i):
     file_name = str(UTMMAP1) + str(UTMMAP2) + str(UTMMAP3) + "-" + str(UTMMAP4) + "-" + str(Scale) + "-" + str(land_no) + "_" + BND_NAME + ".jpeg"
     path = "./Temp/" +  file_name
     
-    img_new = Image.open(image_i)
+    img = Image.open(image_i)
     size = img._size
     new_img = img.resize((int(round(size[0]/sc,0)),int(round(size[1]/sc,0))))
     
