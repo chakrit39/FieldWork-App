@@ -54,6 +54,7 @@ def get_map():
     if Round == "":
         round = round_["รอบที่ 1"]
         round.extend(round_["รอบที่ 2"])
+        round = list(set(round))
     else:
         round = round_[Round]
     for _, t in gdf_t.iterrows():
