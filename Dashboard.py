@@ -52,13 +52,10 @@ def get_map():
               "รอบที่ 2" : ["บางลูกเสือ","องครักษ์"]
              }
     if Round == "":
-        round1 = round_["รอบที่ 1"]
-        round2 = round_["รอบที่ 2"]
-        round = round1.extend(round2)
+        round = round_["รอบที่ 1"]
+        round.extend(round_["รอบที่ 2"])
     else:
         round = round_[Round]
-    round1
-    round2
     round
     for _, t in gdf_t.iterrows():
         # Without simplifying the representation of each borough,
