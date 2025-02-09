@@ -13,7 +13,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
-import Image
+from PIL import Image
 st.set_page_config(page_title="WorkSheet")
 
 st.sidebar.header("Work Sheets")
