@@ -52,7 +52,7 @@ def get_map():
               "รอบที่ 2" : ["บางลูกเสือ","องครักษ์"]
              }
     if Round == "":
-        round = [""]
+        round = round_["รอบที่ 1"].extend(round_["รอบที่ 2"])
     else:
         round = round_[Round]
     for _, t in gdf_t.iterrows():
