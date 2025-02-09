@@ -51,8 +51,10 @@ def get_map():
     round_ = {"รอบที่ 1" : ["บึงศาล","บางสมบูรณ์","ชุมพล","พระอาจารย์","บางลูกเสือ","ศีรษะกระบือ"],
               "รอบที่ 2" : ["บางลูกเสือ","องครักษ์"]
              }
-    
-    round = round_[Round]
+    if Round == "ทั้งหมด"
+        round = [""]
+    else:
+        round = round_[Round]
     for _, t in gdf_t.iterrows():
         # Without simplifying the representation of each borough,
         # the map might not be displayed
