@@ -339,6 +339,7 @@ if st.session_state["Login"]:
                 row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
                 gid = row_update['updates']['updatedRange'][5:]
                 DATE_temp = wks.acell('S'+gid).value.replace('\xa0',' ').split()
+                gid = gid.split(":")[0]
                 wks.update_acell('AH'+gid,gid)
                 DATE = DATE_temp[0] + " " + DATE_temp[1] + " " + str(int(DATE_temp[2])+543)
                 create_report()
