@@ -123,7 +123,6 @@ if Round_ != "ทั้งหมด":
     gdf = gdf.reset_index(drop=True)
 else:
     gdf = gpd.GeoDataFrame()
-gdf
 if len(gdf)!=0:  
     if Name != "ทั้งหมด":
         gdf = gdf[gdf['ผู้รังวัด']==Name]
