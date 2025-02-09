@@ -48,13 +48,17 @@ def get_map():
     gdf_t = gpd.read_file('/vsicurl/https://github.com/chakrit39/FieldWork-App/raw/refs/heads/main/Tambon/องครักษ์.shp')
     gdf_t = gdf_t.to_crs('EPSG:4326')
     map = fo.Map(location=[14.078746259525621, 101.02592277876519], zoom_start=11)
-    round1 = ["บึงศาล","บางสมบูรณ์","ชุมพล","พระอาจารย์","บางลูกเสือ","ศีรษะกระบือ"]
+    round_ = {"รอบที่ 1 " : ["บึงศาล","บางสมบูรณ์","ชุมพล","พระอาจารย์","บางลูกเสือ","ศีรษะกระบือ"],
+              "รอบที่ 2 " : ["บางลูกเสือ","องครักษ์"]
+             }
+    
+    round = round_[Round]
     for _, t in gdf_t.iterrows():
         # Without simplifying the representation of each borough,
         # the map might not be displayed
         sim_geo = gpd.GeoSeries(t["geometry"]).simplify(tolerance=0.001)
         geo_j = sim_geo.to_json()
-        if round1.count(t["T_NAME_T"])==1:
+        if round.count(t["T_NAME_T"])==1:
             geo_j = fo.GeoJson(data=geo_j)
         else:
             geo_j = fo.GeoJson(data=geo_j,style_function=lambda x: {"fillOpacity": 0})
