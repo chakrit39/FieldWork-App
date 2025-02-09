@@ -71,6 +71,8 @@ creds,gc,sh,wks,wks_result = get_service()
 
 df_ =  pd.DataFrame(wks_result.get_all_records())  
 df = df_[['Name','จำนวนแปลง รอบที่ 1','เป้าหมาย รอบที่ 1']]
+df = df[df['เป้าหมาย รอบที่ 1']!=0]
+df = df.reset_index(drop=True)
 df['Progress'] = round(100/ df['เป้าหมาย รอบที่ 1'] * df['จำนวนแปลง รอบที่ 1'],2)
 #df_ = df.tail(1).copy()
 #df = df.drop([df_.index[0]])
