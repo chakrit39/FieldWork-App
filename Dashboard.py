@@ -85,7 +85,7 @@ if Round_ == "ทั้งหมด":
 else:
     Round = Round_
 df_ =  pd.DataFrame(wks_result.get_all_records())  
-df = df_[['Name','จำนวนแปลง ' + Round,'เป้าหมาย ' + Round]]
+df = df_[['Name','จำนวนหมุดหลักเขต ' + Round, 'จำนวนแปลง ' + Round, 'เป้าหมาย ' + Round]]
 df = df[df['เป้าหมาย ' + Round]!=0]
 df = df.reset_index(drop=True)
 df['Progress'] = round(100/ df['เป้าหมาย ' + Round] * df['จำนวนแปลง ' + Round],2)
