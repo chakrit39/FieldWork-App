@@ -121,7 +121,7 @@ gdf_ = gpd.GeoDataFrame(wks.get_all_records())
 if Round_ != "ทั้งหมด":
     gdf = gdf_[gdf_["รอบ"]==Round]
     gdf = gdf.reset_index(drop=True)
-
+gdf
 if len(gdf)!=0:  
     if Name != "ทั้งหมด":
         gdf = gdf[gdf['ผู้รังวัด']==Name]
