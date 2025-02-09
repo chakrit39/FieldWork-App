@@ -51,7 +51,7 @@ def get_map():
     round_ = {"รอบที่ 1" : ["บึงศาล","บางสมบูรณ์","ชุมพล","พระอาจารย์","บางลูกเสือ","ศีรษะกระบือ"],
               "รอบที่ 2" : ["บางลูกเสือ","องครักษ์"]
              }
-    if Round_ == "ทั้งหมด":
+    if Round == "":
         round = [""]
     else:
         round = round_[Round]
@@ -75,7 +75,7 @@ def get_Refresh():
 st.title("Dashboard")
 creds,gc,sh,wks,wks_result = get_service()
 
-Round_ = st.selectbox("เลือกรอบ ",["รอบที่ 1","รอบที่ 2", "ทั้งหมด"],on_change=get_Refresh())
+Round_ = st.selectbox("เลือกรอบ ",["รอบที่ 1","รอบที่ 2", "ทั้งหมด"])
 if Round_ == "ทั้งหมด":
     Round = ""
 else:
