@@ -75,7 +75,7 @@ def get_Refresh():
 st.title("Dashboard")
 creds,gc,sh,wks,wks_result = get_service()
 
-Round_ = st.selectbox("เลือกรอบ ",["รอบที่ 1","รอบที่ 2", "ทั้งหมด"])
+Round_ = st.selectbox("เลือกรอบ ",["รอบที่ 1","รอบที่ 2", "ทั้งหมด"],on_change=get_Refresh())
 if Round_ == "ทั้งหมด":
     Round = ""
 else:
