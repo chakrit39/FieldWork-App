@@ -69,7 +69,11 @@ def get_Refresh():
 st.title("Dashboard")
 creds,gc,sh,wks,wks_result = get_service()
 
-Round = st.selectbox("เลือกรอบ ",["รอบที่ 1","รอบที่ 2", "ทั้งหมด"])
+Round_ = st.selectbox("เลือกรอบ ",["รอบที่ 1","รอบที่ 2", "ทั้งหมด"])
+if Round_ == "ทั้งหมด":
+    Round = ""
+else:
+    Round = Round_
 df_ =  pd.DataFrame(wks_result.get_all_records())  
 df = df_[['Name','จำนวนแปลง ' + Round,'เป้าหมาย ' + Round]]
 df = df[df['เป้าหมาย ' + Round]!=0]
