@@ -75,7 +75,7 @@ def get_Refresh():
     map = get_map()
 def get_Refresh2():    
     get_map.clear()
-    map = get_map()
+
 st.title("Dashboard")
 creds,gc,sh,wks,wks_result = get_service()
 
