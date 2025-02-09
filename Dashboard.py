@@ -75,7 +75,7 @@ def get_Refresh():
     map = get_map()
 def get_Refresh2():    
     get_map.clear()
-    
+    map = get_map()
 st.title("Dashboard")
 creds,gc,sh,wks,wks_result = get_service()
 
@@ -108,7 +108,7 @@ st.dataframe(
 
 
 st.header('Map')
-map = get_map()
+#map = get_map()
 
 
 Name = st.selectbox("ผู้รังวัด",["ทั้งหมด","ชาคฤตย์", "กิตติพันธุ์", "สุริยา", "ณัฐพร", "ศรัณย์", "ฐณิตา", "ปณิดา", "ปฐพี"],on_change=get_Refresh())
