@@ -351,7 +351,7 @@ if st.session_state["Login"]:
                 DATE_temp = wks.acell('S'+gid).value.replace('\xa0',' ').split()
                 #wks.update_acell('AH'+gid,gid)
                 DATE = DATE_temp[0] + " " + DATE_temp[1] + " " + str(int(DATE_temp[2])+543)
-                create_report()
+                #create_report()
                 del st.session_state[f"image_1-{st.session_state.uploader_key}"]
                 del st.session_state[f"image_2-{st.session_state.uploader_key}"]
                 del st.session_state[f"image_3-{st.session_state.uploader_key}"]
