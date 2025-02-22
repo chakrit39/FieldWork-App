@@ -217,7 +217,7 @@ if st.session_state["Login"]:
     BND_NAME = cc1.text_input("ชื่อหลักเขต","")
     Method = cc2.selectbox("เครื่องมือการรังวัด",["RTK GNSS","Total Station"])
     chk1, chk2 = st.columns([0.5,0.5])
-    upload_method = chk1.selectbox("เลือกวิธีการนำเข้า",["ป้อนค่าพิกัด","Upload a CSV file (Name,Code,N,E,h)","Import from PostGIS"])
+    upload_method = chk1.selectbox("เลือกวิธีการนำเข้า",["ป้อนค่าพิกัด","Upload a CSV file (Name,Code,N,E,h)","Upload a CSV file (PostGIS)","Import from PostGIS"])
     
     if upload_method == "ป้อนค่าพิกัด":
         c1, c2, c3 = st.columns([0.4,0.4,0.2])
@@ -245,7 +245,42 @@ if st.session_state["Login"]:
                 data = pd.read_csv(Point)
             #st.dataframe(data=data['Code'].unique(),use_container_width=False)
             if BND_NAME != "" :
-                #data_point = data[['Code','N','E','h']][data.Code==BND_NAME]
+                data_point = data[['Code','N','E','h']][data.Code==BND_NAME]
+                data_point = data_point.reset_index(drop=True)
+                if len(data_point)==3:
+                    st.dataframe(data=data_point,use_container_width=True)
+                    c1, c2, c3 = st.columns([0.4,0.4,0.2])
+                    N1 = c1.text_input("N1",data_point.iloc[0,1])
+                    N2 = c1.text_input("N2",data_point.iloc[1,1])
+                    N3 = c1.text_input("N3",data_point.iloc[2,1])
+    
+                    E1 = c2.text_input("E1",data_point.iloc[0,2])
+                    E2 = c2.text_input("E2",data_point.iloc[1,2])
+                    E3 = c2.text_input("E3",data_point.iloc[2,2])
+    
+                    H1 = c3.text_input("H1",data_point.iloc[0,3])
+                    H2 = c3.text_input("H2",data_point.iloc[1,3])
+                    H3 = c3.text_input("H3",data_point.iloc[2,3])
+                elif len(data_point)==0:
+                    st.warning("ไม่พบชื่อหมุดหลักเขต")
+                else:
+                    st.dataframe(data=data_point,use_container_width=True)
+                    st.warning("จำนวนค่าพิกัดหมุดหลักเขตไม่ครบหรือเกิน 3 ค่า")
+            else:
+                st.warning("โปรดใส่ชื่อหมุดหลักเขต")
+    elif upload_method == "Upload a CSV file (PostGIS)":
+        chk2.write("")
+        chk2.write("")
+        Noneheader = chk1.checkbox("None header")
+        Point = st.file_uploader("เลือกไฟล์ CSV", accept_multiple_files=False, type=['csv'])
+        if Point is not None:
+            if Noneheader == True:
+                data = pd.read_csv(Point,header=None)
+                data = data.rename(columns={0: "Name", 1: "Code", 2: "N", 3: "E", 4: "h"})
+            else:
+                data = pd.read_csv(Point)
+            #st.dataframe(data=data['Code'].unique(),use_container_width=False)
+            if BND_NAME != "" :
                 data_point = data[['NAME','CODE','N','E','H','REMARK','DATE']][data.CODE==BND_NAME]
                 data_point = data_point.reset_index(drop=True)
                 if len(data_point)==3:
