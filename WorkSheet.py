@@ -249,7 +249,7 @@ if st.session_state["Login"]:
                 data_point = data[['NAME','CODE','N','E','H','REMARK','DATE']][data.CODE==BND_NAME]
                 data_point = data_point.reset_index(drop=True)
                 if len(data_point)==3:
-                    st.dataframe(data=data_point,use_container_width=False)
+                    st.dataframe(data=data_point,use_container_width=True)
                     c1, c2, c3 = st.columns([0.4,0.4,0.2])
                     N1 = c1.text_input("N1",data_point.iloc[0,1])
                     N2 = c1.text_input("N2",data_point.iloc[1,1])
