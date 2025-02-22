@@ -245,7 +245,8 @@ if st.session_state["Login"]:
                 data = pd.read_csv(Point)
             #st.dataframe(data=data['Code'].unique(),use_container_width=False)
             if BND_NAME != "" :
-                data_point = data[['Code','N','E','h']][data.Code==BND_NAME]
+                #data_point = data[['Code','N','E','h']][data.Code==BND_NAME]
+                data_point = data[['NAME','CODE','N','E','H','REMARK','DATE']][data.CODE==BND_NAME]
                 data_point = data_point.reset_index(drop=True)
                 if len(data_point)==3:
                     #st.dataframe(data=data_point,use_container_width=False)
