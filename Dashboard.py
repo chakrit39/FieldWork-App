@@ -39,7 +39,7 @@ def get_service():
     gc = gspread.authorize(creds)
     sh = gc.open('องครักษ์')
     wks = sh.worksheet('Raw')
-    wks_result = sh.worksheet('Result')
+    wks_result = gc.open('Total_Result').worksheet('Result')
     return creds,gc,sh,wks,wks_result
 #icon_image = url("leaf-red.png")
 #icon = folium.CustomIcon(icon_image,icon_size=(38, 95),icon_anchor=(22, 94))
