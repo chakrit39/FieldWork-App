@@ -14,6 +14,8 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 from PIL import Image
+from pillow_heif import register_heif_opener
+register_heif_opener()
 st.set_page_config(page_title="WorkSheet")
 
 st.sidebar.header("Work Sheets")
