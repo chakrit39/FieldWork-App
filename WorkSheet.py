@@ -382,7 +382,7 @@ if st.session_state["Login"]:
                 image = [image_1,image_2,image_3]
                 for i in range(3):
                     image_id.append(upload_image(service,folder_id[i],image[i]))
-                row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, Name, round_, BND_NAME, N, E, H, Method, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
+                row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, Name, round_, Diff, BND_NAME, N, E, H, Method, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
                 row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
                 gid = row_update['updates']['updatedRange'][5:].split(":")[0]
                 DATE_temp = wks.acell('S'+gid).value.replace('\xa0',' ').split()
