@@ -220,7 +220,7 @@ if st.session_state["Login"]:
     Method = cc2.selectbox("เครื่องมือการรังวัด",["RTK GNSS","Total Station"])
     chk1, chk2 = st.columns([0.5,0.5])
     upload_method = chk1.selectbox("เลือกวิธีการนำเข้า",["ป้อนค่าพิกัด","Upload a CSV file (Name,Code,N,E,h)","Upload a CSV file (PostGIS)","Import from PostGIS"])
-    
+    Diff = chk2.text_input("ค่าต่างสูงสุด (m.)","")
     if upload_method == "ป้อนค่าพิกัด":
         c1, c2, c3 = st.columns([0.4,0.4,0.2])
         N1 = c1.text_input("N1","")
