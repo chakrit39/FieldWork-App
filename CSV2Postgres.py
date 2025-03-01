@@ -89,7 +89,7 @@ if c001.button("Submit"):
             gdf_postgis = gdf_postgis.reset_index(drop=True)
             df = data
             df['Remark'] = df['Code']
-            df['ผู้รังวัด'] = Name
+            df['Surveyer'] = Name
             df['Date'] = date_2
             gdf = gpd.GeoDataFrame(df,geometry=gpd.points_from_xy(df['E'],df['N']) , crs="EPSG:24047")
             gdf = gdf.set_index(gdf.index + (gdf_postgis.tail(1)['Index'].iloc[0] + 1))
