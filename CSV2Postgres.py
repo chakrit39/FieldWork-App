@@ -12,7 +12,7 @@ def get_postgis():
     HOSTNAME = st.secrets["HOSTNAME"]
     USER = st.secrets["USER"]
     PASSWD = st.secrets["PASSWD"]
-    engine = create_engine( f"postgresql://{USER}:{PASSWD}@{HOSTNAME}:7001/Data1")
+    engine = create_engine( f"postgresql://{USER}:{PASSWD}@{HOSTNAME}:5432/Data1")
     return engine
             
 
@@ -64,7 +64,7 @@ if Point is not None:
 """
 -----------------
 """
-Name = st.selectbox("ผู้รังวัด",["ชาคฤตย์", "กิตติพันธุ์", "สุริยา", "ณัฐพร", "ศรัณย์", "ฐณิตา", "ปณิดา", "ปฐพี"],)
+Name = st.selectbox("ผู้รังวัด",["ชาคฤตย์", "กิตติพันธุ์", "สุริยา", "ณัฐพร", "ศรัณย์", "ฐณิตา", "ปณิดา", "ปฐพี","สกล"],)
 date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
 date_2 = str(date).split("-")
 date_2 = int(str(int(date_2[0])+543)[-2:] + date_2[1] + date_2[2])
@@ -83,7 +83,7 @@ if c001.button("Submit"):
     st.session_state["Submit"] = True
     if Point is not None :
         if len(data) > 0:
-            sql = f'SELECT * FROM "public"."BND_Points"'
+            sql = f'SELECT * FROM "public"."BND_ONGKHARAK"'
             gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
             gdf_postgis = gdf_postgis.sort_values(by=['Index'])
             gdf_postgis = gdf_postgis.reset_index(drop=True)
@@ -93,7 +93,7 @@ if c001.button("Submit"):
             df['Date'] = date_2
             gdf = gpd.GeoDataFrame(df,geometry=gpd.points_from_xy(df['E'],df['N']) , crs="EPSG:24047")
             gdf = gdf.set_index(gdf.index + (gdf_postgis.tail(1)['Index'].iloc[0] + 1))
-            gdf.to_postgis("BND_Points", engine, if_exists='append', index=True, index_label='Index')
+            gdf.to_postgis("BND_ONGKHARAK", engine, if_exists='append', index=True, index_label='Index')
             del st.session_state[f"upload_{st.session_state.uploader_key}"]
             st.session_state.uploader_key += 1
             pop_up()
