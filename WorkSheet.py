@@ -138,8 +138,8 @@ def get_service():
     wks = sh.worksheet('Raw')
     sh_ref = gc.open('Report') 
     wks_ref = sh_ref.worksheet('Ref')
-    sh_report = gc.open(Name+'-Report_'+office_select)
-    return creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report
+    #sh_report = gc.open(Name+'-Report_'+office_select)
+    return creds,gc,service,sh,wks,sh_ref,wks_ref#,sh_report
     
 @st.cache_resource 
 def get_postgis():
@@ -354,16 +354,16 @@ if st.session_state["Login"]:
     date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
     remark = st.text_input("หมายเหตุ","")
     
-    creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
+    creds,gc,service,sh,wks,sh_ref,wks_ref = get_service()
     if sh.title != office_select:
         get_service.clear()
-        creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
+        creds,gc,service,sh,wks,sh_ref,wks_ref = get_service()
         
     c001, c002 = st.columns([0.12,0.88])
     if c002.button("Refresh", type="primary"):
         st.session_state["Refresh"] = True
         get_service.clear()
-        creds,gc,service,sh,wks,sh_ref,wks_ref,sh_report = get_service()
+        creds,gc,service,sh,wks,sh_ref,wks_ref = get_service()
     else:
         st.session_state["Refresh"] = False   
     if c001.button("Submit"):
@@ -372,8 +372,8 @@ if st.session_state["Login"]:
         st.session_state["Submit"] = True
         st.session_state["Login_alert"] = False
         if N1!="" and N2!="" and N3!="" and E1!="" and E2!="" and E3!="" and N3!="" and E1!="" and E2!="" and E3!="" and H1!="" and H2!=""and H3!="" and parcel_no!="" and survey_no!="" and land_no!="" and UTMMAP1!="" and UTMMAP3!="" and BND_NAME!="" :
-            if sh_report.title != Name+'-Report':
-                sh_report = gc.open(Name+'-Report_'+office_select)
+            #if sh_report.title != Name+'-Report':
+                #sh_report = gc.open(Name+'-Report_'+office_select)
             N = round((float(N1)+float(N2)+float(N3))/3,3)
             E = round((float(E1)+float(E2)+float(E3))/3,3)
             H = round((float(H1)+float(H2)+float(H3))/3,3)
