@@ -146,7 +146,7 @@ def get_postgis():
     HOSTNAME = st.secrets["HOSTNAME"]
     USER = st.secrets["USER"]
     PASSWD = st.secrets["PASSWD"]
-    engine = create_engine( f"postgresql://{USER}:{PASSWD}@{HOSTNAME}:7001/Data1")
+    engine = create_engine( f"postgresql://{USER}:{PASSWD}@{HOSTNAME}:5432/Data1")
     return engine
     
 @st.cache_data
@@ -305,7 +305,7 @@ if st.session_state["Login"]:
             else:
                 st.warning("โปรดใส่ชื่อหมุดหลักเขต")
     elif upload_method == "Import from PostGIS":
-        sql = f'SELECT * FROM "public"."BND_Points"'
+        sql = f'SELECT * FROM "public"."BND_ONGKHARAK"'
         gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
         gdf_postgis_new = gdf_postgis[['Name','Code','N','E','h','Remark','Date']] #[gdf_postgis['ผู้รังวัด']==Name]
         if BND_NAME != "" :
