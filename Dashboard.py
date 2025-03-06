@@ -47,7 +47,7 @@ def get_service():
 def get_map():    
     gdf_t = gpd.read_file('/vsicurl/https://github.com/chakrit39/FieldWork-App/raw/refs/heads/main/Tambon/องครักษ์.shp')
     gdf_t = gdf_t.to_crs('EPSG:4326')
-    map = fo.Map(location=[14.078746259525621, 101.02592277876519], zoom_start=11)
+    map = fo.Map(location=[14.078746259525621, 101.02592277876519], zoom_start=11,crs='EPSG4236')
     round_ = {"รอบที่ 1" : ["บึงศาล","บางสมบูรณ์","ชุมพล","พระอาจารย์","บางลูกเสือ","ศีรษะกระบือ"],
               "รอบที่ 2" : ["บางลูกเสือ","องครักษ์"]
              }
@@ -132,7 +132,7 @@ if len(gdf)!=0:
         gdf = gdf[gdf['ผู้รังวัด']==Name]
     gdf = gdf.set_geometry(gpd.points_from_xy(gdf.E,gdf.N),crs='EPSG:24047')
     #st.dataframe(data=gdf)
-    gdf = gdf.to_crs(epsg=3857)
+    gdf = gdf.to_crs(epsg=4236)
     #st.dataframe(data=gdf)
     #gdf.crs
     #lat = gdf.geometry.y
