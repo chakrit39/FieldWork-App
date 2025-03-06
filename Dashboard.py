@@ -132,7 +132,7 @@ if len(gdf)!=0:
         gdf = gdf[gdf['ผู้รังวัด']==Name]
     gdf = gdf.set_geometry(gpd.points_from_xy(gdf.E,gdf.N),crs='EPSG:24047')
     #st.dataframe(data=gdf)
-    gdf = gdf.to_crs(epsg=4326)
+    gdf = gdf.to_crs(epsg=3857)
     #st.dataframe(data=gdf)
     #gdf.crs
     #lat = gdf.geometry.y
