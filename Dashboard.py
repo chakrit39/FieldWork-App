@@ -68,6 +68,7 @@ def get_map():
             geo_j = fo.GeoJson(data=geo_j,style_function=lambda x: {"fillOpacity": 0})
         fo.Popup(t["T_NAME_T"]).add_to(geo_j)
         geo_j.add_to(map)
+        tile = folium.TileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', attr='Google Satellite',name='Google Satellite', overlay=True).add_to(self.m)
         #tile = fo.TileLayer(tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',attr = 'Esri',name = 'Esri Satellite',overlay = False,control = True).add_to(map)
     return map
 def get_Refresh():    
