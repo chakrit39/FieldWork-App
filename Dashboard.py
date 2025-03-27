@@ -115,7 +115,7 @@ map = get_map()
 Name_list_ = df["Name"].to_list()
 Name_list_ = Name_list_[0:len(Name_list_)-1]
 Name_list = ["ทั้งหมด"]
-Name_list = Name_list.append(Name_list_)
+Name_list = Name_list.extend(Name_list_)
 Name = st.selectbox("ผู้รังวัด",Name_list,on_change=get_Refresh())
 if st.button("Refresh"):
     st.session_state["Refresh"] = True
