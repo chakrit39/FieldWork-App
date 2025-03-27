@@ -112,8 +112,8 @@ st.dataframe(
 st.header('Map')
 map = get_map()
 
-
-Name = st.selectbox("ผู้รังวัด",["ทั้งหมด","ชาคฤตย์", "กิตติพันธุ์", "สุริยา", "ณัฐพร", "ศรัณย์", "ฐณิตา", "ปณิดา", "ปฐพี"],on_change=get_Refresh())
+Name_list = df["Name"].to_list()
+Name = st.selectbox("ผู้รังวัด",Name_list,on_change=get_Refresh())
 if st.button("Refresh"):
     st.session_state["Refresh"] = True
     get_map.clear()
