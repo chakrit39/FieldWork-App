@@ -113,7 +113,8 @@ st.header('Map')
 map = get_map()
 
 Name_list = df["Name"].to_list()
-Name_list = ["ทั้งหมด"].extend(Name_list[0:len(Name_list)-1])
+Name_list 
+Name_list = ["ทั้งหมด"].append(Name_list[0:len(Name_list)-1])
 Name_list
 Name = st.selectbox("ผู้รังวัด",Name_list,on_change=get_Refresh())
 if st.button("Refresh"):
