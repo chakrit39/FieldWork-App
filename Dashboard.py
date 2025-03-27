@@ -46,7 +46,7 @@ def get_service():
 @st.cache_resource 
 def get_map():
     df_field = pd.read_csv("https://docs.google.com/spreadsheets/d/1df9H6WDQX9KXAEIOkNF298jE-UU63wEl0FSB4OdH8k8/export?gid=0&format=csv",header=0)
-    gdf_t = gpd.read_file('/vsicurl/https://github.com/chakrit39/FieldWork-App/raw/refs/heads/main/Tambon/องครักษ์.shp')
+    gdf_t = gpd.read_file('/vsicurl/https://github.com/chakrit39/FieldWork-App/raw/refs/heads/main/Tambon/ตำบล.shp')
     gdf_t = gdf_t.to_crs('EPSG:4326')
     map = fo.Map(location=[14.078746259525621, 101.02592277876519], zoom_start=11)
     round_ = {"รอบที่ 1" : df_field["พื้นที่"][df_field["รอบ"]=="รอบที่ 1"].iloc[0].split(","),
