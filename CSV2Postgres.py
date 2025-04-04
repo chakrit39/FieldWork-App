@@ -90,12 +90,13 @@ if c001.button("Submit"):
             if len(gdf_postgis) > 0:
                 gdf_postgis = gdf_postgis.sort_values(by=['Index'])
                 gdf_postgis = gdf_postgis.reset_index(drop=True)
-                gdf = gdf.set_index(gdf.index + (gdf_postgis.tail(1)['Index'].iloc[0] + 1))
             df = data
             df['Remark'] = df['Code']
             df['Surveyer'] = Name
             df['Date'] = date_2
             gdf = gpd.GeoDataFrame(df,geometry=gpd.points_from_xy(df['E'],df['N']) , crs="EPSG:24047")
+            if len(gdf_postgis) > 0:
+                gdf = gdf.set_index(gdf.index + (gdf_postgis.tail(1)['Index'].iloc[0] + 1))
             gdf.to_postgis("BND_"+office_select, engine, if_exists='append', index=True, index_label='Index')
             del st.session_state[f"upload_{st.session_state.uploader_key}"]
             st.session_state.uploader_key += 1
