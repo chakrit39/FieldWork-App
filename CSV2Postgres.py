@@ -39,7 +39,9 @@ def pop_up():
         st.rerun()    
 
 st.title("Upload CSV file to PostGIS")
-
+office = pd.DataFrame([["องครักษ์","ONGKLARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"]],columns=["th","eng"])
+office_choice = st.selectbox("เลือกสำนักงานที่ดิน",["องครักษ์", "ลำลูกกา", "ธัญบุรี", "คลองหลวง", "ปทุมธานี"],)
+office_select = office['eng'][office['th']==office_choice].iloc[0]
 Noneheader = st.checkbox("None header")
 Point = st.file_uploader("Upload a CSV file (Name,Code,N,E,h)", accept_multiple_files=False, type=['csv'],key=f"upload_{st.session_state.uploader_key}")
 if Point is not None:
@@ -83,17 +85,18 @@ if c001.button("Submit"):
     st.session_state["Submit"] = True
     if Point is not None :
         if len(data) > 0:
-            sql = f'SELECT * FROM "public"."BND_ONGKHARAK"'
+            sql = f'SELECT * FROM "public"."BND_' + office_select + '"'
             gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
-            gdf_postgis = gdf_postgis.sort_values(by=['Index'])
-            gdf_postgis = gdf_postgis.reset_index(drop=True)
+            if len(gdf_postgis) > 0:
+                gdf_postgis = gdf_postgis.sort_values(by=['Index'])
+                gdf_postgis = gdf_postgis.reset_index(drop=True)
+                gdf = gdf.set_index(gdf.index + (gdf_postgis.tail(1)['Index'].iloc[0] + 1))
             df = data
             df['Remark'] = df['Code']
             df['Surveyer'] = Name
             df['Date'] = date_2
             gdf = gpd.GeoDataFrame(df,geometry=gpd.points_from_xy(df['E'],df['N']) , crs="EPSG:24047")
-            gdf = gdf.set_index(gdf.index + (gdf_postgis.tail(1)['Index'].iloc[0] + 1))
-            gdf.to_postgis("BND_ONGKHARAK", engine, if_exists='append', index=True, index_label='Index')
+            gdf.to_postgis("BND_"+office_select, engine, if_exists='append', index=True, index_label='Index')
             del st.session_state[f"upload_{st.session_state.uploader_key}"]
             st.session_state.uploader_key += 1
             pop_up()
