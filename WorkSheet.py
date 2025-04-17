@@ -152,7 +152,7 @@ def get_postgis():
     
 @st.cache_data
 def get_data():
-    df = pd.read_csv('./ONGKHARAK.csv',header=0)
+    df = pd.read_csv('./P_A_T.csv',header=0)
     sc = pd.read_csv('./UTMMAP4.csv',header=0,dtype={'UTMMAP4': str})
     df_name = pd.read_csv("https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv",header=0)
     df_fol = pd.read_csv("https://docs.google.com/spreadsheets/d/1j0m_zhMDIXrqjsqyRMCczHjm6quwVS4Km0M7WqZ_s2M/export?gid=0&format=csv",header=0)
@@ -191,7 +191,9 @@ if st.session_state["Login"]:
     df_fol_ = df_fol[df_fol.Name==office_select]
     df_fol_ = df_fol_.reset_index(drop=True)
     folder_id = [df_fol_.iloc[0,1], df_fol_.iloc[0,2],df_fol_.iloc[0,3]]
-    #folder_id
+    df_P_A_T = df[df['OFFICE']==office_select]
+    df_P_A_T = df_P_A_T.reset_index(drop=True)
+
     
     st.title("แบบกรอกข้อมูลงานภาคสนาม")
     st.title("สาขา"+office_select)  
@@ -209,9 +211,9 @@ if st.session_state["Login"]:
     UTMMAP4 = col_5.selectbox("UTMMAP4",pd.unique(sc.UTMMAP4[sc.SCALE==Scale]),)
     
     col1, col2, col3 = st.columns([0.35,0.35,0.3])
-    province = col1.selectbox("จังหวัด",pd.unique(df.P_NAME_T))
-    amphoe = col2.selectbox("อำเภอ",pd.unique(df.A_NAME_T[df.P_NAME_T==province]))
-    tambon = col3.selectbox("ตำบล",pd.unique(df.T_NAME_T[df.A_NAME_T==amphoe]))
+    province = col1.selectbox("จังหวัด",pd.unique(df_P_A_T.P_NAME_T))
+    amphoe = col2.selectbox("อำเภอ",pd.unique(df_P_A_T.A_NAME_T[df_P_A_T.P_NAME_T==province]))
+    tambon = col3.selectbox("ตำบล",pd.unique(df_P_A_T.T_NAME_T[df_P_A_T.A_NAME_T==amphoe]))
     
     """
     --------------
