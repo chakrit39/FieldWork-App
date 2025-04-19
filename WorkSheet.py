@@ -47,7 +47,8 @@ def upload_image(service,parents,image_i):
         chk_sc = size[1]
     sc = chk_sc/2000
     new_img = img.resize( ( int(round(size[0]/sc,0)) , int(round(size[1]/sc,0)) ) )
-    new_img = new_img.convert('RGB')
+    if new_img.mode != "RGB":
+        new_img = new_img.convert('RGB')
     new_img.save(path)
     #temp_file = open(path, 'wb')
     #temp_file.write(new_img.getvalue())
