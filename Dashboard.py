@@ -127,8 +127,11 @@ if st.button("Refresh"):
     creds,gc,sh,wks,wks_result = get_service()
 else:
     st.session_state["Refresh"] = False
-    
-gdf_ = gpd.GeoDataFrame(wks.get_all_records())
+gdf_ong = pd.DataFrame(gc.open('องครักษ์').worksheet('Raw').get_all_records())   
+gdf_lum = pd.DataFrame(gc.open('ลำลูกกา').worksheet('Raw').get_all_records())  
+gdf_thun = pd.DataFrame(gc.open('ธัญบุรี').worksheet('Raw').get_all_records())  
+gdf_khlong = pd.DataFrame(gc.open('คลองหลวง').worksheet('Raw').get_all_records())  
+gdf_ = gpd.GeoDataFrame(pd.concat([gdf_ong,gdf_lum,gdf_thun,gdf_khlong]))
 if Round_ != "ทั้งหมด":
     gdf = gdf_[gdf_["รอบ"]==Round]
     gdf = gdf.reset_index(drop=True)
