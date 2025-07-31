@@ -51,12 +51,14 @@ def get_map():
     map = fo.Map(location=[14.078746259525621, 101.02592277876519], zoom_start=11)
     round_ = {"รอบที่ 1" : df_field["พื้นที่"][df_field["รอบ"]=="รอบที่ 1"].iloc[0].split(","),
               "รอบที่ 2" : df_field["พื้นที่"][df_field["รอบ"]=="รอบที่ 2"].iloc[0].split(","),
-              "รอบที่ 3" : df_field["พื้นที่"][df_field["รอบ"]=="รอบที่ 3"].iloc[0].split(",")
+              "รอบที่ 3" : df_field["พื้นที่"][df_field["รอบ"]=="รอบที่ 3"].iloc[0].split(","),
+              "รอบที่ 4" : df_field["พื้นที่"][df_field["รอบ"]=="รอบที่ 4"].iloc[0].split(",")
              }
     if Round == "":
         round_field = round_["รอบที่ 1"]
         round_field.extend(round_["รอบที่ 2"])
         round_field.extend(round_["รอบที่ 3"])
+        round_field.extend(round_["รอบที่ 4"])
         round_field = list(set(round_field))
     else:
         round_field = round_[Round]
@@ -83,7 +85,7 @@ def get_Refresh2():
 st.title("Dashboard")
 creds,gc,sh,wks,wks_result = get_service()
 
-Round_ = st.selectbox("เลือกรอบ ",["รอบที่ 1","รอบที่ 2","รอบที่ 3", "ทั้งหมด"],on_change=get_Refresh2())
+Round_ = st.selectbox("เลือกรอบ ",["รอบที่ 1","รอบที่ 2","รอบที่ 3","รอบที่ 4", "ทั้งหมด"],on_change=get_Refresh2())
 if Round_ == "ทั้งหมด":
     Round = ""
 else:
@@ -131,7 +133,8 @@ gdf_ong = pd.DataFrame(gc.open('องครักษ์').worksheet('Raw').get_
 gdf_lum = pd.DataFrame(gc.open('ลำลูกกา').worksheet('Raw').get_all_records())  
 gdf_thun = pd.DataFrame(gc.open('ธัญบุรี').worksheet('Raw').get_all_records())  
 gdf_khlong = pd.DataFrame(gc.open('คลองหลวง').worksheet('Raw').get_all_records())  
-gdf_ = gpd.GeoDataFrame(pd.concat([gdf_ong,gdf_lum,gdf_thun,gdf_khlong]))
+gdf_pathum = pd.DataFrame(gc.open('ปทุมธานี').worksheet('Raw').get_all_records())  
+gdf_ = gpd.GeoDataFrame(pd.concat([gdf_ong,gdf_lum,gdf_thun,gdf_khlong,gdf_pathum]))
 if Round_ != "ทั้งหมด":
     gdf = gdf_[gdf_["รอบ"]==Round]
     gdf = gdf.reset_index(drop=True)
