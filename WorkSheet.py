@@ -170,12 +170,12 @@ def pop_up():
         #st.session_state.vote = {"item": item, "reason": reason}
         st.rerun()    
         
-Office = ['องครักษ์','ลำลูกกา','ธัญบุรี','คลองหลวง']        
+Office = ['องครักษ์','ลำลูกกา','ธัญบุรี','คลองหลวง','ปทุมธานี']        
 placeholder = st.empty()
 with placeholder.form("login"):
     st.markdown("#### โปรดเลือก")
     office_select = st.selectbox("สำนักงานที่ดิน",Office)
-    round_ = st.selectbox("รอบที่",["1","2","3"])
+    round_ = st.selectbox("รอบที่",["1","2","3","4"])
     Login = st.form_submit_button("Login")
     if Login:
         st.session_state["Login"] = True
