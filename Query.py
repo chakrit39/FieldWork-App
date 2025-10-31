@@ -40,6 +40,14 @@ prop = fm.FontProperties(fname=font_path)
 plt.rcParams['font.family'] = prop.get_name()
 plt.rcParams['font.sans-serif'] = [prop.get_name()] # Also set sans-serif if needed
 
+col_1, col_2, col_3, col_4, col_5 , col_6 = st.columns([0.2,0.10,0.2,0.2,0.15,0.15])
+UTMMAP1 = col_1.text_input("UTMMAP1","")
+UTMMAP2 = col_2.selectbox("UTMMAP2",["I", "II", "III", "IV"],)
+UTMMAP3 = col_3.text_input("UTMMAP3","")
+Scale = col_4.selectbox("Scale",pd.unique(sc.SCALE),)
+UTMMAP4 = col_5.selectbox("UTMMAP4",pd.unique(sc.UTMMAP4[sc.SCALE==Scale]),)
+land_no = col_6.text_input("เลขที่ดิน","")
+
 if st.button("Search"):
     #import time 
     #start = time.time()
