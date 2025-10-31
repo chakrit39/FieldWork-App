@@ -91,7 +91,8 @@ if st.button("Search"):
             
             poly_url = "https://drive.google.com/uc?id=" + id_poly + "&export%3Fformat=geojson"
             point_url = "https://drive.google.com/uc?id=" + id_point + "&export%3Fformat=geojson"
-                    
+            poly_url 
+            point_url
             # === โหลดไฟล์ ===
             if  'poly_data' in globals():
                 get_data.clear()
