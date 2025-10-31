@@ -76,8 +76,6 @@ land_no = col_6.text_input("เลขที่ดิน","")
 
 if st.button("Search"):
     if UTMMAP1 != "" and UTMMAP3 != "" and land_no != "" :
-        st.session_state["Search"] = True
-        st.session_state["Search_"] = True
             # === Path ไปยังไฟล์ของคุณ ===
         UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
         id = df[df['Name']==UTM]
@@ -93,6 +91,8 @@ if st.button("Search"):
                     
             # === โหลดไฟล์ ===
             poly_data,point_data,data_point = get_data()
+            st.session_state["Search"] = True
+            st.session_state["Search_"] = True
     else:
         st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
         st.session_state["Search"] = False
