@@ -77,7 +77,7 @@ df,sc = get_List()
 placeholder = st.empty()
 with placeholder.form("login"):
     st.markdown("#### โปรดใส่รหัส")
-    password = st.text_input("รหัสผ่าน","")
+    password = st.text_input("รหัสผ่าน","", type="password")
     verity = st.form_submit_button("Login")
     if verity:
         if password == st.secrets["PASSWD"]:
