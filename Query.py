@@ -88,7 +88,6 @@ if st.button("Search"):
             st.warning("ไม่พบรูปแปลงที่ดิน")
             st.session_state["Search"] = False
             st.session_state["Search_"] = False
-            st.session_state["Search_"]  = True
         else:
             id_poly = id['Polygon'].iloc[0]
             id_point = id['Point'].iloc[0]
@@ -108,7 +107,6 @@ if st.button("Search"):
         st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
         st.session_state["Search"] = False
         st.session_state["Search_"] = False
-        st.session_state["Search_"]  = True
 else:
     st.session_state["Search"] = False
 
@@ -118,7 +116,7 @@ else:
 
 
 if st.session_state["Search_"] ==  True:
-    if st.session_state["Search_"]  == True :
+    if st.session_state["Polygon"]  == True :
         polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
         points = [shape(feat["geometry"]) for feat in point_data["features"]]
         
