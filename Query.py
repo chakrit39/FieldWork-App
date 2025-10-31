@@ -140,7 +140,7 @@ point2 = c02.selectbox("หมุดหลักเขต 2",Name_list)
 if point1 == point2:
     length = 0
 else:
-    point1_ = data_point.loc[data_point['PCM_BNDNAME']==point1,'geometry'][0]
-    point2_ = data_point.loc[data_point['PCM_BNDNAME']==point2,'geometry'][0]
+    point1_ = data_point.loc[data_point['PCM_BNDNAME']==point1,'geometry'].iloc[0]
+    point2_ = data_point.loc[data_point['PCM_BNDNAME']==point2,'geometry'].iloc[0]
     length = point1_.distance(point2_)
 length_ = c03.selectbox("ระยะ",str(length))
