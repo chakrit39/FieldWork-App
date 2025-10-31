@@ -217,7 +217,7 @@ if st.session_state["Search_"] ==  True:
             length = round(point1_.distance(point2_),3)
         length_ = c03.selectbox("ระยะ",str(length))
         
-local() 
+#local() 
 """
             --------------
 """
