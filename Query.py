@@ -92,8 +92,13 @@ else:
 
 if st.session_state["Search_"] ==  True:
     # === Path ไปยังไฟล์ของคุณ ===
-    poly_url = "https://drive.google.com/uc?id=1T731fgDUaa-DcRHHirZiv165JMy2rIfg&export%3Fformat=geojson"
-    point_url = "https://drive.google.com/uc?id=1cHJhf_gicoUIekg1MqKk3WCDY65CmGGt&export%3Fformat=geojson"
+    UTM = UTMMAP1 + " " + UTMMAP2 + " " + UTMMAP3 + "-" + UTMMAP4 + "(" + Scale + ")_" + land_no
+    id = df[df['Name']==UTM]
+    id_poly = id['Polygon'].iloc[0]
+    id_point = id['Point'].iloc[0]
+    
+    poly_url = "https://drive.google.com/uc?id=' +  + '&export%3Fformat=geojson"
+    point_url = "https://drive.google.com/uc?id=' +  + '&export%3Fformat=geojson"
         
     # === โหลดไฟล์ ===
     poly_data,point_data,data_point = get_data()
