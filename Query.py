@@ -72,22 +72,23 @@ def pop_up():
         st.rerun()
         
 creds,gc,service,sh,wks = get_service()
-df,sc = get_List()    
+df,sc = get_List()  
 
-placeholder = st.empty()
-with placeholder.form("login"):
-    st.markdown("#### โปรดใส่รหัส")
-    password = st.text_input("รหัสผ่าน","", type="password")
-    verity = st.form_submit_button("Login")
-    if verity:
-        if password == st.secrets["PASSWD"]:
-            st.session_state["verity"] = True
-        else:
-            pop_up()
-            st.session_state["verity"] = False
+if st.session_state["verity"] == False:
+    placeholder = st.empty()
+    with placeholder.form("login"):
+        st.markdown("#### โปรดใส่รหัส")
+        password = st.text_input("รหัสผ่าน","", type="password")
+        verity = st.form_submit_button("Login")
+        if verity:
+            if password == st.secrets["PASSWD"]:
+                st.session_state["verity"] = True
+                placeholder.empty()
+            else:
+                pop_up()
+                st.session_state["verity"] = False
 
 if st.session_state["verity"]:
-    placeholder.empty()
     st.set_page_config(page_title="Query")
     
     font_path = "./tahoma.ttf"
