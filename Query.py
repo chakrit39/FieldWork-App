@@ -111,6 +111,7 @@ else:
 
 if st.session_state["Search_"] ==  True:
     if  'poly_data' in globals():
+        poly_data
         polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
         points = [shape(feat["geometry"]) for feat in point_data["features"]]
         
