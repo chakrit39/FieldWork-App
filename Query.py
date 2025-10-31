@@ -159,5 +159,5 @@ if st.button("Search"):
         length = round(point1_.distance(point2_),3)
     length_ = c03.selectbox("ระยะ",str(length))
 
-#else:
-    #st.session_state["Submit"] = False
+else:
+    st.session_state["Submit"] = True
