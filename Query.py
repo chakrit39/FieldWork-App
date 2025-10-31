@@ -44,8 +44,11 @@ if st.button("Search"):
     #import time 
     #start = time.time()
     st.session_state["Search"] = True
+else:
+    st.session_state["Search"] = True
 
-            
+if 1:
+    if st.session_state["Search"] :
     # === Path ไปยังไฟล์ของคุณ ===
     poly_url = "https://drive.google.com/uc?id=1T731fgDUaa-DcRHHirZiv165JMy2rIfg&export%3Fformat=geojson"
     point_url = "https://drive.google.com/uc?id=1cHJhf_gicoUIekg1MqKk3WCDY65CmGGt&export%3Fformat=geojson"
@@ -159,5 +162,4 @@ if st.button("Search"):
         length = round(point1_.distance(point2_),3)
     length_ = c03.selectbox("ระยะ",str(length))
 
-else:
-    st.session_state["Search"] = True
+
