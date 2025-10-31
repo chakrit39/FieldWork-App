@@ -50,7 +50,7 @@ def get_data():
     return poly_data,point_data,data_point
     
 def get_List():
-    df = pd.DataFrame(wks..get_all_records())
+    df = pd.DataFrame(wks.get_all_records())
     sc = pd.read_csv('./UTMMAP4.csv',header=0,dtype={'UTMMAP4': str})
     return df,sc
     
