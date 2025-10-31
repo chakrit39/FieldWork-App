@@ -142,5 +142,5 @@ if point1 == point2:
 else:
     point1_ = data_point.loc[data_point['PCM_BNDNAME']==point1,'geometry'].iloc[0]
     point2_ = data_point.loc[data_point['PCM_BNDNAME']==point2,'geometry'].iloc[0]
-    length = point1_.distance(point2_)
+    length = round(point1_.distance(point2_),3)
 length_ = c03.selectbox("ระยะ",str(length))
