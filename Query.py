@@ -128,7 +128,7 @@ st.pyplot(fig)
     --------------
 """
 
-data_point = gpd.read_file(point_url)
+data_point = gpd.read_file(point_url)[:1]
 st.dataframe(data=data_point[['PCM_BNDNAME' , 'PCM_NORTH' , 'PCM_EAST']],use_container_width=True)
 """
     --------------
