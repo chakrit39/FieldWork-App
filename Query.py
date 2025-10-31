@@ -74,7 +74,7 @@ UTMMAP3 = col_3.text_input("UTMMAP3","")
 Scale = col_4.selectbox("Scale",pd.unique(sc.SCALE),)
 UTMMAP4 = col_5.selectbox("UTMMAP4",pd.unique(sc.UTMMAP4[sc.SCALE==Scale]),)
 land_no = col_6.text_input("เลขที่ดิน","")
-
+globals()
 if st.button("Search"):
     if UTMMAP1 != "" and UTMMAP3 != "" and land_no != "" :
             
@@ -217,8 +217,3 @@ if st.session_state["Search_"] ==  True:
             length = round(point1_.distance(point2_),3)
         length_ = c03.selectbox("ระยะ",str(length))
         
-#local() 
-"""
-            --------------
-"""
-globals()
