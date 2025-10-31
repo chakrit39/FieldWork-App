@@ -22,7 +22,7 @@ import math
 import requests
 import matplotlib.font_manager as fm
 if "Search" not in st.session_state:
-    st.session_state["Search"] = True
+    st.session_state["Search"] = False
     
 @st.cache_data
 def get_data():
@@ -45,7 +45,7 @@ if st.button("Search"):
     #start = time.time()
     st.session_state["Search"] = True
 else:
-    st.session_state["Search"] = True
+    st.session_state["Search"] = False
 
 if st.session_state["Search"] ==  True:
     # === Path ไปยังไฟล์ของคุณ ===
