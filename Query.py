@@ -78,8 +78,6 @@ if st.button("Search"):
     if UTMMAP1 != "" and UTMMAP3 != "" and land_no != "" :
             # === Path ไปยังไฟล์ของคุณ ===
         UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
-        df
-        UTM
         id = df[df['Name']==UTM]
         if len(id) ==0:
             st.warning("ไม่พบรูปแปลงที่ดิน")
@@ -93,6 +91,8 @@ if st.button("Search"):
             point_url = "https://drive.google.com/uc?id=" + id_point + "&export%3Fformat=geojson"
                     
             # === โหลดไฟล์ ===
+            if  'poly_data' in globals()
+                get_data.clear()
             poly_data,point_data,data_point = get_data()
             st.session_state["Search"] = True
             st.session_state["Search_"] = True
