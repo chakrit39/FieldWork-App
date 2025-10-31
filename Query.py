@@ -203,7 +203,7 @@ if st.session_state["Search_"] ==  True:
             ax.text(geom.x + ox, geom.y + oy, label,
                     fontsize=9, color="red", ha="center", va="center")
         
-        ax.set_title(UTM_Name + " " + data_point.SURVEY_UNITNAME[0])
+        ax.set_title(UTM_Name + " " + poly_data['features'][0]['SURVEY_UNITNAME'])
         ax.axis("equal")
         st.pyplot(fig)
         
