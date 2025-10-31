@@ -95,11 +95,13 @@ if st.button("Search"):
             poly_url = "https://drive.google.com/uc?id=" + id_poly + "&export%3Fformat=geojson"
             point_url = "https://drive.google.com/uc?id=" + id_point + "&export%3Fformat=geojson"
             if  st.session_state["Search_"]  == True :
+                st.session_state["Search_"]  == False
                 get_data.clear()
             poly_data,point_data,data_point = get_data()
 
             st.session_state["Search"] = True
             st.session_state["Search_"] = True
+            st.session_state["Search_"]  == True
     else:
         st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
         st.session_state["Search"] = False
