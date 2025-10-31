@@ -51,7 +51,7 @@ if st.button("Search"):
     point_url = "https://drive.google.com/uc?id=1cHJhf_gicoUIekg1MqKk3WCDY65CmGGt&export%3Fformat=geojson"
     
     # === โหลดไฟล์ ===
-    
+    poly_data,point_data,data_point = get_data()
     
     polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
     points = [shape(feat["geometry"]) for feat in point_data["features"]]
