@@ -203,7 +203,7 @@ if st.session_state["Search_"] ==  True:
             ax.text(geom.x + ox, geom.y + oy, label,
                     fontsize=9, color="red", ha="center", va="center")
         
-        ax.set_title("Polygon + Points (EPSG:24047)\nDistances + Smart Point Label Offset (No Azimuth) ")
+        ax.set_title("UTM_Name")
         ax.axis("equal")
         st.pyplot(fig)
         
