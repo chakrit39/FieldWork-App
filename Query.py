@@ -15,12 +15,13 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 from PIL import Image
 from pillow_heif import register_heif_opener
-
-
- import json
+import json
 import matplotlib.pyplot as plt
 from shapely.geometry import shape, Point
 import math
+
+st.set_page_config(page_title="Query")
+
 plt.rcParams['font.family'] = 'tahoma'
 # === Path ไปยังไฟล์ของคุณ ===
 poly_url = "https://drive.google.com/uc?id=1T731fgDUaa-DcRHHirZiv165JMy2rIfg&export%3Fformat=geojson"
