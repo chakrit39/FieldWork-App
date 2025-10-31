@@ -47,8 +47,7 @@ if st.button("Search"):
 else:
     st.session_state["Search"] = True
 
-if 1:
-    if st.session_state["Search"] :
+if st.session_state["Search"] ==  True:
     # === Path ไปยังไฟล์ของคุณ ===
     poly_url = "https://drive.google.com/uc?id=1T731fgDUaa-DcRHHirZiv165JMy2rIfg&export%3Fformat=geojson"
     point_url = "https://drive.google.com/uc?id=1cHJhf_gicoUIekg1MqKk3WCDY65CmGGt&export%3Fformat=geojson"
