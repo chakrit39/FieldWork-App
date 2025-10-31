@@ -101,7 +101,7 @@ if st.button("Search"):
 
             st.session_state["Search"] = True
             st.session_state["Search_"] = True
-            st.session_state["Search_"]  == True
+            st.session_state["Search_"]  = True
     else:
         st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
         st.session_state["Search"] = False
