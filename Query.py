@@ -27,17 +27,36 @@ if "Search" not in st.session_state:
 if "Search_" not in st.session_state:
     st.session_state["Search_"] = False
     
+scope = ['https://www.googleapis.com/auth/drive',
+         'https://www.googleapis.com/auth/drive.file',
+         'https://www.googleapis.com/auth/spreadsheets',
+        ]
+
+@st.cache_resource
+def get_service():
+    #if "creds" not in globals() :
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scope)
+    gc = gspread.authorize(creds)
+    service = build("drive", "v3", credentials=creds)
+    sh = gc.open('DOLCAD')
+    wks = sh.worksheet('Raw')
+    return creds,gc,service,sh,wks
+    
 @st.cache_data
 def get_data():
     poly_data = requests.get(poly_url).json()
     point_data = requests.get(point_url).json()
     data_point = gpd.read_file(point_url)[:-1]
     return poly_data,point_data,data_point
+    
 def get_List():
-    df = pd.read_csv("https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv",header=0)
+    df = pd.DataFrame(wks.get_all_values(),header=0)
     sc = pd.read_csv('./UTMMAP4.csv',header=0,dtype={'UTMMAP4': str})
     return df,sc
+    
+creds,gc,service,sh,wks = get_service()
 df,sc = get_List()    
+
 st.set_page_config(page_title="Query")
 
 font_path = "./tahoma.ttf"
