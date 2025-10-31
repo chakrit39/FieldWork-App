@@ -21,7 +21,16 @@ from shapely.geometry import shape, Point
 import math
 import requests
 import matplotlib.font_manager as fm
-
+#if "Search" not in st.session_state:
+#    st.session_state["Search"] = False
+    
+@st.cache_data
+def get_data():
+    poly_data = requests.get(poly_url).json()
+    point_data = requests.get(point_url).json()
+    data_point = gpd.read_file(point_url)[:-1]
+    return poly_data,point_data,data_point
+    
 st.set_page_config(page_title="Query")
 
 font_path = "./tahoma.ttf"
@@ -31,13 +40,18 @@ prop = fm.FontProperties(fname=font_path)
 plt.rcParams['font.family'] = prop.get_name()
 plt.rcParams['font.sans-serif'] = [prop.get_name()] # Also set sans-serif if needed
 
+if c001.button("Search"):
+        #import time 
+        #start = time.time()
+        #st.session_state["Submit"] = True
+
+        
 # === Path ไปยังไฟล์ของคุณ ===
 poly_url = "https://drive.google.com/uc?id=1T731fgDUaa-DcRHHirZiv165JMy2rIfg&export%3Fformat=geojson"
 point_url = "https://drive.google.com/uc?id=1cHJhf_gicoUIekg1MqKk3WCDY65CmGGt&export%3Fformat=geojson"
 
 # === โหลดไฟล์ ===
-poly_data = requests.get(poly_url).json()
-point_data = requests.get(point_url).json()
+
 
 polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
 points = [shape(feat["geometry"]) for feat in point_data["features"]]
@@ -128,7 +142,7 @@ st.pyplot(fig)
     --------------
 """
 
-data_point = gpd.read_file(point_url)[:-1]
+
 st.dataframe(data=data_point[['PCM_BNDNAME' , 'PCM_NORTH' , 'PCM_EAST']],use_container_width=True)
 """
     --------------
@@ -144,3 +158,6 @@ else:
     point2_ = data_point.loc[data_point['PCM_BNDNAME']==point2,'geometry'].iloc[0]
     length = round(point1_.distance(point2_),3)
 length_ = c03.selectbox("ระยะ",str(length))
+
+#else:
+    #st.session_state["Submit"] = False
