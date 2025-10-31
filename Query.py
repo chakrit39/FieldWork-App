@@ -40,7 +40,7 @@ prop = fm.FontProperties(fname=font_path)
 plt.rcParams['font.family'] = prop.get_name()
 plt.rcParams['font.sans-serif'] = [prop.get_name()] # Also set sans-serif if needed
 
-if c001.button("Search"):
+if st.button("Search"):
         #import time 
         #start = time.time()
         #st.session_state["Submit"] = True
