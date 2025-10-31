@@ -14,3 +14,4 @@ psycopg2-binary
 geoalchemy2
 pillow_heif
 matplotlib
+requests
