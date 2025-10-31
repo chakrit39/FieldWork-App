@@ -91,7 +91,7 @@ if st.button("Search"):
 
             poly_url = "https://drive.google.com/uc?id=" + id_poly + "&export%3Fformat=geojson"
             point_url = "https://drive.google.com/uc?id=" + id_point + "&export%3Fformat=geojson"
-            if  poly_data  is not None :
+            if  poly_data  != None :
                 get_data.clear()
             poly_data,point_data,data_point = get_data()
 
@@ -110,7 +110,7 @@ else:
 
 
 if st.session_state["Search_"] ==  True:
-    if  poly_data is not  None :
+    if  poly_data !=  None :
         polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
         points = [shape(feat["geometry"]) for feat in point_data["features"]]
         
