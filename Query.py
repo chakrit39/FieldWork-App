@@ -124,5 +124,9 @@ ax.set_title("Polygon + Points (EPSG:24047)\nDistances + Smart Point Label Offse
 ax.axis("equal")
 st.pyplot(fig)
 
+"""
+    --------------
+"""
+
 data_point = gpd.read_file(point_url)[['PCM_BNDNAME' , 'PCM_NORTH' , 'PCM_EAST']]
 st.dataframe(data=data_point,use_container_width=True)
