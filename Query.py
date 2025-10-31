@@ -19,6 +19,7 @@ import json
 import matplotlib.pyplot as plt
 from shapely.geometry import shape, Point
 import math
+import requests
 
 st.set_page_config(page_title="Query")
 
