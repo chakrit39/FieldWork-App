@@ -56,7 +56,7 @@ UTMMAP4 = col_5.selectbox("UTMMAP4",pd.unique(sc.UTMMAP4[sc.SCALE==Scale]),)
 land_no = col_6.text_input("เลขที่ดิน","")
 
 if st.button("Search"):
-    if UTMMAP1 != "" or UTMMAP3 != "" or land_no != "" :
+    if UTMMAP1 != "" and UTMMAP3 != "" and land_no != "" :
         st.session_state["Search"] = True
         st.session_state["Search_"] = True
     else:
