@@ -92,7 +92,7 @@ else:
 
 if st.session_state["Search_"] ==  True:
     # === Path ไปยังไฟล์ของคุณ ===
-    UTM = UTMMAP1 + " " + UTMMAP2 + " " + UTMMAP3 + "-" + UTMMAP4 + "(" + Scale + ")_" + land_no
+    UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
     id = df[df['Name']==UTM]
     id_poly = id['Polygon'].iloc[0]
     id_point = id['Point'].iloc[0]
