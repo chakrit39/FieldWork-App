@@ -82,6 +82,7 @@ if st.button("Search"):
         if len(id) ==0:
             st.warning("ไม่พบรูปแปลงที่ดิน")
             st.session_state["Search"] = False
+            st.session_state["Search_"] = False
         else:
             id_poly = id['Polygon'].iloc[0]
             id_point = id['Point'].iloc[0]
