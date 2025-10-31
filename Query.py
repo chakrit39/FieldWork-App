@@ -97,9 +97,7 @@ if st.button("Search"):
             if  st.session_state["Polygon"]  == True :
                 st.session_state["Polygon"]  = False
                 get_data.clear()
-                poly_data,point_data,data_point = get_data()
-            else:
-                poly_data,point_data,data_point = get_data()
+            
             st.session_state["Search"] = True
             st.session_state["Search_"] = True
             st.session_state["Polygon"] = True
@@ -116,6 +114,7 @@ else:
 
 
 if st.session_state["Search_"] ==  True:
+    poly_data,point_data,data_point = get_data()
     if st.session_state["Polygon"]  == True :
         polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
         points = [shape(feat["geometry"]) for feat in point_data["features"]]
