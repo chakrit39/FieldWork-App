@@ -43,7 +43,7 @@ plt.rcParams['font.sans-serif'] = [prop.get_name()] # Also set sans-serif if nee
 if st.button("Search"):
         #import time 
         #start = time.time()
-        st.session_state["Submit"] = True
+        st.session_state["Search"] = True
 
             
     # === Path ไปยังไฟล์ของคุณ ===
