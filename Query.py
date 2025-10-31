@@ -21,8 +21,8 @@ from shapely.geometry import shape, Point
 import math
 import requests
 import matplotlib.font_manager as fm
-#if "Search" not in st.session_state:
-#    st.session_state["Search"] = False
+if "Search" not in st.session_state:
+    st.session_state["Search"] = False
     
 @st.cache_data
 def get_data():
@@ -43,7 +43,7 @@ plt.rcParams['font.sans-serif'] = [prop.get_name()] # Also set sans-serif if nee
 if st.button("Search"):
         #import time 
         #start = time.time()
-        #st.session_state["Submit"] = True
+        st.session_state["Submit"] = True
 
             
     # === Path ไปยังไฟล์ของคุณ ===
