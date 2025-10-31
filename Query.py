@@ -49,6 +49,7 @@ def get_data():
     data_point = gpd.read_file(point_url)[:-1]
     return poly_data,point_data,data_point
     
+@st.cache_data    
 def get_List():
     df = pd.DataFrame(wks.get_all_records())
     sc = pd.read_csv('./UTMMAP4.csv',header=0,dtype={'UTMMAP4': str})
