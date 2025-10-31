@@ -80,6 +80,7 @@ if st.button("Search"):
             # === Path ไปยังไฟล์ของคุณ ===
         UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
         id = df[df['Name']==UTM]
+        id
         if len(id) ==0:
             st.warning("ไม่พบรูปแปลงที่ดิน")
             st.session_state["Search"] = False
