@@ -79,7 +79,7 @@ with placeholder.form("login"):
     st.markdown("#### โปรดใส่รหัส")
     password = st.text_input("รหัสผ่าน","")
     verity = st.form_submit_button("Login")
-    if Login:
+    if verity:
         if password == st.secrets["PASSWD"]:
             st.session_state["verity"] = True
         else:
