@@ -30,6 +30,10 @@ def get_data():
     point_data = requests.get(point_url).json()
     data_point = gpd.read_file(point_url)[:-1]
     return poly_data,point_data,data_point
+def get_List():
+    df = pd.read_csv("https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv",header=0)
+    sc = pd.read_csv('./UTMMAP4.csv',header=0,dtype={'UTMMAP4': str})
+    return df,sc
     
 st.set_page_config(page_title="Query")
 
