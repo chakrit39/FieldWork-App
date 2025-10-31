@@ -87,14 +87,17 @@ if st.button("Search"):
         else:
             id_poly = id['Polygon'].iloc[0]
             id_point = id['Point'].iloc[0]
-            if  'poly_data' in globals():
-                get_data.clear()
+
                 
             poly_url = "https://drive.google.com/uc?id=" + id_poly + "&export%3Fformat=geojson"
             point_url = "https://drive.google.com/uc?id=" + id_point + "&export%3Fformat=geojson"
             
             # === โหลดไฟล์ ===
-            poly_data,point_data,data_point = get_data()
+            if  'poly_data' in globals():
+                get_data.clear()
+                poly_data,point_data,data_point = get_data()
+            else:
+                poly_data,point_data,data_point = get_data()
             st.session_state["Search"] = True
             st.session_state["Search_"] = True
     else:
