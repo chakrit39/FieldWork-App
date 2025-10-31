@@ -24,6 +24,9 @@ import matplotlib.font_manager as fm
 if "Search" not in st.session_state:
     st.session_state["Search"] = False
     
+if "Search_" not in st.session_state:
+    st.session_state["Search_"] = False
+    
 @st.cache_data
 def get_data():
     poly_data = requests.get(poly_url).json()
@@ -54,22 +57,23 @@ land_no = col_6.text_input("เลขที่ดิน","")
 
 if st.button("Search"):
     st.session_state["Search"] = True
-    # === Path ไปยังไฟล์ของคุณ ===
-    poly_url = "https://drive.google.com/uc?id=1T731fgDUaa-DcRHHirZiv165JMy2rIfg&export%3Fformat=geojson"
-    point_url = "https://drive.google.com/uc?id=1cHJhf_gicoUIekg1MqKk3WCDY65CmGGt&export%3Fformat=geojson"
-    
-    # === โหลดไฟล์ ===
-    poly_data,point_data,data_point = get_data()
-#else:
-    #st.session_state["Search"] = True
+    st.session_state["Search_"] = True
+
+else:
+    st.session_state["Search"] = False
 
 """
         --------------
 """
 
 
-if st.session_state["Search"] ==  True:
-    
+if st.session_state["Search_"] ==  True:
+    # === Path ไปยังไฟล์ของคุณ ===
+    poly_url = "https://drive.google.com/uc?id=1T731fgDUaa-DcRHHirZiv165JMy2rIfg&export%3Fformat=geojson"
+    point_url = "https://drive.google.com/uc?id=1cHJhf_gicoUIekg1MqKk3WCDY65CmGGt&export%3Fformat=geojson"
+        
+    # === โหลดไฟล์ ===
+    poly_data,point_data,data_point = get_data()
     polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
     points = [shape(feat["geometry"]) for feat in point_data["features"]]
     
