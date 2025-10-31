@@ -52,6 +52,9 @@ Scale = col_4.selectbox("Scale",pd.unique(sc.SCALE),)
 UTMMAP4 = col_5.selectbox("UTMMAP4",pd.unique(sc.UTMMAP4[sc.SCALE==Scale]),)
 land_no = col_6.text_input("เลขที่ดิน","")
 
+poly_data = None
+point_data = None
+
 if st.button("Search"):
     st.session_state["Search"] = True
     poly_url = "https://drive.google.com/uc?id=1T731fgDUaa-DcRHHirZiv165JMy2rIfg&export%3Fformat=geojson"
@@ -65,7 +68,6 @@ else:
 if st.session_state["Search"] ==  True:
     # === Path ไปยังไฟล์ของคุณ ===
 
-    
     polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
     points = [shape(feat["geometry"]) for feat in point_data["features"]]
     
