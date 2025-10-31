@@ -133,4 +133,7 @@ st.dataframe(data=data_point,use_container_width=True)
 """
     --------------
 """
-
+c01, c02, c03 = st.columns([0.35,0.35,0.3])
+Name_list = data_point["PCM_BNDNAME"].to_list()
+point1 = c01.selectbox("หมุดหลักเขต",Name_list)
+point2 = c02.selectbox("หมุดหลักเขต",Name_list)
