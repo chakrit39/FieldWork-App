@@ -137,3 +137,8 @@ c01, c02, c03 = st.columns([0.35,0.35,0.3])
 Name_list = data_point["PCM_BNDNAME"].to_list()
 point1 = c01.selectbox("หมุดหลักเขต 1",Name_list)
 point2 = c02.selectbox("หมุดหลักเขต 2",Name_list)
+
+point1_ = data_point.loc[data_point['PCM_BNDNAME']==point1,'geometry']
+point2_ = data_point.loc[data_point['PCM_BNDNAME']==point2,'geometry']
+length = point1_.distance(point2_)
+length_ = c03.text()
