@@ -85,8 +85,8 @@ with placeholder.form("login"):
         else:
             pop_up()
             #st.session_state["verity"] = False
-    else:
-        st.session_state["verity"] = False
+    #else:
+        #st.session_state["verity"] = False
 
 if st.session_state["verity"]:
     placeholder.empty()
