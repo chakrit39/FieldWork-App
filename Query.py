@@ -78,6 +78,21 @@ if st.button("Search"):
     if UTMMAP1 != "" and UTMMAP3 != "" and land_no != "" :
         st.session_state["Search"] = True
         st.session_state["Search_"] = True
+            # === Path ไปยังไฟล์ของคุณ ===
+        UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
+        id = df[df['Name']==UTM]
+        if len(id) ==0:
+            st.warning("ไม่พบรูปแปลงที่ดิน")
+            st.session_state["Search"] = False
+        else:
+            id_poly = id['Polygon'].iloc[0]
+            id_point = id['Point'].iloc[0]
+            
+            poly_url = "https://drive.google.com/uc?id=' +  + '&export%3Fformat=geojson"
+            point_url = "https://drive.google.com/uc?id=' +  + '&export%3Fformat=geojson"
+                    
+            # === โหลดไฟล์ ===
+            poly_data,point_data,data_point = get_data()
     else:
         st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
         st.session_state["Search"] = False
@@ -91,17 +106,7 @@ else:
 
 
 if st.session_state["Search_"] ==  True:
-    # === Path ไปยังไฟล์ของคุณ ===
-    UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
-    id = df[df['Name']==UTM]
-    id_poly = id['Polygon'].iloc[0]
-    id_point = id['Point'].iloc[0]
-    
-    poly_url = "https://drive.google.com/uc?id=' +  + '&export%3Fformat=geojson"
-    point_url = "https://drive.google.com/uc?id=' +  + '&export%3Fformat=geojson"
-        
-    # === โหลดไฟล์ ===
-    poly_data,point_data,data_point = get_data()
+
     polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
     points = [shape(feat["geometry"]) for feat in point_data["features"]]
     
