@@ -110,7 +110,7 @@ else:
 
 
 if st.session_state["Search_"] ==  True:
-    if  'poly_data' in globals():
+    if  poly_data is not  None :
         polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
         points = [shape(feat["geometry"]) for feat in point_data["features"]]
         
@@ -216,6 +216,4 @@ if st.session_state["Search_"] ==  True:
             point2_ = data_point.loc[data_point['PCM_BNDNAME']==point2,'geometry'].iloc[0]
             length = round(point1_.distance(point2_),3)
         length_ = c03.selectbox("ระยะ",str(length))
-
-st.session_state
 
