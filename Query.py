@@ -66,7 +66,7 @@ prop = fm.FontProperties(fname=font_path)
 # Set Matplotlib's default font to the Thai font
 plt.rcParams['font.family'] = prop.get_name()
 plt.rcParams['font.sans-serif'] = [prop.get_name()] # Also set sans-serif if needed
-globals
+
 col_1, col_2, col_3, col_4, col_5 , col_6 = st.columns([0.2,0.13,0.2,0.2,0.13,0.15])
 UTMMAP1 = col_1.text_input("UTMMAP1","")
 UTMMAP2 = col_2.selectbox("UTMMAP2",["1", "2", "3", "4"],)
@@ -77,9 +77,6 @@ land_no = col_6.text_input("เลขที่ดิน","")
 
 if st.button("Search"):
     if UTMMAP1 != "" and UTMMAP3 != "" and land_no != "" :
-        locals()
-        if  'poly_data' in globals():
-            get_data.clear()
             
         # === Path ไปยังไฟล์ของคุณ ===
         UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
@@ -94,6 +91,8 @@ if st.button("Search"):
 
             poly_url = "https://drive.google.com/uc?id=" + id_poly + "&export%3Fformat=geojson"
             point_url = "https://drive.google.com/uc?id=" + id_point + "&export%3Fformat=geojson"
+            if  poly_data is not None:
+                get_data.clear()
             poly_data,point_data,data_point = get_data()
 
             st.session_state["Search"] = True
