@@ -55,8 +55,8 @@ land_no = col_6.text_input("เลขที่ดิน","")
 if st.button("Search"):
     st.session_state["Search"] = True
 
-else:
-    st.session_state["Search"] = True
+#else:
+    #st.session_state["Search"] = True
 
 if st.session_state["Search"] ==  True:
     # === Path ไปยังไฟล์ของคุณ ===
