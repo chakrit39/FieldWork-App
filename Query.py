@@ -23,7 +23,7 @@ import requests
 
 st.set_page_config(page_title="Query")
 
-plt.rcParams['font.family'] = 'tahoma'
+plt.rcParams['font.family'] = 'THSarabunNew'
 # === Path ไปยังไฟล์ของคุณ ===
 poly_url = "https://drive.google.com/uc?id=1T731fgDUaa-DcRHHirZiv165JMy2rIfg&export%3Fformat=geojson"
 point_url = "https://drive.google.com/uc?id=1cHJhf_gicoUIekg1MqKk3WCDY65CmGGt&export%3Fformat=geojson"
