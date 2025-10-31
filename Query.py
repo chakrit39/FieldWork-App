@@ -20,10 +20,17 @@ import matplotlib.pyplot as plt
 from shapely.geometry import shape, Point
 import math
 import requests
+import matplotlib.font_manager as fm
 
 st.set_page_config(page_title="Query")
 
-plt.rcParams['font.family'] = 'THSarabunNew'
+font_path = "./tahoma.ttf"
+fm.fontManager.addfont(font_path)
+prop = fm.FontProperties(fname=font_path)
+# Set Matplotlib's default font to the Thai font
+plt.rcParams['font.family'] = prop.get_name()
+plt.rcParams['font.sans-serif'] = [prop.get_name()] # Also set sans-serif if needed
+
 # === Path ไปยังไฟล์ของคุณ ===
 poly_url = "https://drive.google.com/uc?id=1T731fgDUaa-DcRHHirZiv165JMy2rIfg&export%3Fformat=geojson"
 point_url = "https://drive.google.com/uc?id=1cHJhf_gicoUIekg1MqKk3WCDY65CmGGt&export%3Fformat=geojson"
