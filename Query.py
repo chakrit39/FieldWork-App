@@ -69,7 +69,7 @@ def get_UTM_Name():
 @st.dialog("รหัสผ่านไม่ถูกต้อง !!", width="small")
 def pop_up():
     if st.button("ตกลง"):
-        pass
+        st.rerun()
         
 creds,gc,service,sh,wks = get_service()
 df,sc = get_List()    
