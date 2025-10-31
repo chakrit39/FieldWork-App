@@ -58,6 +58,11 @@ def get_List():
     sc = pd.read_csv('./UTMMAP4.csv',header=0,dtype={'UTMMAP4': str})
     return df,sc
     
+@st.cache_data    
+def get_UTM_Name():
+    UTM_Name = UTM
+    return UTM_Name
+    
 creds,gc,service,sh,wks = get_service()
 df,sc = get_List()    
 
@@ -97,7 +102,7 @@ if st.button("Search"):
             if  st.session_state["Polygon"]  == True :
                 st.session_state["Polygon"]  = False
                 get_data.clear()
-            
+                get_UTM_Name.clear()
             st.session_state["Search"] = True
             st.session_state["Search_"] = True
             st.session_state["Polygon"] = True
@@ -114,6 +119,7 @@ else:
 
 
 if st.session_state["Search_"] ==  True:
+    UTM_Name = get_UTM_Name()
     poly_data,point_data,data_point = get_data()
     if st.session_state["Polygon"]  == True :
         polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
