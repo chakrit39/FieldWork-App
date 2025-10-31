@@ -91,7 +91,7 @@ if st.button("Search"):
 
             poly_url = "https://drive.google.com/uc?id=" + id_poly + "&export%3Fformat=geojson"
             point_url = "https://drive.google.com/uc?id=" + id_point + "&export%3Fformat=geojson"
-            if  poly_data is not None:
+            if  'poly_data'  in globals() :
                 get_data.clear()
             poly_data,point_data,data_point = get_data()
 
@@ -217,5 +217,5 @@ if st.session_state["Search_"] ==  True:
             length = round(point1_.distance(point2_),3)
         length_ = c03.selectbox("ระยะ",str(length))
 
-
+st.session_state
 
