@@ -95,7 +95,9 @@ if st.button("Search"):
             # === โหลดไฟล์ ===
             if  'poly_data' in globals():
                 get_data.clear()
-            poly_data,point_data,data_point = get_data()
+                poly_data,point_data,data_point = get_data()
+            else:
+                poly_data,point_data,data_point = get_data()
             st.session_state["Search"] = True
             st.session_state["Search_"] = True
     else:
