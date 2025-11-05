@@ -70,3 +70,165 @@ OFFICE,P_NAME_T,P_NAME_E,A_NAME_T,A_NAME_E,T_NAME_T,T_NAME_E
 ธัญบุรี,ปทุมธานี,PATHUM THANI,หนองเสือ,NONG SUEA,บึงชำอ้อ,BUENG CHAM O
 ธัญบุรี,ปทุมธานี,PATHUM THANI,หนองเสือ,NONG SUEA,บึงกาสาม,BUENG KA SAM
 ธัญบุรี,ปทุมธานี,PATHUM THANI,หนองเสือ,NONG SUEA,นพรัตน์,NOPPHARAT
+นครนายก,นครนายก,NAKHON NAYOK,ปากพลี,PAK PHLI,ท่าเรือ,THA RUEA
+นครนายก,นครนายก,NAKHON NAYOK,ปากพลี,PAK PHLI,หนองแสง,NONG SAENG
+นครนายก,นครนายก,NAKHON NAYOK,เมืองนครนายก,MUEANG NAKHON NAYOK,ศรีนาวา,SI NAWA
+นครนายก,นครนายก,NAKHON NAYOK,เมืองนครนายก,MUEANG NAKHON NAYOK,ดงละคร,DONG LAKHON
+นครนายก,นครนายก,NAKHON NAYOK,ปากพลี,PAK PHLI,ปากพลี,PAK PHLI
+นครนายก,นครนายก,NAKHON NAYOK,บ้านนา,BAN NA,พิกุลออก,PHIKUN OK
+นครนายก,นครนายก,NAKHON NAYOK,ปากพลี,PAK PHLI,เกาะโพธิ์,KO PHO
+นครนายก,นครนายก,NAKHON NAYOK,ปากพลี,PAK PHLI,โคกกรวด,KHOK KRUAT
+นครนายก,นครนายก,NAKHON NAYOK,บ้านนา,BAN NA,เขาเพิ่ม,KHAO PHOEM
+นครนายก,นครนายก,NAKHON NAYOK,เมืองนครนายก,MUEANG NAKHON NAYOK,ดอนยอ,DON YO
+นครนายก,นครนายก,NAKHON NAYOK,บ้านนา,BAN NA,ทองหลาง,THONG LANG
+นครนายก,นครนายก,NAKHON NAYOK,บ้านนา,BAN NA,บ้านพริก,BAN PHRIK
+นครนายก,นครนายก,NAKHON NAYOK,เมืองนครนายก,MUEANG NAKHON NAYOK,ท่าช้าง,THA CHANG
+นครนายก,นครนายก,NAKHON NAYOK,ปากพลี,PAK PHLI,เกาะหวาย,KO WAI
+นครนายก,นครนายก,NAKHON NAYOK,บ้านนา,BAN NA,ป่าขะ,PA KHA
+นครนายก,นครนายก,NAKHON NAYOK,เมืองนครนายก,MUEANG NAKHON NAYOK,นครนายก,NAKHON NAYOK
+นครนายก,นครนายก,NAKHON NAYOK,เมืองนครนายก,MUEANG NAKHON NAYOK,พรหมณี,PHROMMANI
+นครนายก,นครนายก,NAKHON NAYOK,บ้านนา,BAN NA,ศรีกะอาง,SI KA-ANG
+นครนายก,นครนายก,NAKHON NAYOK,เมืองนครนายก,MUEANG NAKHON NAYOK,เขาพระ,KHAO PHRA
+นครนายก,นครนายก,NAKHON NAYOK,เมืองนครนายก,MUEANG NAKHON NAYOK,หินตั้ง,HIN TANG
+นครนายก,นครนายก,NAKHON NAYOK,เมืองนครนายก,MUEANG NAKHON NAYOK,ศรีจุฬา,SI CHULA
+นครนายก,นครนายก,NAKHON NAYOK,บ้านนา,BAN NA,บางอ้อ,BANG O
+นครนายก,นครนายก,NAKHON NAYOK,เมืองนครนายก,MUEANG NAKHON NAYOK,บ้านใหญ่,BAN YAI
+นครนายก,นครนายก,NAKHON NAYOK,บ้านนา,BAN NA,บ้านพร้าว,BAN PHRAO
+นครนายก,นครนายก,NAKHON NAYOK,บ้านนา,BAN NA,อาษา,ASA
+นครนายก,นครนายก,NAKHON NAYOK,ปากพลี,PAK PHLI,นาหินลาด,NA HIN LAT
+นครนายก,นครนายก,NAKHON NAYOK,บ้านนา,BAN NA,บ้านนา,BAN NA
+นครนายก,นครนายก,NAKHON NAYOK,เมืองนครนายก,MUEANG NAKHON NAYOK,วังกระโจม,WANG KRACHOM
+นครนายก,นครนายก,NAKHON NAYOK,เมืองนครนายก,MUEANG NAKHON NAYOK,ท่าทราย,THA SAI
+นครนายก,นครนายก,NAKHON NAYOK,เมืองนครนายก,MUEANG NAKHON NAYOK,สาริกา,SARIKA
+,ชลบุรี,CHON BURI,ศรีราชา,SI RACHA,สุรศักดิ์,SURASAK
+,ชลบุรี,CHON BURI,กิ่งอำเภอเกาะจันทร์,KING AMPHOE KO CHAN,ท่าบุญมี,THA BUNMI
+,ชลบุรี,CHON BURI,พานทอง,PHAN THONG,หนองกะขะ,NONG KAKHA
+,ชลบุรี,CHON BURI,พานทอง,PHAN THONG,เกาะลอย,KO LOI
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,นาเริก,NA ROEK
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,หนองไม้แดง,NONG MAI DAENG
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,ห้วยกะปิ,HUAI KAPI
+,ชลบุรี,CHON BURI,พานทอง,PHAN THONG,มาบโป่ง,MAP PONG
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,สัตหีบ,SATTAHIP
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,เสม็ด,SAMET
+,ชลบุรี,CHON BURI,บ้านบึง,BAN BUENG,หนองอิรุณ,NONG I RUN
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,อ่างศิลา,ANG SILA
+,ชลบุรี,CHON BURI,เกาะสีชัง,KO SI CHANG,ท่าเทววงษ์,THA THEWAWONG
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,แสมสาร,SAMAE SAN
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,สระสี่เหลี่ยม,SA SI LIAM
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,แสมสาร,SAMAE SAN
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,หัวถนน,HUA THANON
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,โป่ง,PONG
+,ชลบุรี,CHON BURI,ศรีราชา,SI RACHA,หนองขาม,NONG KHAM
+,ชลบุรี,CHON BURI,หนองใหญ่,NONG YAI,เขาซก,KHAO SOK
+,ชลบุรี,CHON BURI,พานทอง,PHAN THONG,บางนาง,BANG NANG
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,สัตหีบ,SATTAHIP
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,นาเกลือ,NA KLUEA
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,นาเกลือ,NA KLUEA
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,หน้าพระธาตุ,NA PHRATHAT
+,ชลบุรี,CHON BURI,บ้านบึง,BAN BUENG,หนองบอนแดง,NONG BON DAENG
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,สัตหีบ,SATTAHIP
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,พลูตาหลวง,PHLU TA LUANG
+,ชลบุรี,CHON BURI,พานทอง,PHAN THONG,หน้าประดู่,NA PRADU
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,นาเกลือ,NA KLUEA
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,บางเสร่,BANG SARE
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,บางเสร่,BANG SARE
+,ชลบุรี,CHON BURI,เกาะสีชัง,KO SI CHANG,ท่าเทววงษ์,THA THEWAWONG
+,ชลบุรี,CHON BURI,เกาะสีชัง,KO SI CHANG,ท่าเทววงษ์,THA THEWAWONG
+,ชลบุรี,CHON BURI,เกาะสีชัง,KO SI CHANG,ท่าเทววงษ์,THA THEWAWONG
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,บ้านสวน,BAN SUAN
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,นาจอมเทียน,NA CHOM THIAN
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,บางละมุง,BANG LAMUNG
+,ชลบุรี,CHON BURI,เกาะสีชัง,KO SI CHANG,ท่าเทววงษ์,THA THEWAWONG
+,ชลบุรี,CHON BURI,ศรีราชา,SI RACHA,เขาคันทรง,KHAO KHAN SONG
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,หนองรี,NONG RI
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,บ้านช้าง,BAN CHANG
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,พนัสนิคม,PHANAT NIKHOM
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,แสมสาร,SAMAE SAN
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,หนองเหียง,NONG HIANG
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,ดอนหัวฬ่อ,DON HUA LO
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,วัดโบสถ์,WAT BOT
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,บางเสร่,BANG SARE
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,บางปลาสร้อย,BANG PLA SOI
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,แสมสาร,SAMAE SAN
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,ไร่หลักทอง,RAI LAK THONG
+,ชลบุรี,CHON BURI,หนองใหญ่,NONG YAI,หนองเสือช้าง,NONG SUEA CHANG
+,ชลบุรี,CHON BURI,บ้านบึง,BAN BUENG,หนองซ้ำซาก,NONG SAMSAK
+,ชลบุรี,CHON BURI,บ่อทอง,BO THONG,บ่อกวางทอง,BO KWANG THONG
+,ชลบุรี,CHON BURI,บ้านบึง,BAN BUENG,มาบไผ่,MAP PHAI
+,ชลบุรี,CHON BURI,บ้านบึง,BAN BUENG,บ้านบึง,BAN BUENG
+,ชลบุรี,CHON BURI,ศรีราชา,SI RACHA,บ่อวิน,BO WIN
+,ชลบุรี,CHON BURI,บ้านบึง,BAN BUENG,คลองกิ่ว,KHLONG KIO
+,ชลบุรี,CHON BURI,ศรีราชา,SI RACHA,ศรีราชา,SI RACHA
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,มะขามหย่ง,MAKHAM YONG
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,ตะเคียนเตี้ย,TAKHIAN TIA
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,ท่าข้าม,THA KHAM
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,หนองปรือ,NONG PRUE
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,โคกเพลาะ,KHOK PHLO
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,นาเกลือ,NA KLUEA
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,กุฎโง้ง,KUT NGONG
+,ชลบุรี,CHON BURI,ศรีราชา,SI RACHA,ศรีราชา,SI RACHA
+,ชลบุรี,CHON BURI,เกาะสีชัง,KO SI CHANG,ท่าเทววงษ์,THA THEWAWONG
+,ชลบุรี,CHON BURI,หนองใหญ่,NONG YAI,คลองพลู,KHLONG PHLU
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,แสมสาร,SAMAE SAN
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,สัตหีบ,SATTAHIP
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,บางเสร่,BANG SARE
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,นาเกลือ,NA KLUEA
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,คลองตำหรุ,KHLONG TAMRU
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,เหมือง,MUEANG
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,บางทราย,BANG SAI
+,ชลบุรี,CHON BURI,พานทอง,PHAN THONG,บางหัก,BANG HAK
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,นาป่า,NA PA
+,ชลบุรี,CHON BURI,ศรีราชา,SI RACHA,บึง,BUENG
+,ชลบุรี,CHON BURI,เกาะสีชัง,KO SI CHANG,ท่าเทววงษ์,THA THEWAWONG
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,ห้วยใหญ่,HUAI YAI
+,ชลบุรี,CHON BURI,พานทอง,PHAN THONG,พานทอง,PHAN THONG
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,นาเกลือ,NA KLUEA
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,แสมสาร,SAMAE SAN
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,บ้านปึก,BAN PUEK
+,ชลบุรี,CHON BURI,พานทอง,PHAN THONG,หนองหงษ์,NONG HONG
+,ชลบุรี,CHON BURI,บ่อทอง,BO THONG,วัดสุวรรณ,WAT SUWAN
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,หนองขยาด,NONG KHAYAT
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,สัตหีบ,SATTAHIP
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,นาเกลือ,NA KLUEA
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,หนองข้างคอก,NONG KHANG KHOK
+,ชลบุรี,CHON BURI,บ่อทอง,BO THONG,บ่อทอง,BO THONG
+,ชลบุรี,CHON BURI,พานทอง,PHAN THONG,หนองตำลึง,NONG TAMLUENG
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,นาวังหิน,NA WANG HIN
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,แสมสาร,SAMAE SAN
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,แสมสาร,SAMAE SAN
+,ชลบุรี,CHON BURI,บ้านบึง,BAN BUENG,หนองไผ่แก้ว,NONG PHAI KAEO
+,ชลบุรี,CHON BURI,เกาะสีชัง,KO SI CHANG,ท่าเทววงษ์,THA THEWAWONG
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,เขาไม้แก้ว,KHAO MAI KAEO
+,ชลบุรี,CHON BURI,พานทอง,PHAN THONG,โคกขี้หนอน,KHOK KHI NON
+,ชลบุรี,CHON BURI,บ้านบึง,BAN BUENG,หนองชาก,NONG CHAK
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,แสมสาร,SAMAE SAN
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,สัตหีบ,SATTAHIP
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,วัดหลวง,WAT LUANG
+,ชลบุรี,CHON BURI,กิ่งอำเภอเกาะจันทร์,KING AMPHOE KO CHAN,เกาะจันทร์,KO CHAN
+,ชลบุรี,CHON BURI,บ่อทอง,BO THONG,ธาตุทอง,THAT THONG
+,ชลบุรี,CHON BURI,ศรีราชา,SI RACHA,ทุ่งสุขลา,THUNG SUKHLA
+,ชลบุรี,CHON BURI,บ่อทอง,BO THONG,พลวงทอง,PHLUANG THONG
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,นาเกลือ,NA KLUEA
+,ชลบุรี,CHON BURI,เกาะสีชัง,KO SI CHANG,ท่าเทววงษ์,THA THEWAWONG
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,สัตหีบ,SATTAHIP
+,ชลบุรี,CHON BURI,ศรีราชา,SI RACHA,บางพระ,BANG PHRA
+,ชลบุรี,CHON BURI,บ่อทอง,BO THONG,เกษตรสุวรรณ,KASET SUWAN
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,นาเกลือ,NA KLUEA
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,สำนักบก,SAMNAK BOK
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,บ้านเซิด,BAN SOET
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,นาเกลือ,NA KLUEA
+,ชลบุรี,CHON BURI,หนองใหญ่,NONG YAI,ห้างสูง,HANG SUNG
+,ชลบุรี,CHON BURI,หนองใหญ่,NONG YAI,หนองใหญ่,NONG YAI
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,สัตหีบ,SATTAHIP
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,แสมสาร,SAMAE SAN
+,ชลบุรี,CHON BURI,พานทอง,PHAN THONG,บ้านเก่า,BAN KAO
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,ทุ่งขวาง,THUNG KHWANG
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,นามะตูม,NA MATUM
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,สัตหีบ,SATTAHIP
+,ชลบุรี,CHON BURI,บางละมุง,BANG LAMUNG,หนองปลาไหล,NONG PLA LAI
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,หมอนนาง,MON NANG
+,ชลบุรี,CHON BURI,พนัสนิคม,PHANAT NIKHOM,หนองปรือ,NONG PRUE
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,แสมสาร,SAMAE SAN
+,ชลบุรี,CHON BURI,สัตหีบ,SATTAHIP,สัตหีบ,SATTAHIP
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,บ้านโขด,BAN KHOT
+,ชลบุรี,CHON BURI,เมืองชลบุรี,MUEANG CHON BURI,แสนสุข,SAEN SUK
