@@ -65,73 +65,6 @@ def upload_image(service,parents,image_i):
     del file_metadata
     os.remove(path)
     return file_id
-def create_report():
-    List = []
-    for i_wks in sh_report.worksheets():
-        List.append(i_wks.title)
-    count = List.count(BND_NAME)
-    if count == 0:
-        BND_NAME_ = BND_NAME
-    else:
-        new = count+1
-        while count != 0:
-            BND_NAME_ = BND_NAME + "_" + str(new)
-            count = List.count(BND_NAME_)
-            new += 1
-    copiedSheet = wks_ref.copy_to(sh_report.id)
-    dstSheet = sh_report.worksheet(copiedSheet['title'])
-    dstSheet.update_title(BND_NAME_)
-    dstSheet.update([[BND_NAME],[parcel_no],[UTMMAP1+" "+UTMMAP2+" "+UTMMAP3+"-"+UTMMAP4],[tambon]], 'H4:H7',value_input_option="USER_ENTERED")
-    dstSheet.update_acell('S6',"1 : " + str(Scale))
-    dstSheet.update_acell('S7',amphoe)
-    dstSheet.update([[DATE],[survey_no],[land_no],[province]], 'AF4:AF7',value_input_option="USER_ENTERED")
-    
-    #dstSheet.update_acell('H4',BND_NAME)
-    #dstSheet.update_acell('H6',UTMMAP1+" "+UTMMAP2+" "+UTMMAP3+"-"+UTMMAP4)
-    #dstSheet.update_acell('O6',"1 : " + str(Scale))
-    #dstSheet.update_acell('AF6',LANDNO)
-    #dstSheet.update_acell('H5',PARCEL_NO)
-    #dstSheet.update_acell('AF5',SURVEY_NO)
-    #dstSheet.update_acell('H7',tambon)
-    #dstSheet.update_acell('S7',amphoe)
-    #dstSheet.update_acell('AF7',province)
-    #dstSheet.update_acell('AF4',DATE)
-    dstSheet.update_acell('K39',N)
-    dstSheet.update_acell('U39',E)
-    dstSheet.update_acell('AE39',H)
-    dstSheet.update_acell('F40',remark)
-    dstSheet.update_acell('Y43',full_name)
-    dstSheet.update([[N1],[N2],[N3]], 'K34:K36', value_input_option="USER_ENTERED")
-    dstSheet.update([[E1],[E2],[E3]], 'U34:UE36', value_input_option="USER_ENTERED")
-    dstSheet.update([[H1],[H2],[H3]], 'AE34:AE36', value_input_option="USER_ENTERED")
-    dstSheet.update('A11', [['=image("https://drive.google.com/uc?export=download&id=' + image_id[0] + '")']], value_input_option="USER_ENTERED")
-    dstSheet.update('U11', [['=image("https://drive.google.com/uc?export=download&id=' + image_id[1] + '")']], value_input_option="USER_ENTERED")
-    dstSheet.update('K22', [['=image("https://drive.google.com/uc?export=download&id=' + image_id[2] + '")']], value_input_option="USER_ENTERED")
-    dstSheet.update('Y40', [['=image("https://drive.google.com/uc?export=download&id=' + Sig + '")']], value_input_option="USER_ENTERED")
-    #body = {
-    #  "requests": [
-    #      {
-    #          "copyPaste": {
-    #              "source": {
-    #                  "sheetId": dstSheet.id,
-    #                  "startRowIndex": 10,
-    #                  "endRowIndex": 44,
-    #                  "startColumnIndex": 0,
-    #                  "endColumnIndex": 39
-    #              },
-    #              "destination": {
-    #                  "sheetId": dstSheet.id,
-    #                  "startRowIndex": 10,
-    #                  "endRowIndex": 44,
-    #                  "startColumnIndex": 0,
-    #                  "endColumnIndex": 39
-    #              },
-    #              "pasteType": "PASTE_VALUES"
-    #                        }
-    #      }
-    #               ]
-    #        }
-    #res = sh_report.batch_update(body)
     
 @st.cache_resource 
 def get_service():
@@ -397,7 +330,6 @@ if st.session_state["Login"]:
                 #DATE_temp = wks.acell('S'+gid).value.replace('\xa0',' ').split()
                 #wks.update_acell('AH'+gid,gid)
                 #DATE = DATE_temp[0] + " " + DATE_temp[1] + " " + str(int(DATE_temp[2])+543)
-                #create_report()
                 del st.session_state[f"image_1-{st.session_state.uploader_key}"]
                 del st.session_state[f"image_2-{st.session_state.uploader_key}"]
                 del st.session_state[f"image_3-{st.session_state.uploader_key}"]
