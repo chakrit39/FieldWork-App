@@ -22,7 +22,6 @@ def get_data():
     
 engine = get_postgis()
 df_name = get_data()
-df_name_ = df_name[df_name[round_]==True]
 
 if "Login" not in st.session_state:
     st.session_state["Login"] = False
@@ -73,7 +72,7 @@ if Point is not None:
 """
 -----------------
 """
-Name_list = df_name_["Name"].to_list()
+Name_list = df_name["Name"].to_list()
 Name = st.selectbox("ผู้รังวัด",Name_list,)
 date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
 date_2 = str(date).split("-")
