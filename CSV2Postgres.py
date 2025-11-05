@@ -15,8 +15,13 @@ def get_postgis():
     engine = create_engine( f"postgresql://{USER}:{PASSWD}@{HOSTNAME}:5432/Data1")
     return engine
             
-
+@st.cache_data
+def get_data():
+    df_name = pd.read_csv("https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv",header=0)
+    return df_name
+    
 engine = get_postgis()
+df_name = get_data()
 
 if "Login" not in st.session_state:
     st.session_state["Login"] = False
@@ -37,10 +42,11 @@ def pop_up():
     if st.button("ตกลง"):
         #st.session_state.vote = {"item": item, "reason": reason}
         st.rerun()    
-
+#[["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"]]
+#["องครักษ์", "ลำลูกกา", "ธัญบุรี", "คลองหลวง", "ปทุมธานี"]
 st.title("Upload CSV file to PostGIS")
-office = pd.DataFrame([["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"]],columns=["th","eng"])
-office_choice = st.selectbox("เลือกสำนักงานที่ดิน",["องครักษ์", "ลำลูกกา", "ธัญบุรี", "คลองหลวง", "ปทุมธานี"],)
+office = pd.DataFrame([["นครนายก","NAKHONNAYOK"]],columns=["th","eng"])
+office_choice = st.selectbox("เลือกสำนักงานที่ดิน",["นครนายก"],)
 office_select = office['eng'][office['th']==office_choice].iloc[0]
 Noneheader = st.checkbox("None header")
 Point = st.file_uploader("Upload a CSV file (Name,Code,N,E,h)", accept_multiple_files=False, type=['csv'],key=f"upload_{st.session_state.uploader_key}")
@@ -66,7 +72,8 @@ if Point is not None:
 """
 -----------------
 """
-Name = st.selectbox("ผู้รังวัด",["ชาคฤตย์", "กิตติพันธุ์", "สุริยา", "ณัฐพร", "ศรัณย์", "ฐณิตา", "ปณิดา", "ปฐพี","สกล","ชาตรี","อ้อมดาว","สายัณห์"],)
+Name_list = df_name_["Name"].to_list()
+Name = st.selectbox("ผู้รังวัด",Name_list,)
 date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
 date_2 = str(date).split("-")
 date_2 = int(str(int(date_2[0])+543)[-2:] + date_2[1] + date_2[2])
