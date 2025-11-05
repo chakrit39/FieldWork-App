@@ -158,7 +158,7 @@ if st.session_state["verity"]:
                         name_col = k
                         break
             
-            fig, ax = plt.subplots(figsize=(13, 10))
+            fig, ax = plt.subplots(figsize=(10, 10))
             
             # === วาด polygon + label ระยะ ===
             for poly in polygons:
