@@ -50,9 +50,9 @@ def get_map():
     gdf_t = gdf_t.to_crs('EPSG:4326')
     map = fo.Map(location=[14.078746259525621, 101.02592277876519], zoom_start=11)
     round_ = {"รอบที่ 1" : df_field["พื้นที่"][df_field["รอบ"]=="รอบที่ 1"].iloc[0].split(","),
-              "รอบที่ 2" : df_field["พื้นที่"][df_field["รอบ"]=="รอบที่ 2"].iloc[0].split(","),
-              "รอบที่ 3" : df_field["พื้นที่"][df_field["รอบ"]=="รอบที่ 3"].iloc[0].split(","),
-              "รอบที่ 4" : df_field["พื้นที่"][df_field["รอบ"]=="รอบที่ 4"].iloc[0].split(",")
+              #"รอบที่ 2" : df_field["พื้นที่"][df_field["รอบ"]=="รอบที่ 2"].iloc[0].split(","),
+              #"รอบที่ 3" : df_field["พื้นที่"][df_field["รอบ"]=="รอบที่ 3"].iloc[0].split(","),
+              #"รอบที่ 4" : df_field["พื้นที่"][df_field["รอบ"]=="รอบที่ 4"].iloc[0].split(",")
              }
     if Round == "":
         round_field = round_["รอบที่ 1"]
