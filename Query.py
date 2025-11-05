@@ -203,7 +203,7 @@ if st.session_state["verity"]:
             
                 label = str(feat["properties"].get(name_col, f"P{i+1}")) if name_col else f"P{i+1}"
                 point = Point(geom.x, geom.y)
-                offset_dist = sc*1.5  # ระยะ offset ออกนอก
+                offset_dist = sc*2  # ระยะ offset ออกนอก
                 ox, oy = 0, offset_dist
             
                 # หาทิศทางออกจาก polygon โดยใช้ centroid เป็นศูนย์กลาง
