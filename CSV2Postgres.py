@@ -22,6 +22,7 @@ def get_data():
     
 engine = get_postgis()
 df_name = get_data()
+df_name_ = df_name[df_name[round_]==True]
 
 if "Login" not in st.session_state:
     st.session_state["Login"] = False
