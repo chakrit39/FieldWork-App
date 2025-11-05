@@ -48,16 +48,16 @@ st.title("Upload CSV file to PostGIS")
 office = pd.DataFrame([["นครนายก","NAKHONNAYOK"]],columns=["th","eng"])
 office_choice = st.selectbox("เลือกสำนักงานที่ดิน",["นครนายก"],)
 office_select = office['eng'][office['th']==office_choice].iloc[0]
-#Noneheader = st.checkbox("None header")
+Noneheader = st.checkbox("None header")
 Point = st.file_uploader("Upload a CSV file (Name,Code,N,E,h)", accept_multiple_files=False, type=['csv'],key=f"upload_{st.session_state.uploader_key}")
 if Point is not None:
-    if True:
+    if Noneheader == True:
         data = pd.read_csv(Point,header=None)
         data = data.rename(columns={0: "Name", 1: "Code", 2: "N", 3: "E", 4: "h"})
         st.dataframe(data,use_container_width=True)
-    #else:
-        #data = pd.read_csv(Point)
-        #st.dataframe(data,use_container_width=True)
+    else:
+        data = pd.read_csv(Point)
+        st.dataframe(data,use_container_width=True)
         
 #sql = f'SELECT * FROM "public"."BND_Points"'        
 #gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
