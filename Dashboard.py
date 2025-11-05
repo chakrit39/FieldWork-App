@@ -121,14 +121,14 @@ st.dataframe(
 #Name_list = ["ทั้งหมด"]
 #Name_list.extend(Name_list_)
 #Name = st.selectbox("ผู้รังวัด",Name_list,on_change=get_Refresh())
-#if st.button("Refresh"):
-#    st.session_state["Refresh"] = True
+if st.button("Refresh"):
+    st.session_state["Refresh"] = True
     #get_map.clear()
-#    get_service.clear()
+    get_service.clear()
     #map = get_map()
     #creds,gc,sh,wks,wks_result = get_service()
-#else:
-#    st.session_state["Refresh"] = False
+else:
+    st.session_state["Refresh"] = False
 #gdf_ong = pd.DataFrame(gc.open('องครักษ์').worksheet('Raw').get_all_records())   
 #gdf_lum = pd.DataFrame(gc.open('ลำลูกกา').worksheet('Raw').get_all_records())  
 #gdf_thun = pd.DataFrame(gc.open('ธัญบุรี').worksheet('Raw').get_all_records())  
