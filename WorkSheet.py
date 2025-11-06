@@ -23,6 +23,8 @@ st.sidebar.markdown("แอปพลิเคชันสร้างราย�
 
 if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
+if "Search" not in st.session_state:
+    st.session_state["Search"] = False
 if "Login" not in st.session_state:
     st.session_state["Login"] = False
 if "Login_alert" not in st.session_state:
@@ -142,14 +144,38 @@ if st.session_state["Login"]:
     UTMMAP4 = col_5.selectbox("UTMMAP4",pd.unique(sc.UTMMAP4[sc.SCALE==Scale]),)
     land_no = col_6.text_input("เลขที่ดิน","")
     
-    c01, c02 = st.columns([0.50,0.50])
-    parcel_no = c01.text_input("เลขที่โฉนด","")
-    survey_no = c02.text_input("หน้าสำรวจ","")
+    if st.button("Search"):
+        if UTMMAP1 != "" & UTMMAP2 != "" & UTMMAP3 != "" & UTMMAP4 != "" & Scale != "" & land_no != "" :
+            UTM_Search = UTMMAP1 & UTMMAP2 & UTMMAP3 & UTMMAP4 & Scale & land_no
+            df_reg_ = df_reg[df_reg['REG_JOIN']==UTM_Search]
+            df_reg_ = df_reg_.reset_index(drop=True)
+            if len(df_reg_) == 1:
+                st.session_state["Search"] = True
+            else:
+                st.session_state["Search"] = False
+                st.warning("ไม่พบข้อมูลในทะเบียน")
+        else:
+            st.session_state["Search"] = False
+            st.warning("โปรดกรอกข้อมูลในครบถ้วน")
+            
+    if st.session_state["Search"] == True:
+        c01, c02 = st.columns([0.50,0.50])
+        parcel_no = c01.text_input("เลขที่โฉนด","")
+        survey_no = c02.text_input("หน้าสำรวจ","")
+    
+        col1, col2, col3 = st.columns([0.35,0.35,0.3])
+        province = col1.selectbox("จังหวัด",pd.unique(df_P_A_T.P_NAME_T))
+        amphoe = col2.selectbox("อำเภอ",pd.unique(df_P_A_T.A_NAME_T[df_P_A_T.P_NAME_T==province]))
+        tambon = col3.selectbox("ตำบล",pd.unique(df_P_A_T.T_NAME_T[df_P_A_T.A_NAME_T==amphoe]))
 
-    col1, col2, col3 = st.columns([0.35,0.35,0.3])
-    province = col1.selectbox("จังหวัด",pd.unique(df_P_A_T.P_NAME_T))
-    amphoe = col2.selectbox("อำเภอ",pd.unique(df_P_A_T.A_NAME_T[df_P_A_T.P_NAME_T==province]))
-    tambon = col3.selectbox("ตำบล",pd.unique(df_P_A_T.T_NAME_T[df_P_A_T.A_NAME_T==amphoe]))
+    #c01, c02 = st.columns([0.50,0.50])
+    #parcel_no = c01.text_input("เลขที่โฉนด","")
+    #survey_no = c02.text_input("หน้าสำรวจ","")
+
+    #col1, col2, col3 = st.columns([0.35,0.35,0.3])
+    #province = col1.selectbox("จังหวัด",pd.unique(df_P_A_T.P_NAME_T))
+    #amphoe = col2.selectbox("อำเภอ",pd.unique(df_P_A_T.A_NAME_T[df_P_A_T.P_NAME_T==province]))
+    #tambon = col3.selectbox("ตำบล",pd.unique(df_P_A_T.T_NAME_T[df_P_A_T.A_NAME_T==amphoe]))
     
     """
     --------------
@@ -158,7 +184,7 @@ if st.session_state["Login"]:
     BND_NAME = cc1.text_input("ชื่อหลักเขต","")
     Method = cc2.selectbox("เครื่องมือการรังวัด",["RTK GNSS","Total Station"])
     chk1, chk2 = st.columns([0.5,0.5])
-    upload_method = chk1.selectbox("เลือกวิธีการนำเข้า",["ป้อนค่าพิกัด","Upload a CSV file (Name,Code,N,E,h)","Upload a CSV file (PostGIS)","Import from PostGIS"])
+    upload_method = chk1.selectbox("เลือกวิธีการนำเข้า",["ป้อนค่าพิกัด","Upload a CSV file (Name,Code,N,E,h)","Import from PostGIS"])
     Diff = chk2.text_input("ค่าต่างสูงสุด (m.)","")
     if upload_method == "ป้อนค่าพิกัด":
         c1, c2, c3 = st.columns([0.4,0.4,0.2])
@@ -312,36 +338,39 @@ if st.session_state["Login"]:
         #start = time.time()
         st.session_state["Submit"] = True
         st.session_state["Login_alert"] = False
-        if N1!="" and N2!="" and N3!="" and E1!="" and E2!="" and E3!="" and N3!="" and E1!="" and E2!="" and E3!="" and H1!="" and H2!=""and H3!="" and parcel_no!="" and survey_no!="" and land_no!="" and UTMMAP1!="" and UTMMAP3!="" and BND_NAME!="" :
-            #if sh_report.title != Name+'-Report':
-                #sh_report = gc.open(Name+'-Report_'+office_select)
-            N = round((float(N1)+float(N2)+float(N3))/3,3)
-            E = round((float(E1)+float(E2)+float(E3))/3,3)
-            H = round((float(H1)+float(H2)+float(H3))/3,3)
-            if image_1 and image_2 and image_3:
-                image_id = []
-                image = [image_1,image_2,image_3]
-                for i in range(3):
-                    image_id.append(upload_image(service,folder_id[i],image[i]))
-                row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, Name, round_, Diff, BND_NAME, N, E, H, Method, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
-                row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
-                #gid = row_update['updates']['updatedRange'][5:].split(":")[0]
-                #DATE_temp = wks.acell('S'+gid).value.replace('\xa0',' ').split()
-                #wks.update_acell('AH'+gid,gid)
-                #DATE = DATE_temp[0] + " " + DATE_temp[1] + " " + str(int(DATE_temp[2])+543)
-                del st.session_state[f"image_1-{st.session_state.uploader_key}"]
-                del st.session_state[f"image_2-{st.session_state.uploader_key}"]
-                del st.session_state[f"image_3-{st.session_state.uploader_key}"]
-                st.session_state.uploader_key += 1
-                #st.rerun()
-                #st.success('สำเร็จ!', icon="✅")
-                #end = time.time()
-                #end - start
-                pop_up()
+        if st.session_state["Search"] == True:
+            if N1!="" and N2!="" and N3!="" and E1!="" and E2!="" and E3!="" and N3!="" and E1!="" and E2!="" and E3!="" and H1!="" and H2!=""and H3!="" and parcel_no!="" and survey_no!="" and land_no!="" and UTMMAP1!="" and UTMMAP3!="" and BND_NAME!="" :
+                #if sh_report.title != Name+'-Report':
+                    #sh_report = gc.open(Name+'-Report_'+office_select)
+                N = round((float(N1)+float(N2)+float(N3))/3,3)
+                E = round((float(E1)+float(E2)+float(E3))/3,3)
+                H = round((float(H1)+float(H2)+float(H3))/3,3)
+                if image_1 and image_2 and image_3:
+                    image_id = []
+                    image = [image_1,image_2,image_3]
+                    for i in range(3):
+                        image_id.append(upload_image(service,folder_id[i],image[i]))
+                    row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, Name, round_, Diff, BND_NAME, N, E, H, Method, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
+                    row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
+                    #gid = row_update['updates']['updatedRange'][5:].split(":")[0]
+                    #DATE_temp = wks.acell('S'+gid).value.replace('\xa0',' ').split()
+                    #wks.update_acell('AH'+gid,gid)
+                    #DATE = DATE_temp[0] + " " + DATE_temp[1] + " " + str(int(DATE_temp[2])+543)
+                    del st.session_state[f"image_1-{st.session_state.uploader_key}"]
+                    del st.session_state[f"image_2-{st.session_state.uploader_key}"]
+                    del st.session_state[f"image_3-{st.session_state.uploader_key}"]
+                    st.session_state.uploader_key += 1
+                    #st.rerun()
+                    #st.success('สำเร็จ!', icon="✅")
+                    #end = time.time()
+                    #end - start
+                    pop_up()
+                else:
+                    st.warning("โปรดเลือกรูปภาพให้ครบ")
             else:
-                st.warning("โปรดเลือกรูปภาพให้ครบ")
+                st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
         else:
-            st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
+            st.warning("โปรดค้นหาข้อมูลในทะเบียน")
     else:
         st.session_state["Submit"] = False
      
