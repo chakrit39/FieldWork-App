@@ -25,6 +25,8 @@ if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
 if "Search" not in st.session_state:
     st.session_state["Search"] = False
+if "Search_" not in st.session_state:
+    st.session_state["Search_"] = False
 if "Login" not in st.session_state:
     st.session_state["Login"] = False
 if "Login_alert" not in st.session_state:
@@ -151,14 +153,14 @@ if st.session_state["Login"]:
     UTMMAP4 = col_5.selectbox("UTMMAP4",pd.unique(sc.UTMMAP4[sc.SCALE==Scale]),)
     land_no = col_6.text_input("เลขที่ดิน","")
     
-    if st.button("Search"):
-        if UTMMAP1 != "" and UTMMAP2 != "" and UTMMAP3 != "" and UTMMAP4 != "" and Scale != "" and land_no != "" :
-            st.session_state["Search"] = True
-        else:
-            st.session_state["Search"] = False
-            st.warning("โปรดกรอกข้อมูลในครบถ้วน")
+    #if st.button("Search"):
+    #    if UTMMAP1 != "" and UTMMAP2 != "" and UTMMAP3 != "" and UTMMAP4 != "" and Scale != "" and land_no != "" :
+    #        st.session_state["Search_"] = True
+    #    else:
+    #        st.session_state["Search_"] = False
+    #        st.warning("โปรดกรอกข้อมูลในครบถ้วน")
             
-    if st.session_state["Search"] == True:
+    if UTMMAP1 != "" and UTMMAP2 != "" and UTMMAP3 != "" and UTMMAP4 != "" and Scale != "" and land_no != "" :
         UTM_Search = str(UTMMAP1) + str(UTMMAP2) + str(UTMMAP3) + str(UTMMAP4) + str(Scale) + str(land_no)
         df_reg_ = df_reg[df_reg['REG_JOIN']==UTM_Search]
         df_reg_ = df_reg_.reset_index(drop=True)
@@ -173,6 +175,8 @@ if st.session_state["Login"]:
             tambon = col3.selectbox("ตำบล",df_reg_['TAMBOL'][0])
         else:
             st.warning("ไม่พบข้อมูลในทะเบียน")
+    else:
+        st.warning("โปรดกรอกข้อมูลในครบถ้วน")
 
     #c01, c02 = st.columns([0.50,0.50])
     #parcel_no = c01.text_input("เลขที่โฉนด","")
@@ -348,7 +352,7 @@ if st.session_state["Login"]:
         #start = time.time()
         st.session_state["Submit"] = True
         st.session_state["Login_alert"] = False
-        if st.session_state["Search"] == True:
+        if st.session_state["Search_"] == True:
             if N1!="" and N2!="" and N3!="" and E1!="" and E2!="" and E3!="" and N3!="" and E1!="" and E2!="" and E3!="" and H1!="" and H2!=""and H3!="" and parcel_no!="" and survey_no!="" and land_no!="" and UTMMAP1!="" and UTMMAP3!="" and BND_NAME!="" :
                 #if sh_report.title != Name+'-Report':
                     #sh_report = gc.open(Name+'-Report_'+office_select)
