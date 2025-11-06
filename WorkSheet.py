@@ -74,10 +74,10 @@ def get_service():
     service = build("drive", "v3", credentials=creds)
     sh = gc.open(office_select)
     wks = sh.worksheet('Raw')
-    sh_ref = gc.open('Report') 
-    wks_ref = sh_ref.worksheet('Ref')
+    wks_reg = sh.worksheet('REG')
+    df_reg = pd.DataFrame(wks_reg.get_all_records())
     #sh_report = gc.open(Name+'-Report_'+office_select)
-    return creds,gc,service,sh,wks,sh_ref,wks_ref#,sh_report
+    return creds,gc,service,sh,wks,df_reg#,sh_report
     
 @st.cache_resource 
 def get_postgis():
@@ -295,10 +295,10 @@ if st.session_state["Login"]:
     date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
     remark = st.text_input("หมายเหตุ","")
     
-    creds,gc,service,sh,wks,sh_ref,wks_ref = get_service()
+    creds,gc,service,sh,wks,df_reg = get_service()
     if sh.title != office_select:
         get_service.clear()
-        creds,gc,service,sh,wks,sh_ref,wks_ref = get_service()
+        creds,gc,service,sh,wks,df_reg = get_service()
         
     c001, c002 = st.columns([0.12,0.88])
     if c002.button("Refresh", type="primary"):
