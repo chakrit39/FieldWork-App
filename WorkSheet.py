@@ -153,27 +153,26 @@ if st.session_state["Login"]:
     
     if st.button("Search"):
         if UTMMAP1 != "" and UTMMAP2 != "" and UTMMAP3 != "" and UTMMAP4 != "" and Scale != "" and land_no != "" :
-            UTM_Search = str(UTMMAP1) + str(UTMMAP2) + str(UTMMAP3) + str(UTMMAP4) + str(Scale) + str(land_no)
-            df_reg_ = df_reg[df_reg['REG_JOIN']==UTM_Search]
-            df_reg_ = df_reg_.reset_index(drop=True)
-            if len(df_reg_) == 1:
-                st.session_state["Search"] = True
-            else:
-                st.session_state["Search"] = False
-                st.warning("ไม่พบข้อมูลในทะเบียน")
+            st.session_state["Search"] = True
         else:
             st.session_state["Search"] = False
             st.warning("โปรดกรอกข้อมูลในครบถ้วน")
             
     if st.session_state["Search"] == True:
-        c01, c02 = st.columns([0.50,0.50])
-        parcel_no = c01.text_input("เลขที่โฉนด",df_reg_['PARCEL_NO'][0])
-        survey_no = c02.text_input("หน้าสำรวจ",df_reg_['SURVEY_NO'][0])
-    
-        col1, col2, col3 = st.columns([0.35,0.35,0.3])
-        province = col1.selectbox("จังหวัด",df_reg_['PROVINCE'][0])
-        amphoe = col2.selectbox("อำเภอ",df_reg_['AMPHUR'][0])
-        tambon = col3.selectbox("ตำบล",df_reg_['TAMBOL'][0])
+        UTM_Search = str(UTMMAP1) + str(UTMMAP2) + str(UTMMAP3) + str(UTMMAP4) + str(Scale) + str(land_no)
+        df_reg_ = df_reg[df_reg['REG_JOIN']==UTM_Search]
+        df_reg_ = df_reg_.reset_index(drop=True)
+        if len(df_reg_) == 1:
+            c01, c02 = st.columns([0.50,0.50])
+            parcel_no = c01.text_input("เลขที่โฉนด",df_reg_['PARCEL_NO'][0])
+            survey_no = c02.text_input("หน้าสำรวจ",df_reg_['SURVEY_NO'][0])
+        
+            col1, col2, col3 = st.columns([0.35,0.35,0.3])
+            province = col1.selectbox("จังหวัด",df_reg_['PROVINCE'][0])
+            amphoe = col2.selectbox("อำเภอ",df_reg_['AMPHUR'][0])
+            tambon = col3.selectbox("ตำบล",df_reg_['TAMBOL'][0])
+        else:
+            st.warning("ไม่พบข้อมูลในทะเบียน")
 
     #c01, c02 = st.columns([0.50,0.50])
     #parcel_no = c01.text_input("เลขที่โฉนด","")
