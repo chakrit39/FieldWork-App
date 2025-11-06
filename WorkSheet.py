@@ -83,7 +83,7 @@ def get_service():
     
 @st.cache_data
 def get_reg():
-    df_reg = pd.DataFrame(wks.get_all_records(numericise_ignore=['all']))
+    df_reg = pd.DataFrame(wks_reg.get_all_records(numericise_ignore=['all']))
     return df_reg
     
 @st.cache_resource 
