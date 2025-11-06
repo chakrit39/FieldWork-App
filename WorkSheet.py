@@ -150,7 +150,7 @@ if st.session_state["Login"]:
     Scale = col_4.selectbox("Scale",pd.unique(sc.SCALE),)
     UTMMAP4 = col_5.selectbox("UTMMAP4",pd.unique(sc.UTMMAP4[sc.SCALE==Scale]),)
     land_no = col_6.text_input("เลขที่ดิน","")
-    df_reg
+    
     if st.button("Search"):
         if UTMMAP1 != "" and UTMMAP2 != "" and UTMMAP3 != "" and UTMMAP4 != "" and Scale != "" and land_no != "" :
             UTM_Search = str(UTMMAP1) + str(UTMMAP2) + str(UTMMAP3) + str(UTMMAP4) + str(Scale) + str(land_no)
@@ -167,13 +167,13 @@ if st.session_state["Login"]:
             
     if st.session_state["Search"] == True:
         c01, c02 = st.columns([0.50,0.50])
-        parcel_no = c01.text_input("เลขที่โฉนด","")
-        survey_no = c02.text_input("หน้าสำรวจ","")
+        parcel_no = c01.text_input("เลขที่โฉนด",df_reg_['PARCEL_NO'][0])
+        survey_no = c02.text_input("หน้าสำรวจ",df_reg_['SURVEY_NO'][0])
     
         col1, col2, col3 = st.columns([0.35,0.35,0.3])
-        province = col1.selectbox("จังหวัด",pd.unique(df_P_A_T.P_NAME_T))
-        amphoe = col2.selectbox("อำเภอ",pd.unique(df_P_A_T.A_NAME_T[df_P_A_T.P_NAME_T==province]))
-        tambon = col3.selectbox("ตำบล",pd.unique(df_P_A_T.T_NAME_T[df_P_A_T.A_NAME_T==amphoe]))
+        province = col1.selectbox("จังหวัด",df_reg_['PROVINCE'][0])
+        amphoe = col2.selectbox("อำเภอ",df_reg_['AMPHUR'][0])
+        tambon = col3.selectbox("ตำบล",df_reg_['TAMBOL'][0])
 
     #c01, c02 = st.columns([0.50,0.50])
     #parcel_no = c01.text_input("เลขที่โฉนด","")
