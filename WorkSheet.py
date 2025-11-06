@@ -77,9 +77,14 @@ def get_service():
     sh = gc.open(office_select)
     wks = sh.worksheet('Raw')
     wks_reg = sh.worksheet('REG')
-    df_reg = pd.DataFrame(wks_reg.get_all_records())
+    
     #sh_report = gc.open(Name+'-Report_'+office_select)
-    return creds,gc,service,sh,wks,df_reg#,sh_report
+    return creds,gc,service,sh,wks,wks_reg#,sh_report
+    
+@st.cache_data
+def get_data():
+    df_reg = pd.DataFrame(wks_reg.get_all_records())
+    return df_reg
     
 @st.cache_resource 
 def get_postgis():
@@ -133,6 +138,8 @@ if st.session_state["Login"]:
     df_P_A_T = df[df['OFFICE']==office_select]
     df_P_A_T = df_P_A_T.reset_index(drop=True)
 
+    creds,gc,service,sh,wks,wks_reg = get_service()
+    df_reg = get_reg()
     
     st.title("แบบกรอกข้อมูลงานภาคสนาม")
     st.title("สาขา"+office_select)  
@@ -321,16 +328,20 @@ if st.session_state["Login"]:
     date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
     remark = st.text_input("หมายเหตุ","")
     
-    creds,gc,service,sh,wks,df_reg = get_service()
+    
     if sh.title != office_select:
         get_service.clear()
+        get_reg.clear()
         creds,gc,service,sh,wks,df_reg = get_service()
+        df_reg = get_reg()
         
     c001, c002 = st.columns([0.12,0.88])
     if c002.button("Refresh", type="primary"):
         st.session_state["Refresh"] = True
         get_service.clear()
+        get_reg.clear()
         creds,gc,service,sh,wks,sh_ref,wks_ref = get_service()
+        df_reg = get_reg()
     else:
         st.session_state["Refresh"] = False   
     if c001.button("Submit"):
