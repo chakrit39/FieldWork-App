@@ -82,7 +82,7 @@ def get_service():
     return creds,gc,service,sh,wks,wks_reg#,sh_report
     
 @st.cache_data
-def get_data():
+def get_reg():
     df_reg = pd.DataFrame(wks_reg.get_all_records())
     return df_reg
     
