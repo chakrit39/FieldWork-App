@@ -134,7 +134,7 @@ if st.session_state["Login"]:
     
     st.title("แบบกรอกข้อมูลงานภาคสนาม")
     st.title("สาขา"+office_select)  
-    col_1, col_2, col_3, col_4, col_5 , col_6 = st.columns([0.2,0.13,0.2,0.2,0.13,0.15])
+    col_1, col_2, col_3, col_4, col_5 , col_6 = st.columns([0.18,0.13,0.18,0.18,0.13,0.15])
     UTMMAP1 = col_1.text_input("UTMMAP1","")
     UTMMAP2 = col_2.selectbox("UTMMAP2",["I", "II", "III", "IV"],)
     UTMMAP3 = col_3.text_input("UTMMAP3","")
