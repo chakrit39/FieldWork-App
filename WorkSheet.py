@@ -134,19 +134,18 @@ if st.session_state["Login"]:
     
     st.title("แบบกรอกข้อมูลงานภาคสนาม")
     st.title("สาขา"+office_select)  
-    
-    c01, c02, c03 = st.columns([0.35,0.35,0.3])
-    parcel_no = c01.text_input("เลขที่โฉนด","")
-    survey_no = c02.text_input("หน้าสำรวจ","")
-    land_no = c03.text_input("เลขที่ดิน","")
-    
-    col_1, col_2, col_3, col_4, col_5 = st.columns([0.2,0.2,0.2,0.2,0.2])
+    col_1, col_2, col_3, col_4, col_5 , col_6 = st.columns([0.2,0.13,0.2,0.2,0.13,0.15])
     UTMMAP1 = col_1.text_input("UTMMAP1","")
     UTMMAP2 = col_2.selectbox("UTMMAP2",["I", "II", "III", "IV"],)
     UTMMAP3 = col_3.text_input("UTMMAP3","")
     Scale = col_4.selectbox("Scale",pd.unique(sc.SCALE),)
     UTMMAP4 = col_5.selectbox("UTMMAP4",pd.unique(sc.UTMMAP4[sc.SCALE==Scale]),)
+    land_no = col_6.text_input("เลขที่ดิน","")
     
+    c01, c02, c03 = st.columns([0.50,0.50])
+    parcel_no = c01.text_input("เลขที่โฉนด","")
+    survey_no = c02.text_input("หน้าสำรวจ","")
+
     col1, col2, col3 = st.columns([0.35,0.35,0.3])
     province = col1.selectbox("จังหวัด",pd.unique(df_P_A_T.P_NAME_T))
     amphoe = col2.selectbox("อำเภอ",pd.unique(df_P_A_T.A_NAME_T[df_P_A_T.P_NAME_T==province]))
