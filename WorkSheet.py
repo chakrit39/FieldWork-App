@@ -332,7 +332,7 @@ if st.session_state["Login"]:
     if sh.title != office_select:
         get_service.clear()
         get_reg.clear()
-        creds,gc,service,sh,wks,df_reg = get_service()
+        creds,gc,service,sh,wks,wks_reg = get_service()
         df_reg = get_reg()
         
     c001, c002 = st.columns([0.12,0.88])
@@ -340,7 +340,7 @@ if st.session_state["Login"]:
         st.session_state["Refresh"] = True
         get_service.clear()
         get_reg.clear()
-        creds,gc,service,sh,wks,sh_ref,wks_ref = get_service()
+        creds,gc,service,sh,wks,wks_reg = get_service()
         df_reg = get_reg()
     else:
         st.session_state["Refresh"] = False   
