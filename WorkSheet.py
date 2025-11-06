@@ -146,7 +146,7 @@ if st.session_state["Login"]:
     
     if st.button("Search"):
         if UTMMAP1 != "" and UTMMAP2 != "" and UTMMAP3 != "" and UTMMAP4 != "" and Scale != "" and land_no != "" :
-            UTM_Search = str(UTMMAP1) & str(UTMMAP2) & str(UTMMAP3) & str(UTMMAP4) & str(Scale) & str(land_no)
+            UTM_Search = str(UTMMAP1) + str(UTMMAP2) + str(UTMMAP3) + str(UTMMAP4) + str(Scale) + str(land_no)
             df_reg_ = df_reg[df_reg['REG_JOIN']==UTM_Search]
             df_reg_ = df_reg_.reset_index(drop=True)
             if len(df_reg_) == 1:
