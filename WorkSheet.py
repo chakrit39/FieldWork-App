@@ -142,7 +142,7 @@ if st.session_state["Login"]:
     UTMMAP4 = col_5.selectbox("UTMMAP4",pd.unique(sc.UTMMAP4[sc.SCALE==Scale]),)
     land_no = col_6.text_input("เลขที่ดิน","")
     
-    c01, c02, c03 = st.columns([0.50,0.50])
+    c01, c02 = st.columns([0.50,0.50])
     parcel_no = c01.text_input("เลขที่โฉนด","")
     survey_no = c02.text_input("หน้าสำรวจ","")
 
