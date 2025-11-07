@@ -253,5 +253,5 @@ if st.session_state["verity"]:
 
             c1, c2 = st.columns([0.50,0.50])
             number = c1.number_input("ระยะที่วัดได้","")
-            if number != 0:
+            if number != 0 and number != "":
                 Diff = c2.text_input("ค่าต่าง",abs(round(length-float(number),3)))
