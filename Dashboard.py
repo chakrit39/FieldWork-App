@@ -96,7 +96,7 @@ df = df[df['แปลงเป้าหมาย ' + Round]!=0]
 df = df.reset_index(drop=True)
 df['Progress'] = 0
 h = len(df)
-for i in range(len(h)):
+for i in range(h):
     if round(100/ df['แปลงเป้าหมาย ' + Round][i] * df['จำนวนแปลง ' + Round][i],2) < round(100/ df['หมุดเป้าหมาย ' + Round][i] * df['จำนวนหมุดหลักเขต ' + Round][i],2):
         df['Progress'][i] = round(100/ df['แปลงเป้าหมาย ' + Round][i] * df['จำนวนแปลง ' + Round][i],2)
     else:
