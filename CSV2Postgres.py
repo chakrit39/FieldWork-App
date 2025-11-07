@@ -54,10 +54,10 @@ if Point is not None:
     if Noneheader == True:
         data = pd.read_csv(Point,header=None)
         data = data.rename(columns={0: "Name", 1: "Code", 2: "N", 3: "E", 4: "h"})
-        st.dataframe(data,use_container_width=True)
+        st.dataframe(data,width="stretch")
     else:
         data = pd.read_csv(Point)
-        st.dataframe(data,use_container_width=True)
+        st.dataframe(data,width="stretch")
         
 #sql = f'SELECT * FROM "public"."BND_Points"'        
 #gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
