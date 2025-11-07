@@ -208,7 +208,22 @@ if st.session_state["Login"]:
     
         H1 = c3.text_input("H1","")
         H2 = c3.text_input("H2","")
-        H3 = c3.text_input("H3","")    
+        H3 = c3.text_input("H3","")
+        if N1!="" and N2!="" and N3!="" and E1!="" and E2!="" and E3!="" and N3!="" and E1!="" and E2!="" and E3!="" and H1!="" and H2!=""and H3!=""
+            data_point = pd.DataFrame([[N1,E1],[N2,E2],[N3,E3]])
+            Diff_N = 0
+            Diff_E = 0
+            for i in range(len(data_point)):
+                for j in range(3):
+                    if abs(data_point.iloc[i,0] - data_point.iloc[j,0]) > Diff_N :
+                        Diff_N = abs(data_point.iloc[i,0] - data_point.iloc[j,0])
+                    if abs(data_point.iloc[i,1] - data_point.iloc[j,1]) > Diff_E :
+                        Diff_E = abs(data_point.iloc[i,1] - data_point.iloc[j,1])
+    
+            if Diff_N > 0.04 :
+                st.warning("ค่า N ต่างกันเกิน 4 cm.")
+                if Diff_E > 0.04 :
+                    st.warning("ค่า E ต่างกันเกิน 4 cm.")
     elif upload_method == "Upload a CSV file (Name,Code,N,E,h)":
         chk2.write("")
         chk2.write("")
@@ -238,6 +253,20 @@ if st.session_state["Login"]:
                     H1 = c3.text_input("H1",data_point.iloc[0,3])
                     H2 = c3.text_input("H2",data_point.iloc[1,3])
                     H3 = c3.text_input("H3",data_point.iloc[2,3])
+                    Diff_N = 0
+                    Diff_E = 0
+                    for i in range(len(data_point)):
+                        for j in range(3):
+                            if abs(data_point.iloc[i,1] - data_point.iloc[j,1]) > Diff_N :
+                                Diff_N = abs(data_point.iloc[i,1] - data_point.iloc[j,1])
+                            if abs(data_point.iloc[i,2] - data_point.iloc[j,2]) > Diff_E :
+                                Diff_E = abs(data_point.iloc[i,2] - data_point.iloc[j,2])
+
+                    if Diff_N > 0.04 :
+                        st.warning("ค่า N ต่างกันเกิน 4 cm.")
+                        if Diff_E > 0.04 :
+                            st.warning("ค่า E ต่างกันเกิน 4 cm.")
+                        
                 elif len(data_point)==0:
                     st.warning("ไม่พบชื่อหมุดหลักเขต")
                 else:
@@ -266,6 +295,19 @@ if st.session_state["Login"]:
                  H1 = c3.text_input("H1",data_point.iloc[0,4])
                  H2 = c3.text_input("H2",data_point.iloc[1,4])
                  H3 = c3.text_input("H3",data_point.iloc[2,4])
+                Diff_N = 0
+                Diff_E = 0
+                for i in range(len(data_point)):
+                    for j in range(3):
+                        if abs(data_point.iloc[i,2] - data_point.iloc[j,2]) > Diff_N :
+                            Diff_N = abs(data_point.iloc[i,2] - data_point.iloc[j,2])
+                        if abs(data_point.iloc[i,3] - data_point.iloc[j,3]) > Diff_E :
+                            Diff_E = abs(data_point.iloc[i,3] - data_point.iloc[j,3])
+
+                if Diff_N > 0.04 :
+                    st.warning("ค่า N ต่างกันเกิน 4 cm.")
+                    if Diff_E > 0.04 :
+                        st.warning("ค่า E ต่างกันเกิน 4 cm.")
             elif len(data_point)==0:
                  st.warning("ไม่พบชื่อหมุดหลักเขต")
             else:
