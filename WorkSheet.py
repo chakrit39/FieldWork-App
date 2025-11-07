@@ -221,6 +221,7 @@ if st.session_state["Login"]:
                         Diff_N = Diff_N_
                     if Diff_E_ > Diff_E :
                         Diff_E = Diff_E_
+            Diff_N
             if Diff_N > 0.04 :
                 st.warning("ค่า N ต่างกันเกิน 4 cm.")
             if Diff_E > 0.04 :
