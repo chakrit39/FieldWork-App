@@ -234,8 +234,8 @@ if st.session_state["verity"]:
                 --------------
             """
             
-            
-            st.dataframe(data=data_point[['PCM_BNDNAME' , 'PCM_NORTH' , 'PCM_EAST']],use_container_width=True)
+            h = len(data_point)
+            st.dataframe(data=data_point[['PCM_BNDNAME' , 'PCM_NORTH' , 'PCM_EAST']],width="stretch",height=35*(h+1))
             """
                 --------------
             """
