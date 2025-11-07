@@ -92,7 +92,7 @@ else:
     Round = Round_
 df_ =  pd.DataFrame(wks_result.get_all_records())  
 df = df_[['Name','จำนวนหมุดหลักเขต ' + Round, 'จำนวนแปลง ' + Round, 'หมุดเป้าหมาย ' + Round, 'แปลงเป้าหมาย ' + Round]]
-df = df[df['เป้าหมาย ' + Round]!=0]
+df = df[df['แปลงเป้าหมาย ' + Round]!=0]
 df = df.reset_index(drop=True)
 if round(100/ df['แปลงเป้าหมาย ' + Round] * df['จำนวนแปลง ' + Round],2) < round(100/ df['หมุดเป้าหมาย ' + Round] * df['จำนวนหมุดหลักเขต ' + Round],2):
     df['Progress'] = round(100/ df['เป้าหมาย ' + Round] * df['แปลงจำนวนแปลง ' + Round],2)
