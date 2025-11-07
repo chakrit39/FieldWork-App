@@ -116,7 +116,7 @@ st.dataframe(
     },
     #hide_index=True,
     width="stretch",
-    height="stretch"
+    height="auto"
 )
 
 
