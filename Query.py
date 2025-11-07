@@ -251,7 +251,8 @@ if st.session_state["verity"]:
                 length = round(point1_.distance(point2_),3)
             length_ = c03.selectbox("ระยะ",str(length))
 
-            c1, c2 = st.columns([0.50,0.50])
-            number = c1.number_input("ระยะที่วัดได้",0)
-            if number != 0:
-                Diff = c2.text_input("ค่าต่าง",abs(round(length-float(number),3)))
+            if length > 0 :
+                c1, c2 = st.columns([0.50,0.50])
+                number = c1.number_input("ระยะที่วัดได้",0)
+                if number != 0:
+                    Diff = c2.text_input("ค่าต่าง",abs(round(length-float(number),3)))
