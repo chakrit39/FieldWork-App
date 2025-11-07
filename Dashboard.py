@@ -94,13 +94,12 @@ df_ =  pd.DataFrame(wks_result.get_all_records())
 df = df_[['Name','จำนวนหมุดหลักเขต ' + Round, 'จำนวนแปลง ' + Round, 'หมุดเป้าหมาย ' + Round, 'แปลงเป้าหมาย ' + Round]]
 df = df[df['แปลงเป้าหมาย ' + Round]!=0]
 df = df.reset_index(drop=True)
-df
-round(100/ df['แปลงเป้าหมาย ' + Round] * df['จำนวนแปลง ' + Round],2)
-round(100/ df['หมุดเป้าหมาย ' + Round] * df['จำนวนหมุดหลักเขต ' + Round],2)
-if round(100/ df['แปลงเป้าหมาย ' + Round] * df['จำนวนแปลง ' + Round],2) < round(100/ df['หมุดเป้าหมาย ' + Round] * df['จำนวนหมุดหลักเขต ' + Round],2):
-    df['Progress'] = round(100/ df['แปลงเป้าหมาย ' + Round] * df['จำนวนแปลง ' + Round],2)
-else:
-    df['Progress'] = round(100/ df['หมุดเป้าหมาย ' + Round] * df['จำนวนหมุดหลักเขต ' + Round],2)
+df['Progress'] = 0
+for i in range(len(df)):
+    if round(100/ df['แปลงเป้าหมาย ' + Round][i] * df['จำนวนแปลง ' + Round][i],2) < round(100/ df['หมุดเป้าหมาย ' + Round][i] * df['จำนวนหมุดหลักเขต ' + Round][i],2):
+        df['Progress'][i] = round(100/ df['แปลงเป้าหมาย ' + Round][i] * df['จำนวนแปลง ' + Round][i],2)
+    else:
+        df['Progress'][i] = round(100/ df['หมุดเป้าหมาย ' + Round][i] * df['จำนวนหมุดหลักเขต ' + Round][i],2)
 #df_ = df.tail(1).copy()
 #df = df.drop([df_.index[0]])
 st.dataframe(
