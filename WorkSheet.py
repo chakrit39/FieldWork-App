@@ -223,8 +223,8 @@ if st.session_state["Login"]:
                         Diff_E = Diff_E_
             if Diff_N > 0.04 :
                 st.warning("ค่า N ต่างกันเกิน 4 cm.")
-                if Diff_E > 0.04 :
-                    st.warning("ค่า E ต่างกันเกิน 4 cm.")
+            if Diff_E > 0.04 :
+                st.warning("ค่า E ต่างกันเกิน 4 cm.")
     elif upload_method == "Upload a CSV file (Name,Code,N,E,h)":
         chk2.write("")
         chk2.write("")
@@ -266,8 +266,8 @@ if st.session_state["Login"]:
                                 Diff_E = Diff_E_
                     if Diff_N > 0.04 :
                         st.warning("ค่า N ต่างกันเกิน 4 cm.")
-                        if Diff_E > 0.04 :
-                            st.warning("ค่า E ต่างกันเกิน 4 cm.")
+                    if Diff_E > 0.04 :
+                        st.warning("ค่า E ต่างกันเกิน 4 cm.")
                         
                 elif len(data_point)==0:
                     st.warning("ไม่พบชื่อหมุดหลักเขต")
@@ -309,8 +309,8 @@ if st.session_state["Login"]:
                             Diff_E = Diff_E_
                 if Diff_N > 0.04 :
                     st.warning("ค่า N ต่างกันเกิน 4 cm.")
-                    if Diff_E > 0.04 :
-                        st.warning("ค่า E ต่างกันเกิน 4 cm.")
+                if Diff_E > 0.04 :
+                    st.warning("ค่า E ต่างกันเกิน 4 cm.")
             elif len(data_point)==0:
                  st.warning("ไม่พบชื่อหมุดหลักเขต")
             else:
