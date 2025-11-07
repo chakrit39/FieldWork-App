@@ -95,7 +95,8 @@ df = df_[['Name','จำนวนหมุดหลักเขต ' + Round, '�
 df = df[df['แปลงเป้าหมาย ' + Round]!=0]
 df = df.reset_index(drop=True)
 df['Progress'] = 0
-for i in range(len(df)):
+h = len(df)
+for i in range(len(h)):
     if round(100/ df['แปลงเป้าหมาย ' + Round][i] * df['จำนวนแปลง ' + Round][i],2) < round(100/ df['หมุดเป้าหมาย ' + Round][i] * df['จำนวนหมุดหลักเขต ' + Round][i],2):
         df['Progress'][i] = round(100/ df['แปลงเป้าหมาย ' + Round][i] * df['จำนวนแปลง ' + Round][i],2)
     else:
@@ -116,7 +117,7 @@ st.dataframe(
     },
     #hide_index=True,
     width="stretch",
-    height="auto"
+    height=h+1
 )
 
 
