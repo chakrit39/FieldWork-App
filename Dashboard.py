@@ -120,7 +120,7 @@ st.dataframe(
     height=1
 )
 
-st.write(df.to_html(), unsafe_allow_html=True)
+
 #st.header('Map')
 #map = get_map()
 
