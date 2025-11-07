@@ -216,10 +216,12 @@ if st.session_state["Login"]:
             Diff_E = 0
             for i in range(3):
                 for j in range(3):
-                    if abs(data_point.iloc[i,0] - data_point.iloc[j,0]) > Diff_N :
-                        Diff_N = abs(data_point.iloc[i,0] - data_point.iloc[j,0])
-                    if abs(data_point.iloc[i,1] - data_point.iloc[j,1]) > Diff_E :
-                        Diff_E = abs(data_point.iloc[i,1] - data_point.iloc[j,1])
+                    Diff_N_ = abs(float(data_point.iloc[i,0]) - float(data_point.iloc[j,0]))
+                    Diff_E_ = abs(float(data_point.iloc[i,1]) - float(data_point.iloc[j,1]))
+                    if Diff_N_ > Diff_N :
+                        Diff_N = Diff_N_
+                    if Diff_E_ > Diff_E :
+                        Diff_E = Diff_E_
             if Diff_N > 0.04 :
                 st.warning("ค่า N ต่างกันเกิน 4 cm.")
                 if Diff_E > 0.04 :
@@ -257,10 +259,12 @@ if st.session_state["Login"]:
                     Diff_E = 0
                     for i in range(3):
                         for j in range(3):
-                            if abs(data_point.iloc[i,1] - data_point.iloc[j,1]) > Diff_N :
-                                Diff_N = abs(data_point.iloc[i,1] - data_point.iloc[j,1])
-                            if abs(data_point.iloc[i,2] - data_point.iloc[j,2]) > Diff_E :
-                                Diff_E = abs(data_point.iloc[i,2] - data_point.iloc[j,2])
+                            Diff_N_ = abs(float(data_point.iloc[i,1]) - float(data_point.iloc[j,1]))
+                            Diff_E_ = abs(float(data_point.iloc[i,2]) - float(data_point.iloc[j,2]))
+                            if Diff_N_ > Diff_N :
+                                Diff_N = Diff_N_
+                            if Diff_E_ > Diff_E :
+                                Diff_E = Diff_E_
                     if Diff_N > 0.04 :
                         st.warning("ค่า N ต่างกันเกิน 4 cm.")
                         if Diff_E > 0.04 :
@@ -298,10 +302,12 @@ if st.session_state["Login"]:
                 Diff_E = 0
                 for i in range(3):
                     for j in range(3):
-                        if abs(data_point.iloc[i,2] - data_point.iloc[j,2]) > Diff_N :
-                            Diff_N = abs(data_point.iloc[i,2] - data_point.iloc[j,2])
-                        if abs(data_point.iloc[i,3] - data_point.iloc[j,3]) > Diff_E :
-                            Diff_E = abs(data_point.iloc[i,3] - data_point.iloc[j,3])
+                        Diff_N_ = abs(float(data_point.iloc[i,2]) - float(data_point.iloc[j,2]))
+                        Diff_E_ = abs(float(data_point.iloc[i,3]) - float(data_point.iloc[j,3]))
+                        if Diff_N_ > Diff_N :
+                            Diff_N = Diff_N_
+                        if Diff_E_ > Diff_E :
+                            Diff_E = Diff_E_
                 if Diff_N > 0.04 :
                     st.warning("ค่า N ต่างกันเกิน 4 cm.")
                     if Diff_E > 0.04 :
