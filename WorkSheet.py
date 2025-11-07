@@ -213,13 +213,12 @@ if st.session_state["Login"]:
             data_point = pd.DataFrame([[N1,E1],[N2,E2],[N3,E3]])
             Diff_N = 0
             Diff_E = 0
-            for i in range(len(data_point)):
+            for i in range(3):
                 for j in range(3):
                     if abs(data_point.iloc[i,0] - data_point.iloc[j,0]) > Diff_N :
                         Diff_N = abs(data_point.iloc[i,0] - data_point.iloc[j,0])
                     if abs(data_point.iloc[i,1] - data_point.iloc[j,1]) > Diff_E :
                         Diff_E = abs(data_point.iloc[i,1] - data_point.iloc[j,1])
-    
             if Diff_N > 0.04 :
                 st.warning("ค่า N ต่างกันเกิน 4 cm.")
                 if Diff_E > 0.04 :
@@ -255,13 +254,12 @@ if st.session_state["Login"]:
                     H3 = c3.text_input("H3",data_point.iloc[2,3])
                     Diff_N = 0
                     Diff_E = 0
-                    for i in range(len(data_point)):
+                    for i in range(3):
                         for j in range(3):
                             if abs(data_point.iloc[i,1] - data_point.iloc[j,1]) > Diff_N :
                                 Diff_N = abs(data_point.iloc[i,1] - data_point.iloc[j,1])
                             if abs(data_point.iloc[i,2] - data_point.iloc[j,2]) > Diff_E :
                                 Diff_E = abs(data_point.iloc[i,2] - data_point.iloc[j,2])
-
                     if Diff_N > 0.04 :
                         st.warning("ค่า N ต่างกันเกิน 4 cm.")
                         if Diff_E > 0.04 :
@@ -284,26 +282,25 @@ if st.session_state["Login"]:
             data_point = gdf_postgis_new[['Name','Code','N','E','h','Remark','Date']][gdf_postgis_new.Code==BND_NAME]
             data_point = data_point.reset_index(drop=True)
             if len(data_point)==3:
-                 st.dataframe(data=data_point,width="stretch")
-                 c1, c2, c3 = st.columns([0.4,0.4,0.2])
-                 N1 = c1.text_input("N1",data_point.iloc[0,2])
-                 N2 = c1.text_input("N2",data_point.iloc[1,2])
-                 N3 = c1.text_input("N3",data_point.iloc[2,2])
-                 E1 = c2.text_input("E1",data_point.iloc[0,3])
-                 E2 = c2.text_input("E2",data_point.iloc[1,3])
-                 E3 = c2.text_input("E3",data_point.iloc[2,3])
-                 H1 = c3.text_input("H1",data_point.iloc[0,4])
-                 H2 = c3.text_input("H2",data_point.iloc[1,4])
-                 H3 = c3.text_input("H3",data_point.iloc[2,4])
+                st.dataframe(data=data_point,width="stretch")
+                c1, c2, c3 = st.columns([0.4,0.4,0.2])
+                N1 = c1.text_input("N1",data_point.iloc[0,2])
+                N2 = c1.text_input("N2",data_point.iloc[1,2])
+                N3 = c1.text_input("N3",data_point.iloc[2,2])
+                E1 = c2.text_input("E1",data_point.iloc[0,3])
+                E2 = c2.text_input("E2",data_point.iloc[1,3])
+                E3 = c2.text_input("E3",data_point.iloc[2,3])
+                H1 = c3.text_input("H1",data_point.iloc[0,4])
+                H2 = c3.text_input("H2",data_point.iloc[1,4])
+                H3 = c3.text_input("H3",data_point.iloc[2,4])
                 Diff_N = 0
                 Diff_E = 0
-                for i in range(len(data_point)):
+                for i in range(3):
                     for j in range(3):
                         if abs(data_point.iloc[i,2] - data_point.iloc[j,2]) > Diff_N :
                             Diff_N = abs(data_point.iloc[i,2] - data_point.iloc[j,2])
                         if abs(data_point.iloc[i,3] - data_point.iloc[j,3]) > Diff_E :
                             Diff_E = abs(data_point.iloc[i,3] - data_point.iloc[j,3])
-
                 if Diff_N > 0.04 :
                     st.warning("ค่า N ต่างกันเกิน 4 cm.")
                     if Diff_E > 0.04 :
