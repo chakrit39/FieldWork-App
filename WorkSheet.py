@@ -211,7 +211,6 @@ if st.session_state["Login"]:
         H3 = c3.text_input("H3","")
         if N1!="" and N2!="" and N3!="" and E1!="" and E2!="" and E3!="" and N3!="" and E1!="" and E2!="" and E3!="" and H1!="" and H2!=""and H3!="" :
             data_point = pd.DataFrame([[N1,E1],[N2,E2],[N3,E3]],columns=['N', 'E'])
-            data_point
             Diff_N = 0
             Diff_E = 0
             for i in range(3):
