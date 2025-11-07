@@ -117,7 +117,7 @@ st.dataframe(
     },
     #hide_index=True,
     width="stretch",
-    height=0
+    height=1
 )
 
 st.write(df.to_html(), unsafe_allow_html=True)
