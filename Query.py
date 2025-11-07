@@ -250,4 +250,8 @@ if st.session_state["verity"]:
                 point2_ = data_point.loc[data_point['PCM_BNDNAME']==point2,'geometry'].iloc[0]
                 length = round(point1_.distance(point2_),3)
             length_ = c03.selectbox("ระยะ",str(length))
-            
+
+            c1, c2 = st.columns([0.50,0.50])
+            number = c1.number_input("ระยะที่วัดได้")
+            if number != "":
+                length_ = c2.number_input("ค่าต่าง",length-number)
