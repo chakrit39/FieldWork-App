@@ -252,6 +252,6 @@ if st.session_state["verity"]:
             length_ = c03.selectbox("ระยะ",str(length))
 
             c1, c2 = st.columns([0.50,0.50])
-            number = c1.number_input("ระยะที่วัดได้")
+            number = c1.text_input("ระยะที่วัดได้")
             if number != "":
                 Diff = c2.text_input("ค่าต่าง",abs(round(length-float(number),3)))
