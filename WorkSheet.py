@@ -59,7 +59,7 @@ def upload_image(service, parents, image_file,
     # ✅ แปลงเป็น RGB เสมอ
     if img.mode != "RGB":
         img = img.convert("RGB")
-
+    
     # ✅ เขียนไฟล์ลง memory (ไม่ต้อง save ลง disk)
     img_bytes = BytesIO()
     img.save(img_bytes, format="JPEG")
@@ -405,8 +405,10 @@ if st.session_state["Login"]:
                     pop_up()
                 else:
                     st.warning("โปรดเลือกรูปภาพให้ครบ")
+            except MemoryError:
+                st.error("❌ หน่วยความจำไม่เพียงพอขณะประมวลผลรูป")
             except Exception as e:
-                st.error(f"เกิดข้อผิดพลาดขณะบันทึก: {e}")
+                st.error(f"เกิดข้อผิดพลาดขณะบันทึก โปรดลองใหม่อีกครั้ง")
         else:
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
     else:
