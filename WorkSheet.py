@@ -334,9 +334,9 @@ if st.session_state["Login"]:
     """
     Name_list = df_name_["Name"].to_list()
     Name = st.selectbox("ผู้รังวัด",Name_list)
-    f_name = df_name["F_Name-th"][df_name.Name==Name].iloc[0]
-    l_name = df_name["L_Name-th"][df_name.Name==Name].iloc[0]
-    full_name = "(" + f_name + "  " + l_name + ")"
+    #f_name = df_name["F_Name-th"][df_name.Name==Name].iloc[0]
+    #l_name = df_name["L_Name-th"][df_name.Name==Name].iloc[0]
+    #full_name = "(" + f_name + "  " + l_name + ")"
     Sig = df_name["Signature"][df_name.Name==Name].iloc[0]
     
     date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
@@ -370,28 +370,31 @@ if st.session_state["Login"]:
                 N = round((float(N1)+float(N2)+float(N3))/3,3)
                 E = round((float(E1)+float(E2)+float(E3))/3,3)
                 H = round((float(H1)+float(H2)+float(H3))/3,3)
-                if image_1 and image_2 and image_3:
-                    image_id = []
-                    image = [image_1,image_2,image_3]
-                    for i in range(3):
-                        image_id.append(upload_image(service,folder_id[i],image[i]))
-                    row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, Name, round_, Diff, BND_NAME, N, E, H, Method, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
-                    row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
-                    #gid = row_update['updates']['updatedRange'][5:].split(":")[0]
-                    #DATE_temp = wks.acell('S'+gid).value.replace('\xa0',' ').split()
-                    #wks.update_acell('AH'+gid,gid)
-                    #DATE = DATE_temp[0] + " " + DATE_temp[1] + " " + str(int(DATE_temp[2])+543)
-                    del st.session_state[f"image_1-{st.session_state.uploader_key}"]
-                    del st.session_state[f"image_2-{st.session_state.uploader_key}"]
-                    del st.session_state[f"image_3-{st.session_state.uploader_key}"]
-                    st.session_state.uploader_key += 1
-                    #st.rerun()
-                    #st.success('สำเร็จ!', icon="✅")
-                    #end = time.time()
-                    #end - start
-                    pop_up()
-                else:
-                    st.warning("โปรดเลือกรูปภาพให้ครบ")
+                try:
+                    if image_1 and image_2 and image_3:
+                        image_id = []
+                        image = [image_1,image_2,image_3]
+                        for i in range(3):
+                            image_id.append(upload_image(service,folder_id[i],image[i]))
+                        row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, Name, round_, Diff, BND_NAME, N, E, H, Method, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
+                        row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
+                        #gid = row_update['updates']['updatedRange'][5:].split(":")[0]
+                        #DATE_temp = wks.acell('S'+gid).value.replace('\xa0',' ').split()
+                        #wks.update_acell('AH'+gid,gid)
+                        #DATE = DATE_temp[0] + " " + DATE_temp[1] + " " + str(int(DATE_temp[2])+543)
+                        del st.session_state[f"image_1-{st.session_state.uploader_key}"]
+                        del st.session_state[f"image_2-{st.session_state.uploader_key}"]
+                        del st.session_state[f"image_3-{st.session_state.uploader_key}"]
+                        st.session_state.uploader_key += 1
+                        #st.rerun()
+                        #st.success('สำเร็จ!', icon="✅")
+                        #end = time.time()
+                        #end - start
+                        pop_up()
+                    else:
+                        st.warning("โปรดเลือกรูปภาพให้ครบ")
+                except Exception as e:
+                    st.error(f"เกิดข้อผิดพลาดขณะบันทึก: {e}")
             else:
                 st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
         else:
