@@ -115,8 +115,8 @@ def get_reg():
         sh = gc.open(office_select)
         wks_reg = sh.worksheet('REG')
         st.session_state[office_select]["df_reg"] = pd.DataFrame(wks_reg.get_all_records(numericise_ignore=['all']))
-        chk_wks = office_select
-    return st.session_state[office_select]["df_reg"] , chk_wks
+        chk_reg = office_select
+    return st.session_state[office_select]["df_reg"] , chk_reg
     
 @st.cache_resource 
 def get_postgis():
