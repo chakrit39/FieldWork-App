@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import geopandas as gpd
 from sqlalchemy import create_engine
 st.set_page_config(page_title="Upload CSV to Postgis")
