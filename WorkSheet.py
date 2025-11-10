@@ -81,10 +81,7 @@ def upload_image(service, parents, image_file,
 @st.cache_resource 
 def get_service():
     creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scope)
-    gc = gspread.authorize(creds)
-    sh = gc.open(office_select)
-    wks = sh.worksheet('Raw')
-    return creds,wks
+    return creds
     
 @st.cache_resource    
 def get_drive_service(user_id: str):
@@ -96,13 +93,26 @@ def get_drive_service(user_id: str):
         st.session_state["drive_services"][user_id] = service
     return st.session_state["drive_services"][user_id] ,user_id
     
+@st.cache_resource 
+def get_wks():
+    if office_select not in st.session_state:
+        st.session_state[office_select] = {}
+    if "wks" not in st.session_state[office_select]:
+        gc = gspread.authorize(creds)
+        sh = gc.open(office_select)
+        st.session_state[office_select]["wks"] = sh.worksheet('Raw')
+    return st.session_state[office_select]["wks"]
+    
 @st.cache_data 
 def get_reg():
-    gc = gspread.authorize(creds)
-    sh = gc.open(office_select)
-    wks_reg = sh.worksheet('REG')
-    df_reg = pd.DataFrame(wks_reg.get_all_records(numericise_ignore=['all']))
-    return df_reg
+    if office_select not in st.session_state:
+        st.session_state[office_select] = {}
+    if "df_reg" not in st.session_state[office_select]:
+        gc = gspread.authorize(creds)
+        sh = gc.open(office_select)+
+        wks_reg = sh.worksheet('REG')
+        st.session_state[office_select]["df_reg"] = pd.DataFrame(wks_reg.get_all_records(numericise_ignore=['all']))
+    return st.session_state[office_select]["df_reg"]
     
 @st.cache_resource 
 def get_postgis():
@@ -153,7 +163,8 @@ if st.session_state["Login"]:
     df_fol_ = df_fol_.reset_index(drop=True)
     folder_id = [df_fol_.iloc[0,1], df_fol_.iloc[0,2],df_fol_.iloc[0,3]]
 
-    creds,wks = get_service()
+    creds = get_service()
+    wks = get_wks()
     df_reg = get_reg()
 
     st.title("แบบกรอกข้อมูลงานภาคสนาม")
@@ -368,11 +379,10 @@ if st.session_state["Login"]:
         get_drive_service.clear()
         service = get_drive_service(Name)
     
-    st.session_state
     if wks._spreadsheet._properties['name'] != office_select:
         get_service.clear()
         get_reg.clear()
-        creds,wks = get_service()
+        wks = get_wks()
         df_reg = get_reg()
         
     c001, c002 = st.columns([0.12,0.88])
@@ -380,11 +390,13 @@ if st.session_state["Login"]:
         st.session_state["Refresh"] = True
         get_service.clear()
         get_reg.clear()
-        creds,wks = get_service()
+        wks = get_wks()
         df_reg = get_reg()
     else:
         st.session_state["Refresh"] = False   
         
+    st.session_state  
+    
     if c001.button("Submit"):
         #import time 
         #start = time.time()
