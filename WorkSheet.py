@@ -166,9 +166,6 @@ if st.session_state["Login"]:
     df_fol_ = df_fol[df_fol.Name==office_select]
     df_fol_ = df_fol_.reset_index(drop=True)
     folder_id = [df_fol_.iloc[0,1], df_fol_.iloc[0,2],df_fol_.iloc[0,3]]
-    
-    if office_select not in st.session_state:
-        st.session_state[office_select] = {}
         
     creds = get_service()
     wks,chk_wks = get_wks(office_select)
