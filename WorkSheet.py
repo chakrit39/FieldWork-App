@@ -96,8 +96,7 @@ def get_drive_service(user_id: str):
     if user_id not in st.session_state["drive_services"]:
         service = build("drive", "v3", credentials=creds, cache_discovery=False)
         st.session_state["drive_services"][user_id] = service
-
-    return st.session_state["drive_services"][user_id]
+    return st.session_state["drive_services"][user_id] ,user_id
     
 @st.cache_data 
 def get_reg():
@@ -358,14 +357,16 @@ if st.session_state["Login"]:
     date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
     remark = st.text_input("หมายเหตุ","")
     
-    service = get_drive_service(Name)
+    service,chk_name = get_drive_service(Name)
+    if chk_name != Name:
+        get_drive_service.clear()
+        service = get_drive_service(Name)
+    
     st.session_state
     if wks._spreadsheet._properties['name'] != office_select:
         get_service.clear()
         get_reg.clear()
-        get_drive_service.clear()
         creds,wks = get_service()
-        service = get_drive_service(Name)
         df_reg = get_reg()
         
     c001, c002 = st.columns([0.12,0.88])
@@ -373,9 +374,7 @@ if st.session_state["Login"]:
         st.session_state["Refresh"] = True
         get_service.clear()
         get_reg.clear()
-        get_drive_service.clear()
         creds,wks = get_service()
-        service = get_drive_service(Name)
         df_reg = get_reg()
     else:
         st.session_state["Refresh"] = False   
