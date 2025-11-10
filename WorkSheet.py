@@ -378,20 +378,25 @@ if st.session_state["Login"]:
     if chk_name != Name:
         get_drive_service.clear()
         service = get_drive_service(Name)
-    
-    if wks._spreadsheet._properties['name'] != office_select:
-        get_service.clear()
+        
+    if "wks" not in st.session_state[office_select]:
+        get_wks.clear()
         get_reg.clear()
         wks = get_wks()
+        
+    if "df_reg" not in st.session_state[office_select]:
+        get_reg.clear()
         df_reg = get_reg()
         
     c001, c002 = st.columns([0.12,0.88])
     if c002.button("Refresh", type="primary"):
         st.session_state["Refresh"] = True
-        get_service.clear()
+        get_drive_service.clear()
+        get_wks.clear()
         get_reg.clear()
         wks = get_wks()
         df_reg = get_reg()
+        service = get_drive_service(Name)
     else:
         st.session_state["Refresh"] = False   
         
