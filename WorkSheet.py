@@ -359,6 +359,7 @@ if st.session_state["Login"]:
     remark = st.text_input("หมายเหตุ","")
     
     service = get_drive_service(Name)
+    st.session_state
     if wks._spreadsheet._properties['name'] != office_select:
         get_service.clear()
         get_reg.clear()
