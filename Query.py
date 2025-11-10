@@ -129,7 +129,6 @@ if st.session_state["verity"]:
                 if  st.session_state["Polygon"]  == True :
                     st.session_state["Polygon"]  = False
                     get_data.clear()
-                poly_data,point_data,data_point,UTM_Name = get_data(poly_url,point_url,UTM)
                 st.session_state["Search"] = True
                 st.session_state["Search_"] = True
                 st.session_state["Polygon"] = True
@@ -146,6 +145,7 @@ if st.session_state["verity"]:
     
     
     if st.session_state["Search_"] ==  True:
+        poly_data,point_data,data_point,UTM_Name = get_data(poly_url,point_url,UTM)
         if UTM_Name not in st.session_state:
             get_data.clear()
             poly_data,point_data,data_point,UTM_Name = get_data(poly_url,point_url,UTM)
