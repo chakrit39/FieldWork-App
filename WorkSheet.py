@@ -15,6 +15,8 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 from PIL import Image
 from pillow_heif import register_heif_opener
+from io import BytesIO
+from googleapiclient.http import MediaIoBaseUpload
 register_heif_opener()
 st.set_page_config(page_title="WorkSheet")
 
@@ -39,36 +41,41 @@ scope = ['https://www.googleapis.com/auth/drive',
          'https://www.googleapis.com/auth/drive.file',
          'https://www.googleapis.com/auth/spreadsheets',
         ]
-def upload_image(service,parents,image_i):
-    file_name = str(UTMMAP1) + str(UTMMAP2) + str(UTMMAP3) + "-" + str(UTMMAP4) + "-" + str(Scale) + "-" + str(land_no) + "_" + BND_NAME + ".jpeg"
-    path = "./Temp/" +  file_name
-    
-    img = Image.open(image_i)
-    size = img._size
-    if size[0] > size[1]:
-        chk_sc = size[0]
-    else:
-        chk_sc = size[1]
-    if chk_sc > 2000:
-        sc = chk_sc/2000
-        new_img = img.resize( ( int(round(size[0]/sc,0)) , int(round(size[1]/sc,0)) ) )
-    else:
-        new_img = img
-    if new_img.mode != "RGB":
-        new_img = new_img.convert('RGB')
-    new_img.save(path)
-    #temp_file = open(path, 'wb')
-    #temp_file.write(new_img.getvalue())
-    #temp_file.close()
-    file_metadata = {"name": file_name,"parents": [parents]}
-    media = MediaFileUpload(path, mimetype="image/jpeg")
-    file = (service.files().create(body=file_metadata, media_body=media, fields="id").execute() )
-    file_id = file['id']
-    del media
-    del file
-    del file_metadata
-    os.remove(path)
-    return file_id
+def upload_image(service, parents, image_file,
+                 UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME):
+    # ✅ ตั้งชื่อไฟล์
+    file_name = f"{UTMMAP1}{UTMMAP2}{UTMMAP3}-{UTMMAP4}-{Scale}-{land_no}_{BND_NAME}.jpeg"
+
+    # ✅ เปิดภาพจาก Streamlit uploader
+    img = Image.open(image_file)
+
+    # ✅ ปรับขนาด (ถ้าจำเป็น)
+    max_size = max(img.size)
+    if max_size > 2000:
+        sc = max_size / 2000
+        new_size = (int(round(img.size[0] / sc)), int(round(img.size[1] / sc)))
+        img = img.resize(new_size)
+
+    # ✅ แปลงเป็น RGB เสมอ
+    if img.mode != "RGB":
+        img = img.convert("RGB")
+
+    # ✅ เขียนไฟล์ลง memory (ไม่ต้อง save ลง disk)
+    img_bytes = BytesIO()
+    img.save(img_bytes, format="JPEG")
+    img_bytes.seek(0)
+
+    # ✅ อัปโหลดโดยใช้ MediaIoBaseUpload
+    file_metadata = {"name": file_name, "parents": [parents]}
+    media = MediaIoBaseUpload(img_bytes, mimetype="image/jpeg")
+
+    file = service.files().create(
+        body=file_metadata,
+        media_body=media,
+        fields="id"
+    ).execute()
+
+    return file.get('id')
     
 @st.cache_resource 
 def get_service():
@@ -372,9 +379,15 @@ if st.session_state["Login"]:
             try:
                 if image_1 and image_2 and image_3:
                     image_id = []
-                    image = [image_1,image_2,image_3]
+                    images = [image_1, image_2, image_3]
                     for i in range(3):
-                        image_id.append(upload_image(service,folder_id[i],image[i]))
+                        file_id = upload_image(
+                            service,
+                            folder_id[i],
+                            images[i],
+                            UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME
+                        )
+                        image_id.append(file_id)
                     row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, Name, round_, Diff, BND_NAME, N, E, H, Method, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
                     row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
                     #gid = row_update['updates']['updatedRange'][5:].split(":")[0]
