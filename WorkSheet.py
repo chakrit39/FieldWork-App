@@ -398,8 +398,6 @@ if st.session_state["Login"]:
         service = get_drive_service(Name)
     else:
         st.session_state["Refresh"] = False   
-        
-    st.session_state  
     
     if c001.button("Submit"):
         #import time 
