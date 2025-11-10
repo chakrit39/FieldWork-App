@@ -347,8 +347,8 @@ if st.session_state["Login"]:
     date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
     remark = st.text_input("หมายเหตุ","")
     
-    wks._spreadsheet._properties
-    if sh.title != office_select:
+    
+    if wks._spreadsheet._properties['name'] != office_select:
         get_service.clear()
         get_reg.clear()
         creds,service,wks = get_service()
