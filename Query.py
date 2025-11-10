@@ -138,7 +138,7 @@ if st.session_state["verity"]:
     
     
     if st.session_state["Search_"] ==  True:
-        poly_data,point_data,data_point,UTM_Name = get_data(point_data,data_point,UTM)
+        poly_data,point_data,data_point,UTM_Name = get_data(poly_url,point_url,UTM)
         if st.session_state["Polygon"]  == True :
             polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
             points = [shape(feat["geometry"]) for feat in point_data["features"]]
