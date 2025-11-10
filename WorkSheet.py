@@ -82,19 +82,15 @@ def upload_image(service, parents, image_file,
 @st.cache_resource 
 def get_service():
     creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scope)
-    user_id = str(st.session_state.get("user_email", "anonymous"))
-    if "drive_services" not in st.session_state:
-        st.session_state["drive_services"] = {}
-        
-    if user_id not in st.session_state["drive_services"]:
-        service = build("drive", "v3", credentials=creds, cache_discovery=False)
-        st.session_state["drive_services"][user_id] = service
-    
-    service = build("drive", "v3", credentials=creds)
     gc = gspread.authorize(creds)
     sh = gc.open(office_select)
     wks = sh.worksheet('Raw')
-    return creds,st.session_state["drive_services"][user_id],wks
+    return creds,wks
+    
+@st.cache_resource    
+def get_drive_service(user_id: str):
+    service = build("drive", "v3", credentials=creds, cache_discovery=False)
+    return service
     
 @st.cache_data 
 def get_reg():
@@ -152,8 +148,10 @@ if st.session_state["Login"]:
     df_fol_ = df_fol[df_fol.Name==office_select]
     df_fol_ = df_fol_.reset_index(drop=True)
     folder_id = [df_fol_.iloc[0,1], df_fol_.iloc[0,2],df_fol_.iloc[0,3]]
-
-    creds,service,wks = get_service()
+    user_id = st.session_state.get("user_email", "anonymous")
+    
+    creds,wks = get_service()
+    service = get_drive_service(user_id)
     df_reg = get_reg()
     
     st.title("แบบกรอกข้อมูลงานภาคสนาม")
@@ -359,7 +357,9 @@ if st.session_state["Login"]:
     if wks._spreadsheet._properties['name'] != office_select:
         get_service.clear()
         get_reg.clear()
-        creds,service,wks = get_service()
+        get_drive_service.clear()
+        creds,wks = get_service()
+        service = get_drive_service(user_id)
         df_reg = get_reg()
         
     c001, c002 = st.columns([0.12,0.88])
@@ -367,7 +367,9 @@ if st.session_state["Login"]:
         st.session_state["Refresh"] = True
         get_service.clear()
         get_reg.clear()
-        creds,service,wks = get_service()
+        get_drive_service.clear()
+        creds,wks = get_service()
+        service = get_drive_service(user_id)
         df_reg = get_reg()
     else:
         st.session_state["Refresh"] = False   
