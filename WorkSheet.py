@@ -379,14 +379,15 @@ if st.session_state["Login"]:
                 if image_1 and image_2 and image_3:
                     image_id = []
                     images = [image_1, image_2, image_3]
-                    for i in range(3):
-                        file_id = upload_image(
-                            service,
-                            folder_id[i],
-                            images[i],
-                            UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME
-                        )
-                        image_id.append(file_id)
+                    #for i in range(3):
+                    #    file_id = upload_image(
+                    #        service,
+                    #        folder_id[i],
+                    #        images[i],
+                    #        UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME
+                    #    )
+                    #    image_id.append(file_id)
+                    image_id['0','0','0']
                     row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, Name, round_, Diff, BND_NAME, N, E, H, Method, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
                     row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
                     #gid = row_update['updates']['updatedRange'][5:].split(":")[0]
