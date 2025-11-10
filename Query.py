@@ -49,15 +49,19 @@ def get_service():
     return creds,gc,service,sh,wks
     
 @st.cache_data
-def get_data(poly_url,point_url,UTM):
+def get_data(poly_url,point_url):
     if UTM not in st.session_state:
         st.session_state[UTM] = {}
     if "poly_data" not in st.session_state[UTM]:
         st.session_state[UTM]["poly_data"] = requests.get(poly_url).json()
         st.session_state[UTM]["point_data"] = requests.get(point_url).json()
         st.session_state[UTM]["data_point"] = gpd.read_file(point_url)[:-1]
-        st.session_state[UTM]["UTM_Name"] = UTM
-    return st.session_state[UTM]["poly_data"],st.session_state[UTM]["point_data"],st.session_state[UTM]["data_point"],st.session_state[UTM]["UTM_Name"]
+    return st.session_state[UTM]["poly_data"],st.session_state[UTM]["point_data"],st.session_state[UTM]["data_point"]
+    
+@st.cache_data    
+def get_UTM_Name(UTM):
+    UTM_Name = UTM
+    return UTM_Name
     
 @st.cache_data    
 def get_List():
@@ -108,7 +112,6 @@ if st.session_state["verity"]:
 
     
     st.session_state
-    UTM_Name 
     
     if st.button("Search"):
         if UTMMAP1 != "" and UTMMAP3 != "" and land_no != "" :
@@ -128,6 +131,7 @@ if st.session_state["verity"]:
                 point_url = "https://drive.google.com/uc?id=" + id_point + "&export%3Fformat=geojson"
                 if  st.session_state["Polygon"]  == True :
                     st.session_state["Polygon"]  = False
+                    get_UTM_Name.clear()
                     get_data.clear()
                 st.session_state["Search"] = True
                 st.session_state["Search_"] = True
@@ -145,7 +149,8 @@ if st.session_state["verity"]:
     
     
     if st.session_state["Search_"] ==  True:
-        poly_data,point_data,data_point,UTM_Name = get_data(poly_url,point_url,UTM)
+        UTM_Name = get_UTM_Name(UTM)
+        poly_data,point_data,data_point = get_data(poly_url,point_url)
         if UTM_Name not in st.session_state:
             get_data.clear()
             poly_data,point_data,data_point,UTM_Name = get_data(poly_url,point_url,UTM)
