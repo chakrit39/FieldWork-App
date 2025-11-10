@@ -50,11 +50,14 @@ def get_service():
     
 @st.cache_data
 def get_data(poly_url,point_url,UTM):
-    poly_data = requests.get(poly_url).json()
-    point_data = requests.get(point_url).json()
-    data_point = gpd.read_file(point_url)[:-1]
-    UTM_Name = UTM
-    return poly_data,point_data,data_point,UTM_Name
+    if UTM not in st.session_state:
+        st.session_state[UTM] = {}
+    if "poly_data" not in st.session_state[UTM]:
+        st.session_state[UTM]["poly_data"] = requests.get(poly_url).json()
+        st.session_state[UTM]["point_data"] = requests.get(point_url).json()
+        st.session_state[UTM]["data_point"] = gpd.read_file(point_url)[:-1]
+        st.session_state[UTM]["UTM_Name"] = UTM
+    return st.session_state[UTM]["poly_data"],st.session_state[UTM]["point_data"],st.session_state[UTM]["data_point"],st.session_state[UTM]["UTM_Name"]
     
 @st.cache_data    
 def get_List():
