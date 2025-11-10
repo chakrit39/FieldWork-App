@@ -22,7 +22,8 @@ st.set_page_config(page_title="WorkSheet")
 
 st.sidebar.header("Work Sheets")
 st.sidebar.markdown("แอปพลิเคชันสร้างรายงานจากข้อมูลภาคสนาม")
-
+if "drive_services" not in st.session_state:
+    st.session_state["drive_services"] = {}
 if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
 if "Search" not in st.session_state:
@@ -90,8 +91,6 @@ def get_service():
 @st.cache_resource    
 def get_drive_service(user_id: str):
     """สร้าง/เรียกคืน Google Drive service สำหรับแต่ละผู้ใช้"""
-    if "drive_services" not in st.session_state:
-        st.session_state["drive_services"] = {}
 
     if user_id not in st.session_state["drive_services"]:
         service = build("drive", "v3", credentials=creds, cache_discovery=False)
@@ -370,7 +369,7 @@ if st.session_state["Login"]:
         get_drive_service.clear()
         service = get_drive_service(Name)
     
-
+    st.session_state
     if wks._spreadsheet._properties['name'] != office_select:
         get_service.clear()
         get_reg.clear()
