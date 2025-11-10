@@ -188,6 +188,8 @@ if st.session_state["Login"]:
             province = col1.selectbox("จังหวัด",df_reg_['PROVINCE'][0])
             amphoe = col2.selectbox("อำเภอ",df_reg_['AMPHUR'][0])
             tambon = col3.selectbox("ตำบล",df_reg_['TAMBOL'][0])
+
+            
         else:
             st.warning("ไม่พบข้อมูลในทะเบียน")
     else:
@@ -211,6 +213,7 @@ if st.session_state["Login"]:
     chk1, chk2 = st.columns([0.5,0.5])
     upload_method = chk1.selectbox("เลือกวิธีการนำเข้า",["ป้อนค่าพิกัด","Upload a CSV file (Name,Code,N,E,h)","Import from PostGIS"])
     Diff = chk2.text_input("ค่าต่างสูงสุด (m.)","")
+    chk_diff = False
     if upload_method == "ป้อนค่าพิกัด":
         c1, c2, c3 = st.columns([0.4,0.4,0.2])
         N1 = c1.text_input("N1","")
@@ -240,6 +243,8 @@ if st.session_state["Login"]:
                 st.warning("ค่า N ต่างกันเกิน 4 cm.")
             if Diff_E > 0.04 :
                 st.warning("ค่า E ต่างกันเกิน 4 cm.")
+            if Diff_N < 0.041 and Diff_E < 0.041:    
+                chk_diff = True
     elif upload_method == "Upload a CSV file (Name,Code,N,E,h)":
         chk2.write("")
         chk2.write("")
@@ -283,7 +288,8 @@ if st.session_state["Login"]:
                         st.warning("ค่า N ต่างกันเกิน 4 cm.")
                     if Diff_E > 0.04 :
                         st.warning("ค่า E ต่างกันเกิน 4 cm.")
-                        
+                    if Diff_N < 0.041 and Diff_E < 0.041:    
+                        chk_diff = True
                 elif len(data_point)==0:
                     st.warning("ไม่พบชื่อหมุดหลักเขต")
                 else:
@@ -326,6 +332,8 @@ if st.session_state["Login"]:
                     st.warning("ค่า N ต่างกันเกิน 4 cm.")
                 if Diff_E > 0.04 :
                     st.warning("ค่า E ต่างกันเกิน 4 cm.")
+                if Diff_N < 0.041 and Diff_E < 0.041:    
+                    chk_diff = True
             elif len(data_point)==0:
                  st.warning("ไม่พบชื่อหมุดหลักเขต")
             else:
@@ -387,44 +395,47 @@ if st.session_state["Login"]:
         if N1!="" and N2!="" and N3!="" and E1!="" and E2!="" and E3!="" and N3!="" and E1!="" and E2!="" and E3!="" and H1!="" and H2!=""and H3!="" and parcel_no!="" and survey_no!="" and land_no!="" and UTMMAP1!="" and UTMMAP3!="" and BND_NAME!="" :
             #if sh_report.title != Name+'-Report':
                 #sh_report = gc.open(Name+'-Report_'+office_select)
-            N = round((float(N1)+float(N2)+float(N3))/3,3)
-            E = round((float(E1)+float(E2)+float(E3))/3,3)
-            H = round((float(H1)+float(H2)+float(H3))/3,3)
-            try:
-                if image_1 and image_2 and image_3:
-                    image_id = []
-                    images = [image_1, image_2, image_3]
-                    #service1 = build("drive", "v3", credentials=creds)
-                    for i in range(3):
-                        file_id = upload_image(
-                            service,
-                            folder_id[i],
-                            images[i],
-                            UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME
-                        )
-                        image_id.append(file_id)
-                    
-                    row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, Name, round_, Diff, BND_NAME, N, E, H, Method, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
-                    row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
-                    #gid = row_update['updates']['updatedRange'][5:].split(":")[0]
-                    #DATE_temp = wks.acell('S'+gid).value.replace('\xa0',' ').split()
-                    #wks.update_acell('AH'+gid,gid)
-                    #DATE = DATE_temp[0] + " " + DATE_temp[1] + " " + str(int(DATE_temp[2])+543)
-                    del st.session_state[f"image_1-{st.session_state.uploader_key}"]
-                    del st.session_state[f"image_2-{st.session_state.uploader_key}"]
-                    del st.session_state[f"image_3-{st.session_state.uploader_key}"]
-                    st.session_state.uploader_key += 1
-                    #st.rerun()
-                    #st.success('สำเร็จ!', icon="✅")
-                    #end = time.time()
-                    #end - start
-                    pop_up()
-                else:
-                    st.warning("โปรดเลือกรูปภาพให้ครบ")
-            except MemoryError:
-                st.error("❌ หน่วยความจำไม่เพียงพอขณะประมวลผลรูป")
-            except Exception as e:
-                st.error(f"เกิดข้อผิดพลาดขณะบันทึก โปรดลองใหม่อีกครั้ง")
+            if chk_diff == True:
+                N = round((float(N1)+float(N2)+float(N3))/3,3)
+                E = round((float(E1)+float(E2)+float(E3))/3,3)
+                H = round((float(H1)+float(H2)+float(H3))/3,3)
+                try:
+                    if image_1 and image_2 and image_3:
+                        image_id = []
+                        images = [image_1, image_2, image_3]
+                        #service1 = build("drive", "v3", credentials=creds)
+                        for i in range(3):
+                            file_id = upload_image(
+                                service,
+                                folder_id[i],
+                                images[i],
+                                UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME
+                            )
+                            image_id.append(file_id)
+                        
+                        row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, Name, round_, Diff, BND_NAME, N, E, H, Method, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
+                        row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
+                        #gid = row_update['updates']['updatedRange'][5:].split(":")[0]
+                        #DATE_temp = wks.acell('S'+gid).value.replace('\xa0',' ').split()
+                        #wks.update_acell('AH'+gid,gid)
+                        #DATE = DATE_temp[0] + " " + DATE_temp[1] + " " + str(int(DATE_temp[2])+543)
+                        del st.session_state[f"image_1-{st.session_state.uploader_key}"]
+                        del st.session_state[f"image_2-{st.session_state.uploader_key}"]
+                        del st.session_state[f"image_3-{st.session_state.uploader_key}"]
+                        st.session_state.uploader_key += 1
+                        #st.rerun()
+                        #st.success('สำเร็จ!', icon="✅")
+                        #end = time.time()
+                        #end - start
+                        pop_up()
+                    else:
+                        st.warning("โปรดเลือกรูปภาพให้ครบ")
+                except MemoryError:
+                    st.error("❌ หน่วยความจำไม่เพียงพอขณะประมวลผลรูป")
+                except Exception as e:
+                    st.error(f"เกิดข้อผิดพลาดขณะบันทึก โปรดลองใหม่อีกครั้ง")
+            else:
+                st.warning("มีค่าพิกัด NE ต่างกันเกิน 4 cm.")
         else:
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
     else:
