@@ -381,15 +381,15 @@ if st.session_state["Login"]:
     
     service,chk_name = get_drive_service(Name)
     if chk_name != Name:
-        service.clear()
+        get_drive_service.clear()
         service = get_drive_service(Name)
         
     if "wks" not in st.session_state[office_select]:
-        wks.clear()
+        get_wks.clear()
         wks = get_wks()
         
     if "df_reg" not in st.session_state[office_select]:
-        df_reg.clear()
+        get_reg.clear()
         df_reg = get_reg()
         
     c001, c002 = st.columns([0.12,0.88])
