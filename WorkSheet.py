@@ -379,9 +379,10 @@ if st.session_state["Login"]:
                 if image_1 and image_2 and image_3:
                     image_id = []
                     images = [image_1, image_2, image_3]
+                    service1 = build("drive", "v3", credentials=creds)
                     for i in range(3):
                         file_id = upload_image(
-                            service,
+                            service1,
                             folder_id[i],
                             images[i],
                             UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME
