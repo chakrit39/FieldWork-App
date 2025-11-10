@@ -441,7 +441,7 @@ if st.session_state["Login"]:
                         #end - start
                         pop_up()
                     else:
-                        st.warning("โปรดเลือกรูปภาพให้ครบ")
+                        st.warning("โปรดเลือกรูปภาพให้ครบ 3 รูป")
                 except MemoryError:
                     st.error("❌ หน่วยความจำไม่เพียงพอขณะประมวลผลรูป")
                 except Exception as e:
