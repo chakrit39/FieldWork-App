@@ -176,7 +176,7 @@ if st.session_state["Login"]:
         else:
             st.warning("ไม่พบข้อมูลในทะเบียน")
     else:
-        st.warning("โปรดกรอกข้อมูลในครบถ้วน")
+        st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
 
     #c01, c02 = st.columns([0.50,0.50])
     #parcel_no = c01.text_input("เลขที่โฉนด","")
