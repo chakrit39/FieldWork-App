@@ -74,7 +74,9 @@ def upload_image(service, parents, image_file,
         media_body=media,
         fields="id"
     ).execute()
-
+                     
+    img.close()
+                     
     return file.get('id')
     
 @st.cache_resource 
