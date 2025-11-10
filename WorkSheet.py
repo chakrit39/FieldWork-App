@@ -92,7 +92,7 @@ def get_drive_service(user_id: str):
     if user_id not in st.session_state:
         st.session_state[user_id] = {}
     if "drive_services" not in st.session_state[user_id]:
-        service = build("drive", "v3", credentials=creds, cache_discovery=False)
+        service = build("drive", "v3", credentials=creds)
         st.session_state[user_id]["drive_services"] = service
     return st.session_state[user_id]["drive_services"] ,user_id
     
