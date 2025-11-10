@@ -156,7 +156,7 @@ if st.session_state["Login"]:
     df_fol_ = df_fol_.reset_index(drop=True)
     folder_id = [df_fol_.iloc[0,1], df_fol_.iloc[0,2],df_fol_.iloc[0,3]]
     user_id = st.session_state.get("user_email", "anonymous")
-    
+    st.session_state
     creds,wks = get_service()
     service = get_drive_service(user_id)
     df_reg = get_reg()
