@@ -1,19 +1,19 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-from streamlit_folium import folium_static
-import folium as fo
+#import numpy as np
+#from streamlit_folium import folium_static
+##import folium as fo
 import geopandas as gpd
-from requests.auth import HTTPBasicAuth
-import time
-import datetime
-import os
+#from requests.auth import HTTPBasicAuth
+#import time
+#import datetime
+#import os
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from tempfile import NamedTemporaryFile
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
-from googleapiclient.http import MediaFileUpload
+#from tempfile import NamedTemporaryFile
+#from googleapiclient.discovery import build
+#from googleapiclient.errors import HttpError
+#from googleapiclient.http import MediaFileUpload
 
 st.set_page_config(page_title="Dashboard")
 
