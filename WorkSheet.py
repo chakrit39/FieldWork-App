@@ -370,7 +370,7 @@ if st.session_state["Login"]:
         get_drive_service.clear()
         service = get_drive_service(Name)
     
-    st.session_state
+
     if wks._spreadsheet._properties['name'] != office_select:
         get_service.clear()
         get_reg.clear()
