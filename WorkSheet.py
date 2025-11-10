@@ -62,7 +62,7 @@ def upload_image(service, parents, image_file,
 
     # ✅ เขียนไฟล์ลง memory (ไม่ต้อง save ลง disk)
     img_bytes = BytesIO()
-    img.save(img_bytes, format="JPEG")
+    #img.save(img_bytes, format="JPEG")
     img_bytes.seek(0)
 
     # ✅ อัปโหลดโดยใช้ MediaIoBaseUpload
