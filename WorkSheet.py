@@ -109,7 +109,7 @@ def get_reg():
         st.session_state[office_select] = {}
     if "df_reg" not in st.session_state[office_select]:
         gc = gspread.authorize(creds)
-        sh = gc.open(office_select)+
+        sh = gc.open(office_select)
         wks_reg = sh.worksheet('REG')
         st.session_state[office_select]["df_reg"] = pd.DataFrame(wks_reg.get_all_records(numericise_ignore=['all']))
     return st.session_state[office_select]["df_reg"]
