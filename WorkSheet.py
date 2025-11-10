@@ -155,12 +155,10 @@ if st.session_state["Login"]:
     df_fol_ = df_fol[df_fol.Name==office_select]
     df_fol_ = df_fol_.reset_index(drop=True)
     folder_id = [df_fol_.iloc[0,1], df_fol_.iloc[0,2],df_fol_.iloc[0,3]]
-    user_id = st.session_state.get("user_email")
-    user_id
+
     creds,wks = get_service()
-    service = get_drive_service(user_id)
     df_reg = get_reg()
-    st.session_state
+
     st.title("แบบกรอกข้อมูลงานภาคสนาม")
     st.title("สาขา"+office_select)  
     col_1, col_2, col_3, col_4, col_5 , col_6 = st.columns([0.18,0.13,0.18,0.18,0.13,0.15])
@@ -360,13 +358,13 @@ if st.session_state["Login"]:
     date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
     remark = st.text_input("หมายเหตุ","")
     
-    
+    service = get_drive_service(Name)
     if wks._spreadsheet._properties['name'] != office_select:
         get_service.clear()
         get_reg.clear()
         get_drive_service.clear()
         creds,wks = get_service()
-        service = get_drive_service(user_id)
+        service = get_drive_service(Name)
         df_reg = get_reg()
         
     c001, c002 = st.columns([0.12,0.88])
@@ -376,7 +374,7 @@ if st.session_state["Login"]:
         get_reg.clear()
         get_drive_service.clear()
         creds,wks = get_service()
-        service = get_drive_service(user_id)
+        service = get_drive_service(Name)
         df_reg = get_reg()
     else:
         st.session_state["Refresh"] = False   
