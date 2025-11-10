@@ -82,11 +82,19 @@ def upload_image(service, parents, image_file,
 @st.cache_resource 
 def get_service():
     creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scope)
+    user_id = str(st.session_state.get("user_email", "anonymous"))
+    if "drive_services" not in st.session_state:
+        st.session_state["drive_services"] = {}
+        
+    if user_id not in st.session_state["drive_services"]:
+        service = build("drive", "v3", credentials=creds, cache_discovery=False)
+        st.session_state["drive_services"][user_id] = service
+    
     service = build("drive", "v3", credentials=creds)
     gc = gspread.authorize(creds)
     sh = gc.open(office_select)
     wks = sh.worksheet('Raw')
-    return creds,service,wks
+    return creds,st.session_state["drive_services"][user_id],wks
     
 @st.cache_data 
 def get_reg():
