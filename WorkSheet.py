@@ -381,7 +381,6 @@ if st.session_state["Login"]:
         
     if "wks" not in st.session_state[office_select]:
         get_wks.clear()
-        get_reg.clear()
         wks = get_wks()
         
     if "df_reg" not in st.session_state[office_select]:
