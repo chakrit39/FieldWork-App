@@ -103,7 +103,8 @@ def get_wks():
         gc = gspread.authorize(creds)
         sh = gc.open(office_select)
         st.session_state[office_select]["wks"] = sh.worksheet('Raw')
-    return st.session_state[office_select]["wks"]
+        chk_wks = office_select
+    return st.session_state[office_select]["wks"], chk_wks
     
 @st.cache_data 
 def get_reg():
@@ -114,7 +115,8 @@ def get_reg():
         sh = gc.open(office_select)
         wks_reg = sh.worksheet('REG')
         st.session_state[office_select]["df_reg"] = pd.DataFrame(wks_reg.get_all_records(numericise_ignore=['all']))
-    return st.session_state[office_select]["df_reg"]
+        chk_wks = office_select
+    return st.session_state[office_select]["df_reg"] , chk_wks
     
 @st.cache_resource 
 def get_postgis():
@@ -169,9 +171,15 @@ if st.session_state["Login"]:
         st.session_state[office_select] = {}
         
     creds = get_service()
-    wks = get_wks()
-    df_reg = get_reg()
-
+    wks,chk_wks = get_wks()
+    df_reg,chk_reg = get_reg()
+    
+    if chk_wks != office_select or chk_reg != office_select:
+        get_wks.clear()
+        get_reg.clear()
+        wks,chk_wks = get_wks()
+        df_reg,chk_reg = get_reg()
+        
     st.title("แบบกรอกข้อมูลงานภาคสนาม")
     st.title("สาขา"+office_select)  
     col_1, col_2, col_3, col_4, col_5 , col_6 = st.columns([0.18,0.13,0.18,0.18,0.13,0.15])
@@ -382,15 +390,7 @@ if st.session_state["Login"]:
     service,chk_name = get_drive_service(Name)
     if chk_name != Name:
         get_drive_service.clear()
-        service = get_drive_service(Name)
-        
-    if "wks" not in st.session_state[office_select]:
-        get_wks.clear()
-        wks = get_wks()
-        
-    if "df_reg" not in st.session_state[office_select]:
-        get_reg.clear()
-        df_reg = get_reg()
+        service,chk_name = get_drive_service(Name)
         
     c001, c002 = st.columns([0.12,0.88])
     if c002.button("Refresh", type="primary"):
