@@ -49,7 +49,7 @@ def get_service():
     return creds,gc,service,sh,wks
     
 @st.cache_data
-def get_data(poly_url,point_url):
+def get_data(poly_url,point_url,UTM):
     if UTM not in st.session_state:
         st.session_state[UTM] = {}
     if "poly_data" not in st.session_state[UTM]:
@@ -60,8 +60,9 @@ def get_data(poly_url,point_url):
     
 @st.cache_data    
 def get_UTM_Name(UTM):
-    UTM_Name = UTM
-    return UTM_Name
+    if UTM not in st.session_state:
+        st.session_state[UTM] = UTM
+    return st.session_state[UTM]
     
 @st.cache_data    
 def get_List():
@@ -150,10 +151,10 @@ if st.session_state["verity"]:
     
     if st.session_state["Search_"] ==  True:
         UTM_Name = get_UTM_Name(UTM)
-        poly_data,point_data,data_point = get_data(poly_url,point_url)
+        poly_data,point_data,data_point = get_data(poly_url,point_url,UTM_Name)
         if UTM_Name not in st.session_state:
-            get_data.clear()
-            poly_data,point_data,data_point,UTM_Name = get_data(poly_url,point_url,UTM)
+            UTM_Name = get_UTM_Name(UTM)
+            poly_data,point_data,data_point,UTM_Name = get_data(poly_url,point_url,UTM_Name)
         else:
             polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
             points = [shape(feat["geometry"]) for feat in point_data["features"]]
