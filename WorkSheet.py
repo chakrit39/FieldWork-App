@@ -78,22 +78,21 @@ def upload_image(service, parents, image_file,
     img.close()
     img_bytes.close()                 
     return file.get('id')
-    
+                     
 @st.cache_resource 
 def get_service():
-    #if "creds" not in globals() :
     creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scope)
-    gc = gspread.authorize(creds)
     service = build("drive", "v3", credentials=creds)
+    gc = gspread.authorize(creds)
     sh = gc.open(office_select)
     wks = sh.worksheet('Raw')
-    wks_reg = sh.worksheet('REG')
+    return creds,service,wks
     
-    #sh_report = gc.open(Name+'-Report_'+office_select)
-    return creds,gc,service,sh,wks,wks_reg#,sh_report
-    
-@st.cache_data
+@st.cache_data 
 def get_reg():
+    gc = gspread.authorize(creds)
+    sh = gc.open(office_select)
+    wks_reg = sh.worksheet('REG')
     df_reg = pd.DataFrame(wks_reg.get_all_records(numericise_ignore=['all']))
     return df_reg
     
@@ -107,11 +106,10 @@ def get_postgis():
     
 @st.cache_data
 def get_data():
-    df = pd.read_csv('./P_A_T.csv',header=0)
     sc = pd.read_csv('./UTMMAP4.csv',header=0,dtype={'UTMMAP4': str})
     df_name = pd.read_csv("https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv",header=0)
     df_fol = pd.read_csv("https://docs.google.com/spreadsheets/d/1j0m_zhMDIXrqjsqyRMCczHjm6quwVS4Km0M7WqZ_s2M/export?gid=0&format=csv",header=0)
-    return df,sc,df_name,df_fol
+    return sc,df_name,df_fol
     
 @st.dialog("สำเร็จ !!", width="small")
 def pop_up():
@@ -140,16 +138,14 @@ if st.session_state["Login"]:
         st.success("Login successful")
     
  
-    df,sc,df_name,df_fol = get_data()
+    sc,df_name,df_fol = get_data()
     engine = get_postgis()
     df_name_ = df_name[df_name[round_]==True]
     df_fol_ = df_fol[df_fol.Name==office_select]
     df_fol_ = df_fol_.reset_index(drop=True)
     folder_id = [df_fol_.iloc[0,1], df_fol_.iloc[0,2],df_fol_.iloc[0,3]]
-    df_P_A_T = df[df['OFFICE']==office_select]
-    df_P_A_T = df_P_A_T.reset_index(drop=True)
 
-    creds,gc,service,sh,wks,wks_reg = get_service()
+    creds,service,wks = get_service()
     df_reg = get_reg()
     
     st.title("แบบกรอกข้อมูลงานภาคสนาม")
@@ -355,7 +351,7 @@ if st.session_state["Login"]:
     if sh.title != office_select:
         get_service.clear()
         get_reg.clear()
-        creds,gc,service,sh,wks,wks_reg = get_service()
+        creds,service,wks = get_service()
         df_reg = get_reg()
         
     c001, c002 = st.columns([0.12,0.88])
@@ -363,7 +359,7 @@ if st.session_state["Login"]:
         st.session_state["Refresh"] = True
         get_service.clear()
         get_reg.clear()
-        creds,gc,service,sh,wks,wks_reg = get_service()
+        creds,service,wks = get_service()
         df_reg = get_reg()
     else:
         st.session_state["Refresh"] = False   
