@@ -106,8 +106,9 @@ if st.session_state["verity"]:
     UTMMAP4 = col_5.selectbox("UTMMAP4",pd.unique(sc.UTMMAP4[sc.SCALE==Scale]),)
     land_no = col_6.text_input("เลขที่ดิน","")
 
-    UTM_Name 
+    
     st.session_state
+    UTM_Name 
     
     if st.button("Search"):
         if UTMMAP1 != "" and UTMMAP3 != "" and land_no != "" :
