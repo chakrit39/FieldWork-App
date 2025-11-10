@@ -96,7 +96,7 @@ def get_drive_service(user_id: str):
     return st.session_state["drive_services"][user_id] ,user_id
     
 @st.cache_resource 
-def get_wks():
+def get_wks(office_select):
     if office_select not in st.session_state:
         st.session_state[office_select] = {}
     if "wks" not in st.session_state[office_select]:
@@ -107,7 +107,7 @@ def get_wks():
     return st.session_state[office_select]["wks"], chk_wks
     
 @st.cache_data 
-def get_reg():
+def get_reg(office_select):
     if office_select not in st.session_state:
         st.session_state[office_select] = {}
     if "df_reg" not in st.session_state[office_select]:
@@ -171,14 +171,14 @@ if st.session_state["Login"]:
         st.session_state[office_select] = {}
         
     creds = get_service()
-    wks,chk_wks = get_wks()
-    df_reg,chk_reg = get_reg()
+    wks,chk_wks = get_wks(office_select)
+    df_reg,chk_reg = get_reg(office_select)
     
-    if chk_wks != office_select or chk_reg != office_select:
+    if chk_wks != office_select or chk_reg != office_select :
         get_wks.clear()
         get_reg.clear()
-        wks,chk_wks = get_wks()
-        df_reg,chk_reg = get_reg()
+        wks,chk_wks = get_wks(office_select)
+        df_reg,chk_reg = get_reg(office_select)
         
     st.title("แบบกรอกข้อมูลงานภาคสนาม")
     st.title("สาขา"+office_select)  
