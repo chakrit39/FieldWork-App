@@ -137,7 +137,7 @@ def pop_up():
         #st.session_state.vote = {"item": item, "reason": reason}
         st.rerun()    
         
-Office = ['นครนายก']        
+Office = ['นครนายก','องครักษ์']        
 placeholder = st.empty()
 with placeholder.form("login"):
     st.markdown("#### โปรดเลือก")
