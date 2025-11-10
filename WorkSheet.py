@@ -89,12 +89,12 @@ def get_service():
 @st.cache_resource    
 def get_drive_service(user_id: str):
     """สร้าง/เรียกคืน Google Drive service สำหรับแต่ละผู้ใช้"""
-    if user_id not in st.session_state:
-        st.session_state[user_id] = {}
-    if "drive_services" not in st.session_state[user_id]:
+    if "drive_services" not in st.session_state:
+        st.session_state["drive_services"] = {}
+    if user_id not in st.session_state["drive_services"]:
         service = build("drive", "v3", credentials=creds)
-        st.session_state[user_id]["drive_services"] = service
-    return st.session_state[user_id]["drive_services"] ,user_id
+        st.session_state["drive_services"][user_id] = service
+    return st.session_state["drive_services"][user_id] ,user_id
     
 @st.cache_data 
 def get_reg():
