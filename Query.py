@@ -49,11 +49,12 @@ def get_service():
     return creds,gc,service,sh,wks
     
 @st.cache_data
-def get_data():
+def get_data(poly_url,point_url,UTM):
     poly_data = requests.get(poly_url).json()
     point_data = requests.get(point_url).json()
     data_point = gpd.read_file(point_url)[:-1]
-    return poly_data,point_data,data_point
+    UTM_Name = UTM
+    return poly_data,point_data,data_point,UTM_Name
     
 @st.cache_data    
 def get_List():
@@ -61,10 +62,6 @@ def get_List():
     sc = pd.read_csv('./UTMMAP4.csv',header=0,dtype={'UTMMAP4': str})
     return df,sc
     
-@st.cache_data    
-def get_UTM_Name():
-    UTM_Name = UTM
-    return UTM_Name
     
 @st.dialog("รหัสผ่านไม่ถูกต้อง !!", width="small")
 def pop_up():
@@ -125,7 +122,6 @@ if st.session_state["verity"]:
                 if  st.session_state["Polygon"]  == True :
                     st.session_state["Polygon"]  = False
                     get_data.clear()
-                    get_UTM_Name.clear()
                 st.session_state["Search"] = True
                 st.session_state["Search_"] = True
                 st.session_state["Polygon"] = True
@@ -142,8 +138,7 @@ if st.session_state["verity"]:
     
     
     if st.session_state["Search_"] ==  True:
-        UTM_Name = get_UTM_Name()
-        poly_data,point_data,data_point = get_data()
+        poly_data,point_data,data_point,UTM_Name = get_data(point_data,data_point,UTM)
         if st.session_state["Polygon"]  == True :
             polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
             points = [shape(feat["geometry"]) for feat in point_data["features"]]
