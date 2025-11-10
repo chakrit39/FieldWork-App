@@ -24,8 +24,6 @@ st.sidebar.header("Work Sheets")
 st.sidebar.markdown("แอปพลิเคชันสร้างรายงานจากข้อมูลภาคสนาม")
 if "drive_services" not in st.session_state:
     st.session_state["drive_services"] = {}
-if office_select not in st.session_state:
-    st.session_state[office_select] = {}
 if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
 if "Search" not in st.session_state:
@@ -166,7 +164,10 @@ if st.session_state["Login"]:
     df_fol_ = df_fol[df_fol.Name==office_select]
     df_fol_ = df_fol_.reset_index(drop=True)
     folder_id = [df_fol_.iloc[0,1], df_fol_.iloc[0,2],df_fol_.iloc[0,3]]
-
+    
+    if office_select not in st.session_state:
+        st.session_state[office_select] = {}
+        
     creds = get_service()
     wks = get_wks()
     df_reg = get_reg()
