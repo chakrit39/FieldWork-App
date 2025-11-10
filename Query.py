@@ -105,7 +105,7 @@ if st.session_state["verity"]:
     Scale = col_4.selectbox("Scale",pd.unique(sc.SCALE),)
     UTMMAP4 = col_5.selectbox("UTMMAP4",pd.unique(sc.UTMMAP4[sc.SCALE==Scale]),)
     land_no = col_6.text_input("เลขที่ดิน","")
-    
+    st.session_state
     if st.button("Search"):
         if UTMMAP1 != "" and UTMMAP3 != "" and land_no != "" :
                 
@@ -257,4 +257,4 @@ if st.session_state["verity"]:
                 number = c1.number_input("ระยะที่วัดได้",value=float(),step=0.001,format="%0.3f" )
                 if number != 0:
                     Diff = c2.text_input("ค่าต่าง",abs(round(length-float(number),3)))
-st.session_state
+
