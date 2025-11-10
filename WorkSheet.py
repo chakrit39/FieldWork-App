@@ -347,7 +347,7 @@ if st.session_state["Login"]:
     date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
     remark = st.text_input("หมายเหตุ","")
     
-    
+    wks.__dict__
     if sh.title != office_select:
         get_service.clear()
         get_reg.clear()
@@ -363,6 +363,7 @@ if st.session_state["Login"]:
         df_reg = get_reg()
     else:
         st.session_state["Refresh"] = False   
+        
     if c001.button("Submit"):
         #import time 
         #start = time.time()
