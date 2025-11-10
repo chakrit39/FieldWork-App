@@ -22,6 +22,10 @@ st.set_page_config(page_title="WorkSheet")
 
 st.sidebar.header("Work Sheets")
 st.sidebar.markdown("แอปพลิเคชันสร้างรายงานจากข้อมูลภาคสนาม")
+if "drive_services" not in st.session_state:
+    st.session_state["drive_services"] = {}
+if office_select not in st.session_state:
+    st.session_state[office_select] = {}
 if "Submit" not in st.session_state:
     st.session_state["Submit"] = False
 if "Search" not in st.session_state:
