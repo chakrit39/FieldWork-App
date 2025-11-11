@@ -27,7 +27,7 @@ st.write(str(uuid.uuid4()))
 query_params = st.query_params
 if "user_id" not in query_params :
     user_id = str(uuid.uuid4())
-    st.query_params(user_id=user_id)
+    st.query_params["user_id"] = 1
 else:
     user_id = query_params["user_id"][0]
 st.query_params
