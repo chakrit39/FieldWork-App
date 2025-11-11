@@ -144,8 +144,12 @@ if st.session_state["verity"]:
     """
     st.session_state
     if st.session_state["Search_"] ==  True:
-        if st.session_state["UTM_Name"] != "":
-            
+        if st.session_state["UTM_Name"] != "" :
+            if st.session_state["UTM_Name"] in st.session_state["Data"] :
+                UTM_Name_ = st.session_state["UTM_Name"]
+                poly_data = st.session_state["Data"][UTM_Name_]["poly_data"]
+                point_data = st.session_state["Data"][UTM_Name_]["point_data"]
+                data_point = st.session_state["Data"][UTM_Name_]["data_point"]
             polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
             points = [shape(feat["geometry"]) for feat in point_data["features"]]
             
