@@ -135,8 +135,6 @@ if st.session_state["verity"]:
             # === Path ไปยังไฟล์ของคุณ ===
             UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
             #UTM_Name = get_UTM_Name(UTM)
-            st.session_state["cookies"][cookies]["UTM_Name"]
-            UTM
             if st.session_state["cookies"][cookies]["UTM_Name"] != UTM :
                 get_UTM_Name.clear()
                 UTM_Name = get_UTM_Name(UTM)
@@ -167,7 +165,7 @@ if st.session_state["verity"]:
             --------------
     """
     st.session_state["cookies"][cookies]["UTM_Name"]
-    st.session_state["Data"]
+    st.session_state["Data"][UTM_Name_]
     if st.session_state["Search_"] ==  True:
         if st.session_state["cookies"][cookies]["UTM_Name"] != "" :
             if st.session_state["cookies"][cookies]["UTM_Name"] in st.session_state["Data"] :
