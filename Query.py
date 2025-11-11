@@ -26,10 +26,11 @@ from streamlit_cookies_manager import EncryptedCookieManager
 cookies = EncryptedCookieManager(prefix="my_app",password="my_secrets_key")
 cookies.__dict__
 cookies._cookie_manager["session_id"]
+st.session_state
 #if not cookies.ready():
 #    st.stop()
-#if "session_id" not in cookies:
-#    cookies["session_id"] = str(uuid.uuid4())
+if "cookies" not in st.session_state:
+    st.session_state["cookies"] = {}
 #cookies["session_id"]
 #st.write(str(uuid.uuid4()))
 #query_params = st.query_params
