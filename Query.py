@@ -35,7 +35,6 @@ if "UTM_Name" not in st.session_state["cookies"][cookies] :
     st.session_state["cookies"][cookies]["UTM_Name"] = ""
 if "Data" not in st.session_state :
     st.session_state["Data"] = {}
-st.session_state["Data"]
 if "Search" not in st.session_state:
     st.session_state["Search"] = False
     
