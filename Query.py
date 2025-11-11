@@ -172,6 +172,9 @@ if st.session_state["verity"]:
                 poly_data = st.session_state["Data"][UTM_Name_]["poly_data"]
                 point_data = st.session_state["Data"][UTM_Name_]["point_data"]
                 data_point = st.session_state["Data"][UTM_Name_]["data_point"]
+            else:
+                UTM_Name_ = st.session_state["cookies"][cookies]["UTM_Name"]
+                poly_data,point_data,data_point = get_data(UTM_Name_,poly_url,point_url)
             polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
             points = [shape(feat["geometry"]) for feat in point_data["features"]]
             
