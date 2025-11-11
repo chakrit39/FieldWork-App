@@ -76,9 +76,7 @@ def get_UTM_Name(UTM):
 def pop_up():
     if st.button("ตกลง"):
         st.rerun()
-        
-creds,gc,service,sh,wks = get_service()
-df,sc = get_List()  
+
 
 if st.session_state["verity"] == False:
     placeholder = st.empty()
@@ -93,6 +91,9 @@ if st.session_state["verity"] == False:
             else:
                 pop_up()
                 st.session_state["verity"] = False
+        
+creds,gc,service,sh,wks = get_service()
+df,sc = get_List()  
 
 if st.session_state["verity"]:
     st.set_page_config(page_title="Query")
@@ -142,7 +143,7 @@ if st.session_state["verity"]:
     """
             --------------
     """
-    st.query_params.my_key
+
     if st.session_state["Search_"] ==  True:
         if st.session_state["UTM_Name"] != "" :
             if st.session_state["UTM_Name"] in st.session_state["Data"] :
