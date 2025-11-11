@@ -21,6 +21,8 @@ from shapely.geometry import shape, Point
 import math
 import requests
 import matplotlib.font_manager as fm
+import uuid
+str(uuid.uuid4())
 if "Search" not in st.session_state:
     st.session_state["Search"] = False
     
