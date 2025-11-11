@@ -15,4 +15,4 @@ geoalchemy2
 pillow_heif
 matplotlib
 requests
-streamlit-cookies-mangager
+streamlit-cookies-manager
