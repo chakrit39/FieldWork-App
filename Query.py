@@ -24,9 +24,9 @@ import matplotlib.font_manager as fm
 import uuid
 from streamlit_cookies_manager import EncryptedCookieManager
 cookies = EncryptedCookieManager(prefix="my_app",password="my_secrets_key")
-st.write(cookies)
 if not cookies.ready():
     st.stop()
+st.write(cookies)
 #st.write(str(uuid.uuid4()))
 #query_params = st.query_params
 #if "user_id" not in query_params :
