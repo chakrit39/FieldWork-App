@@ -49,20 +49,11 @@ def get_service():
     return creds,gc,service,sh,wks
     
 @st.cache_data
-def get_data(poly_url,point_url,UTM):
-    if UTM not in st.session_state:
-        st.session_state[UTM] = {}
-    if "poly_data" not in st.session_state[UTM]:
-        st.session_state[UTM]["poly_data"] = requests.get(poly_url).json()
-        st.session_state[UTM]["point_data"] = requests.get(point_url).json()
-        st.session_state[UTM]["data_point"] = gpd.read_file(point_url)[:-1]
-    return st.session_state[UTM]["poly_data"],st.session_state[UTM]["point_data"],st.session_state[UTM]["data_point"]
-    
-@st.cache_data    
-def get_UTM_Name(UTM):
-    if UTM not in st.session_state:
-        st.session_state[UTM] = UTM
-    return st.session_state[UTM]
+def get_data():
+    poly_data = requests.get(poly_url).json()
+    point_data = requests.get(point_url).json()
+    data_point = gpd.read_file(point_url)[:-1]
+    return poly_data,point_data,data_point
     
 @st.cache_data    
 def get_List():
@@ -70,6 +61,10 @@ def get_List():
     sc = pd.read_csv('./UTMMAP4.csv',header=0,dtype={'UTMMAP4': str})
     return df,sc
     
+@st.cache_data    
+def get_UTM_Name():
+    UTM_Name = UTM
+    return UTM_Name
     
 @st.dialog("รหัสผ่านไม่ถูกต้อง !!", width="small")
 def pop_up():
@@ -110,9 +105,6 @@ if st.session_state["verity"]:
     Scale = col_4.selectbox("Scale",pd.unique(sc.SCALE),)
     UTMMAP4 = col_5.selectbox("UTMMAP4",pd.unique(sc.UTMMAP4[sc.SCALE==Scale]),)
     land_no = col_6.text_input("เลขที่ดิน","")
-
-    
-    st.session_state
     
     if st.button("Search"):
         if UTMMAP1 != "" and UTMMAP3 != "" and land_no != "" :
@@ -132,8 +124,8 @@ if st.session_state["verity"]:
                 point_url = "https://drive.google.com/uc?id=" + id_point + "&export%3Fformat=geojson"
                 if  st.session_state["Polygon"]  == True :
                     st.session_state["Polygon"]  = False
-                    get_UTM_Name.clear()
                     get_data.clear()
+                    get_UTM_Name.clear()
                 st.session_state["Search"] = True
                 st.session_state["Search_"] = True
                 st.session_state["Polygon"] = True
@@ -150,12 +142,9 @@ if st.session_state["verity"]:
     
     
     if st.session_state["Search_"] ==  True:
-        UTM_Name = get_UTM_Name(UTM)
-        poly_data,point_data,data_point = get_data(poly_url,point_url,UTM_Name)
-        if UTM_Name not in st.session_state:
-            UTM_Name = get_UTM_Name(UTM)
-            poly_data,point_data,data_point,UTM_Name = get_data(poly_url,point_url,UTM_Name)
-        else:
+        UTM_Name = get_UTM_Name()
+        poly_data,point_data,data_point = get_data()
+        if st.session_state["Polygon"]  == True :
             polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
             points = [shape(feat["geometry"]) for feat in point_data["features"]]
             
@@ -261,7 +250,7 @@ if st.session_state["verity"]:
                 point2_ = data_point.loc[data_point['PCM_BNDNAME']==point2,'geometry'].iloc[0]
                 length = round(point1_.distance(point2_),3)
             length_ = c03.selectbox("ระยะ",str(length))
-
+            
             if length > 0 :
                 c1, c2 = st.columns([0.50,0.50])
                 number = c1.number_input("ระยะที่วัดได้",value=float(),step=0.001,format="%0.3f" )
