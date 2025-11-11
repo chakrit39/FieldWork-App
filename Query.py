@@ -140,6 +140,8 @@ if st.session_state["verity"]:
             if st.session_state["cookies"][cookies]["UTM_Name"] != UTM :
                 get_UTM_Name.clear()
                 UTM_Name = get_UTM_Name(UTM)
+            else:
+                UTM_Name = get_UTM_Name(UTM)
             id = df[df['Name']==UTM]
             if len(id) ==0:
                 st.warning("ไม่พบรูปแปลงที่ดิน")
