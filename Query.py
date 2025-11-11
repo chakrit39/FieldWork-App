@@ -142,7 +142,7 @@ if st.session_state["verity"]:
     """
             --------------
     """
-    st.query_params
+    st.query_params()
     if st.session_state["Search_"] ==  True:
         if st.session_state["UTM_Name"] != "" :
             if st.session_state["UTM_Name"] in st.session_state["Data"] :
