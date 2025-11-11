@@ -23,7 +23,7 @@ import requests
 import matplotlib.font_manager as fm
 import uuid
 from streamlit_cookies_mangager import EncryyptedCookieManager
-EncryyptedCookieManager()
+EncryyptedCookieManager(prefix="my_app",password="my_secrets_key")
 st.write(str(uuid.uuid4()))
 query_params = st.query_params
 if "user_id" not in query_params :
