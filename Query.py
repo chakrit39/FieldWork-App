@@ -49,11 +49,15 @@ def get_service():
     return creds,gc,service,sh,wks
     
 @st.cache_data(ttl=3600)
-def get_data():
-    poly_data = requests.get(poly_url).json()
-    point_data = requests.get(point_url).json()
-    data_point = gpd.read_file(point_url)[:-1]
-    return poly_data,point_data,data_point
+def get_data(UTM_Name,poly_url,point_url):
+    if "Data" not in st.session_state :
+        st.session_state["Data"] = {}
+    if UTM_Name not in st.session_state["Data"] :
+        st.session_state["Data"][UTM_Name] = {}
+    st.session_state["Data"][UTM_Name]["poly_data"] = requests.get(poly_url).json()
+    st.session_state["Data"][UTM_Name]["point_data"] = requests.get(point_url).json()
+    st.session_state["Data"][UTM_Name]["data_point"] = gpd.read_file(point_url)[:-1]
+    return st.session_state["Data"][UTM_Name]["poly_data"],st.session_state["Data"][UTM_Name]["point_data"],st.session_state["Data"][UTM_Name]["data_point"]
     
 @st.cache_data    
 def get_List():
@@ -61,10 +65,12 @@ def get_List():
     sc = pd.read_csv('./UTMMAP4.csv',header=0,dtype={'UTMMAP4': str})
     return df,sc
     
-@st.cache_data    
+@st.cache_data(ttl=3600)    
 def get_UTM_Name(UTM):
-    UTM_Name = UTM
-    return UTM_Name
+    if "UTM_Name" not in st.session_state :
+        st.session_state["UTM_Name"] = ""
+    st.session_state["UTM_Name"] = UTM
+    return st.session_state["UTM_Name"]
     
 @st.dialog("รหัสผ่านไม่ถูกต้อง !!", width="small")
 def pop_up():
@@ -123,13 +129,9 @@ if st.session_state["verity"]:
     
                 poly_url = "https://drive.google.com/uc?id=" + id_poly + "&export%3Fformat=geojson"
                 point_url = "https://drive.google.com/uc?id=" + id_point + "&export%3Fformat=geojson"
-                if  st.session_state["Polygon"]  == True :
-                    st.session_state["Polygon"]  = False
-                    get_data.clear()
-                    get_UTM_Name.clear()
+                poly_data,point_data,data_point = get_data(UTM_Name,poly_url,point_url)
                 st.session_state["Search"] = True
                 st.session_state["Search_"] = True
-                st.session_state["Polygon"] = True
         else:
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
             st.session_state["Search"] = False
@@ -140,12 +142,10 @@ if st.session_state["verity"]:
     """
             --------------
     """
-    
-    
+    st.session_state
     if st.session_state["Search_"] ==  True:
-        UTM_Name = get_UTM_Name()
-        poly_data,point_data,data_point = get_data()
-        if st.session_state["Polygon"]  == True :
+        if st.session_state["UTM_Name"] != "":
+            
             polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
             points = [shape(feat["geometry"]) for feat in point_data["features"]]
             
