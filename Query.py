@@ -165,7 +165,7 @@ if st.session_state["verity"]:
     if st.session_state["Search_"] ==  True:
         if st.session_state["cookies"][cookies]["UTM_Name"] != "" :
             if st.session_state["cookies"][cookies]["UTM_Name"] in st.session_state["Data"] :
-                UTM_Name_ = st.session_state["Data"][UTM_Name_]
+                UTM_Name_ = st.session_state["cookies"][cookies]["UTM_Name"]
                 poly_data = st.session_state["Data"][UTM_Name_]["poly_data"]
                 point_data = st.session_state["Data"][UTM_Name_]["point_data"]
                 data_point = st.session_state["Data"][UTM_Name_]["data_point"]
