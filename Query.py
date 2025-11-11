@@ -33,6 +33,8 @@ if cookies not in st.session_state["cookies"]:
     st.session_state["cookies"][cookies] = {}
 if "UTM_Name" not in st.session_state["cookies"][cookies] :
     st.session_state["cookies"][cookies]["UTM_Name"] = ""
+
+
 if "Data" not in st.session_state :
     st.session_state["Data"] = {}
 if "Search" not in st.session_state:
@@ -163,7 +165,7 @@ if st.session_state["verity"]:
     if st.session_state["Search_"] ==  True:
         if st.session_state["cookies"][cookies]["UTM_Name"] != "" :
             if st.session_state["cookies"][cookies]["UTM_Name"] in st.session_state["Data"] :
-                UTM_Name_ = st.session_state["cookies"][cookies]["UTM_Name"]
+                UTM_Name_ = st.session_state["Data"][UTM_Name_]
                 poly_data = st.session_state["Data"][UTM_Name_]["poly_data"]
                 point_data = st.session_state["Data"][UTM_Name_]["point_data"]
                 data_point = st.session_state["Data"][UTM_Name_]["data_point"]
