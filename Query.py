@@ -24,15 +24,15 @@ import matplotlib.font_manager as fm
 import uuid
 from streamlit_cookies_manager import EncryptedCookieManager
 EncryptedCookieManager(prefix="my_app",password="my_secrets_key")
-st.write(str(uuid.uuid4()))
-query_params = st.query_params
-if "user_id" not in query_params :
-    user_id = str(uuid.uuid4())
-    st.query_params[user_id] = 1
-else:
-    user_id = query_params["user_id"][0]
-st.query_params
-st.session_state
+#st.write(str(uuid.uuid4()))
+#query_params = st.query_params
+#if "user_id" not in query_params :
+#    user_id = str(uuid.uuid4())
+#    st.query_params[user_id] = 1
+#else:
+#    user_id = query_params["user_id"][0]
+#st.query_params
+#st.session_state
 if "Search" not in st.session_state:
     st.session_state["Search"] = False
     
