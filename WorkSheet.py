@@ -78,12 +78,12 @@ def upload_image(service, parents, image_file,
     img_bytes.close()                 
     return file.get('id')
                      
-@st.cache_resource 
+@st.cache_resource(ttl=21600) 
 def get_service():
     creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scope)
     return creds
     
-@st.cache_resource    
+@st.cache_resource(ttl=21600)   
 def get_drive_service(user_id: str):
     """สร้าง/เรียกคืน Google Drive service สำหรับแต่ละผู้ใช้"""
     if "drive_services" not in st.session_state:
@@ -93,7 +93,7 @@ def get_drive_service(user_id: str):
         st.session_state["drive_services"][user_id] = service
     return st.session_state["drive_services"][user_id] ,user_id
     
-@st.cache_resource 
+@st.cache_resource(ttl=21600) 
 def get_wks(office_select):
     if office_select not in st.session_state:
         st.session_state[office_select] = {}
@@ -104,7 +104,7 @@ def get_wks(office_select):
         chk_wks = office_select
     return st.session_state[office_select]["wks"], chk_wks
     
-@st.cache_data 
+@st.cache_data(ttl=21600)  
 def get_reg(office_select):
     if office_select not in st.session_state:
         st.session_state[office_select] = {}
@@ -116,7 +116,7 @@ def get_reg(office_select):
         chk_reg = office_select
     return st.session_state[office_select]["df_reg"] , chk_reg
     
-@st.cache_resource 
+@st.cache_resource(ttl=21600)  
 def get_postgis():
     HOSTNAME = st.secrets["HOSTNAME"]
     USER = st.secrets["USER"]
