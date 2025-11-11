@@ -29,7 +29,6 @@ if "cookies" not in st.session_state:
     st.session_state["cookies"] = {}
 if cookies not in st.session_state["cookies"]:
     st.session_state["cookies"][cookies] = {}
-st.session_state
 
 if "Search" not in st.session_state:
     st.session_state["Search"] = False
@@ -77,10 +76,10 @@ def get_List():
     
 @st.cache_data(ttl=3600)    
 def get_UTM_Name(UTM):
-    if "UTM_Name" not in st.session_state :
-        st.session_state["UTM_Name"] = ""
-    st.session_state["UTM_Name"] = UTM
-    return st.session_state["UTM_Name"]
+    if "UTM_Name" not in st.session_state["cookies"][cookies] :
+        st.session_state["cookies"][cookies]["UTM_Name"] = ""
+    st.session_state["cookies"][cookies]["UTM_Name"] = UTM
+    return st.session_state["cookies"][cookies]["UTM_Name"]
     
 @st.dialog("รหัสผ่านไม่ถูกต้อง !!", width="small")
 def pop_up():
@@ -156,8 +155,8 @@ if st.session_state["verity"]:
 
     if st.session_state["Search_"] ==  True:
         if st.session_state["UTM_Name"] != "" :
-            if st.session_state["UTM_Name"] in st.session_state["Data"] :
-                UTM_Name_ = st.session_state["UTM_Name"]
+            if st.session_state["cookies"][cookies]["UTM_Name"] in st.session_state["Data"] :
+                UTM_Name_ = st.session_state["cookies"][cookies]["UTM_Name"]
                 poly_data = st.session_state["Data"][UTM_Name_]["poly_data"]
                 point_data = st.session_state["Data"][UTM_Name_]["point_data"]
                 data_point = st.session_state["Data"][UTM_Name_]["data_point"]
