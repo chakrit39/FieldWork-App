@@ -25,6 +25,7 @@ import uuid
 from streamlit_cookies_manager import EncryptedCookieManager
 cookies = EncryptedCookieManager(prefix="my_app",password="my_secrets_key")
 cookies.__dict__
+cookies._cookie_manager["session_id"]
 #if not cookies.ready():
 #    st.stop()
 #if "session_id" not in cookies:
