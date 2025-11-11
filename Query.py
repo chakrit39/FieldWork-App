@@ -48,7 +48,7 @@ def get_service():
     wks = sh.worksheet('Raw')
     return creds,gc,service,sh,wks
     
-@st.cache_data
+@st.cache_data(ttl=3600)
 def get_data():
     poly_data = requests.get(poly_url).json()
     point_data = requests.get(point_url).json()
@@ -62,7 +62,7 @@ def get_List():
     return df,sc
     
 @st.cache_data    
-def get_UTM_Name():
+def get_UTM_Name(UTM):
     UTM_Name = UTM
     return UTM_Name
     
@@ -111,6 +111,7 @@ if st.session_state["verity"]:
                 
             # === Path ไปยังไฟล์ของคุณ ===
             UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
+            UTM_Name = get_UTM_Name(UTM)
             id = df[df['Name']==UTM]
             if len(id) ==0:
                 st.warning("ไม่พบรูปแปลงที่ดิน")
