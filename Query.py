@@ -31,8 +31,8 @@ if "cookies" not in st.session_state:
     st.session_state["cookies"] = {}
 if cookies not in st.session_state["cookies"]:
     st.session_state["cookies"][cookies] = {}
-if "UTM_Name" not in st.session_state["cookies"][cookies] :
-    st.session_state["cookies"][cookies]["UTM_Name"] = ""
+#if "UTM_Name" not in st.session_state["cookies"][cookies] :
+#    st.session_state["cookies"][cookies]["UTM_Name"] = ""
 
 
 if "Data" not in st.session_state :
