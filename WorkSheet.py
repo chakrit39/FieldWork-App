@@ -104,7 +104,7 @@ def get_wks(office_select):
         chk_wks = office_select
     return st.session_state[office_select]["wks"], chk_wks
     
-@st.cache_data(ttl=21600)  
+@st.cache_data(ttl=86400)  
 def get_reg(office_select):
     if office_select not in st.session_state:
         st.session_state[office_select] = {}
