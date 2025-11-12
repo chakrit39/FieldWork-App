@@ -60,6 +60,8 @@ if "cookies" not in st.session_state:
 # store cookie-specific dict server-side (avoids direct low-level api usage)
 if session_cookie_id not in st.session_state["cookies"]:
     st.session_state["cookies"][session_cookie_id] = {}
+if "Data" not in cookie_manager:
+    cookie_manager["Data"] = {}
 cookie_manager
 st.session_state
 scope = ['https://www.googleapis.com/auth/drive',
@@ -177,8 +179,7 @@ if st.session_state["verity"]:
 
     UTM_saved = cookie_manager.get("last_search", "")
     UTM_saved 
-    if "Data" not in cookie_manager:
-        cookie_manager["Data"] = {}
+
     if UTM_saved and UTM_saved in cookie_manager["Data"]:
         poly_data =  cookie_manager["Data"][UTM_saved]["poly_data"]
         point_data = cookie_manager["Data"][UTM_saved]["point_data"]
