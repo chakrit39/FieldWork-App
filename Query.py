@@ -50,7 +50,8 @@ if "Polygon" not in st.session_state:
     st.session_state["Polygon"] = False
 if "verity" not in st.session_state:
     st.session_state["verity"] = False
-    
+if "Data" not in st.session_state:
+    st.session_state["Data"] = {}    
 if "cookies" not in st.session_state:
     st.session_state["cookies"] = {}
 # store cookie-specific dict server-side (avoids direct low-level api usage)
