@@ -61,9 +61,6 @@ if session_cookie_id not in st.session_state["cookies"]:
     st.session_state["cookies"][session_cookie_id] = {}
 cookie_manager
 
-else:
-    st.write("ไม่มี")
-st.session_state
 scope = ['https://www.googleapis.com/auth/drive',
          'https://www.googleapis.com/auth/drive.file',
          'https://www.googleapis.com/auth/spreadsheets',
