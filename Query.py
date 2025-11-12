@@ -140,18 +140,14 @@ if st.session_state["verity"]:
     
     if st.button("Search"):
         if UTMMAP1 and UTMMAP3 and land_no:
-                
+            st.session_state["Search"] = True    
             # === Path ไปยังไฟล์ของคุณ ===
             UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
-            #if "UTM_Name" in st.session_state["cookies"][session_cookie_id] :
-            #    set_utm_name_for_session.clear()
-            #set_utm_name_for_session(session_cookie_id, UTM)
             cookie_manager["last_search"] = UTM
             cookie_manager.save()  
             id = df[df['Name']==UTM]
             if len(id) == 0 :
                 st.warning("ไม่พบรูปแปลงที่ดิน")
-                st.session_state["Search"] = True
             else:
                 id_poly = id[id['Type']=='Polygon']['ID'].iloc[0]
                 id_point = id[id['Type']=='Point']['ID'].iloc[0]
@@ -171,11 +167,10 @@ if st.session_state["verity"]:
                         "point_data": point_data,
                         "data_point": data_point,
                     }
-                #st.session_state["Search"] = False
         else:
+            st.session_state["Search"] = True
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
-    #else:
-        #st.session_state["Search"] = False
+
     
     """
             --------------
