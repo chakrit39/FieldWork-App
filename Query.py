@@ -24,11 +24,11 @@ import matplotlib.font_manager as fm
 from streamlit_cookies_manager import EncryptedCookieManager
 
 cookies = EncryptedCookieManager(prefix="my_app",password="my_secrets_key")
-
+if not cookies.ready():
+    st.stop()
+    
 @st.cache_data(ttl=3600)    
 def get_cookies(cookies):
-    if not cookies.ready():
-        st.stop()
     cookies = cookies._cookie_manager["session_id"]
     if "cookies" not in st.session_state:
         st.session_state["cookies"] = {}
