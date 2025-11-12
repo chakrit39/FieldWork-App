@@ -139,7 +139,7 @@ if st.session_state["verity"]:
             # === Path ไปยังไฟล์ของคุณ ===
             UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
             cookie_manager["last_search"] = UTM
-            cookie_manager.save()  
+            cookie_manager.save()
             id = df[df['Name']==UTM]
             if len(id) == 0 :
                 st.warning("ไม่พบรูปแปลงที่ดิน")
@@ -172,7 +172,7 @@ if st.session_state["verity"]:
     """
 
     UTM_saved = cookie_manager.get("last_search", "")
-
+    UTM_saved not in st.session_state["Data"]
     if UTM_saved and UTM_saved not in st.session_state["Data"]:
         id = df[df['Name']==UTM_saved]
         if len(id) == 0 :
