@@ -27,7 +27,7 @@ cookies = EncryptedCookieManager(prefix="my_app",password="my_secrets_key")
 if not cookies.ready():
     st.stop()
 cookies = cookies._cookie_manager["session_id"]
-cookies
+
 @st.cache_data()
 def get_cookies(cookies):
     if "cookies" not in st.session_state:
