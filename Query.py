@@ -138,7 +138,7 @@ if st.session_state["verity"]:
     land_no = col_6.text_input("เลขที่ดิน","")
     
     if st.button("Search"):
-        if UTMMAP1 != "" and UTMMAP3 != "" and land_no != "" :
+        if UTMMAP1 and UTMMAP3 and land_no:
                 
             # === Path ไปยังไฟล์ของคุณ ===
             UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
