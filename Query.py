@@ -138,7 +138,7 @@ if st.session_state["verity"]:
             UTM_Name = get_UTM_Name(UTM)
             
             id = df[df['Name']==UTM]
-            if len(id) ==0:
+            if len(id) == 0 :
                 st.warning("ไม่พบรูปแปลงที่ดิน")
                 st.session_state["Search"] = False
                 st.session_state["Search_"] = False
@@ -161,10 +161,10 @@ if st.session_state["verity"]:
     """
             --------------
     """
-    st.session_state
+    
     if st.session_state["Search_"] ==  True:
-        if "UTM_Name" not in st.session_state["cookies"][cookies] :
-            st.session_state["cookies"][cookies]["UTM_Name"] = ""
+        #if "UTM_Name" not in st.session_state["cookies"][cookies] :
+            #st.session_state["cookies"][cookies]["UTM_Name"] = ""
         if st.session_state["cookies"][cookies]["UTM_Name"] != "" :
             if st.session_state["cookies"][cookies]["UTM_Name"] in st.session_state["Data"] :
                 UTM_Name_ = st.session_state["cookies"][cookies]["UTM_Name"]
