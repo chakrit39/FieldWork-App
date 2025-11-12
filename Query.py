@@ -195,7 +195,7 @@ if st.session_state["verity"]:
                     "point_data": point_data,
                     "data_point": data_point,
                 }
-
+    st.session_state
     if ( UTM_saved and UTM_saved in st.session_state["Data"] ) :
         poly_data = st.session_state["Data"][UTM_saved]["poly_data"]
         point_data = st.session_state["Data"][UTM_saved]["point_data"]
