@@ -86,7 +86,7 @@ def get_List():
     
 
     
-#@st.cache_data(ttl=3600)    
+@st.cache_data(ttl=3600)    
 def get_UTM_Name(UTM):
     if "UTM_Name" not in st.session_state["cookies"][cookies] :
         st.session_state["cookies"][cookies]["UTM_Name"] = ""
