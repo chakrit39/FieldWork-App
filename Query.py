@@ -151,7 +151,7 @@ if st.session_state["verity"]:
             id = df[df['Name']==UTM]
             if len(id) == 0 :
                 st.warning("ไม่พบรูปแปลงที่ดิน")
-                #st.session_state["Search"] = False
+                st.session_state["Search"] = True
             else:
                 id_poly = id[id['Type']=='Polygon']['ID'].iloc[0]
                 id_point = id[id['Type']=='Point']['ID'].iloc[0]
@@ -163,7 +163,7 @@ if st.session_state["verity"]:
                     poly_data,point_data,data_point = get_data(poly_url,point_url)
                 except Exception as e:
                     st.error(f"โหลดข้อมูลล้มเหลว: {e}")
-                    st.session_state["Search"] = False
+                    st.session_state["Search"] = True
                 else:
                     # store in session cache for reuse in same session
                     st.session_state["Data"][UTM] = {
@@ -174,8 +174,8 @@ if st.session_state["verity"]:
                 #st.session_state["Search"] = False
         else:
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
-    else:
-        st.session_state["Search"] = False
+    #else:
+        #st.session_state["Search"] = False
     
     """
             --------------
