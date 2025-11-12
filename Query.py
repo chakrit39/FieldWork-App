@@ -35,7 +35,7 @@ def get_cookies(cookies):
     if cookies not in st.session_state["cookies"]:
         st.session_state["cookies"][cookies] = {}
     return st.session_state["cookies"][cookies]
-
+st.session_state["cookies"][cookies]
 cookies_id = get_cookies(cookies)
 
 if "Data" not in st.session_state :
