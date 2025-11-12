@@ -62,7 +62,7 @@ if session_cookie_id not in st.session_state["cookies"]:
 
 cookie_manager
 if "data_" not in cookie_manager:
-    cookie_manager["data_"]=123
+    cookie_manager["data_"]="123"
     #cookie_manager.save()
 
 scope = ['https://www.googleapis.com/auth/drive',
