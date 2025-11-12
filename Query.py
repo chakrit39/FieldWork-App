@@ -146,7 +146,8 @@ if st.session_state["verity"]:
             #if "UTM_Name" in st.session_state["cookies"][session_cookie_id] :
             #    set_utm_name_for_session.clear()
             set_utm_name_for_session(session_cookie_id, UTM)
-            
+            cookie_manager["last_search"] = UTM
+            cookie_manager.save()
             id = df[df['Name']==UTM]
             if len(id) == 0 :
                 st.warning("ไม่พบรูปแปลงที่ดิน")
@@ -181,9 +182,8 @@ if st.session_state["verity"]:
     """
             --------------
     """
-                
+    cookie_manager.get("last_search", "")            
     UTM_saved = get_utm_name_for_session(session_cookie_id)
-    UTM_saved
     if UTM_saved and UTM_saved in st.session_state["Data"]:
         poly_data = st.session_state["Data"][UTM_saved]["poly_data"]
         point_data = st.session_state["Data"][UTM_saved]["point_data"]
