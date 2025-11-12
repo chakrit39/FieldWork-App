@@ -59,7 +59,7 @@ if "cookies" not in st.session_state:
 # store cookie-specific dict server-side (avoids direct low-level api usage)
 if session_cookie_id not in st.session_state["cookies"]:
     st.session_state["cookies"][session_cookie_id] = {}
-if "Data_" not in cookie_manager:
+if "data_" not in cookie_manager:
     cookie_manager["data_"]=123
     #cookie_manager.save()
 cookie_manager
