@@ -168,8 +168,6 @@ if st.session_state["verity"]:
                         "point_data": point_data,
                         "data_point": data_point,
                     }
-                    cookie_manager["Data"][UTM]  = st.session_state["Data"][UTM]
-                    cookie_manager.save()
         else:
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
 
