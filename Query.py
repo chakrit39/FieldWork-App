@@ -77,12 +77,17 @@ def get_service():
     wks = sh.worksheet('Raw')
     return creds,gc,service,sh,wks
     
-#@st.cache_data(ttl=3600)
+@st.cache_data(ttl=3600)
 def get_data(poly_url,point_url):
     poly_data = requests.get(poly_url).json()
     point_data = requests.get(point_url).json()
     data_point = gpd.read_file(point_url)[:-1]
-    return poly_data,point_data,data_point
+    st.session_state["Data"][UTM] = {
+        "poly_data": poly_data,
+        "point_data": point_data,
+        "data_point": data_point,
+    }
+    return st.session_state["Data"][UTM]["poly_data"], st.session_state["Data"][UTM]["point_data"], st.session_state["Data"][UTM]["data_point"]
     
 @st.cache_data    
 def get_List():
@@ -160,13 +165,6 @@ if st.session_state["verity"]:
                     poly_data,point_data,data_point = get_data(poly_url,point_url)
                 except Exception as e:
                     st.error(f"โหลดข้อมูลล้มเหลว: {e}")
-                else:
-                    # store in session cache for reuse in same session
-                    st.session_state["Data"][UTM] = {
-                        "poly_data": poly_data,
-                        "point_data": point_data,
-                        "data_point": data_point,
-                    }
         else:
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
     else:
@@ -178,9 +176,13 @@ if st.session_state["verity"]:
 
     UTM_saved = cookie_manager.get("last_search", "")
     UTM_saved 
-    #poly_data
-    #point_data
-    #data_point
+    #if UTM_saved and st.session_state["Data"] = {}:
+    #    st.session_state["Data"][UTM_saved] = {
+    #        "poly_data": cookie_manager.get("poly_data", ""),
+    #        "point_data": cookie_manager.get("point_data", ""),
+    #        "data_point": cookie_manager.get("data_point", ""),
+    #    }
+
     if UTM_saved and UTM_saved in st.session_state["Data"]:
         poly_data = st.session_state["Data"][UTM_saved]["poly_data"]
         point_data = st.session_state["Data"][UTM_saved]["point_data"]
