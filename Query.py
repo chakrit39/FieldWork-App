@@ -74,10 +74,6 @@ def get_service():
     
 @st.cache_data(ttl=3600)
 def get_data(poly_url,point_url):
-    if "Data" not in st.session_state :
-        st.session_state["Data"] = {}
-    if UTM_Name not in st.session_state["Data"] :
-        st.session_state["Data"][UTM_Name] = {}
     poly_data = requests.get(poly_url).json()
     point_data = requests.get(point_url).json()
     data_point = gpd.read_file(point_url)[:-1]
