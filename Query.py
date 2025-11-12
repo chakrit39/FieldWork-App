@@ -61,8 +61,8 @@ if session_cookie_id not in st.session_state["cookies"]:
     st.session_state["cookies"][session_cookie_id] = {}
 
 cookie_manager
-if "data_" not in cookie_manager:
-    cookie_manager["data_"]="123"
+#if "data_" not in cookie_manager:
+#    cookie_manager["data_"]="123"
     #cookie_manager.save()
 
 scope = ['https://www.googleapis.com/auth/drive',
@@ -181,17 +181,18 @@ if st.session_state["verity"]:
     UTM_saved = cookie_manager.get("last_search", "")
     UTM_saved 
 
-    if UTM_saved and UTM_saved in cookie_manager["Data"]:
-        poly_data =  cookie_manager["Data"][UTM_saved]["poly_data"]
-        point_data = cookie_manager["Data"][UTM_saved]["point_data"]
-        data_point = cookie_manager["Data"][UTM_saved]["data_point"]
+   # if UTM_saved and UTM_saved in cookie_manager["Data"]:
+   #     poly_data =  cookie_manager["Data"][UTM_saved]["poly_data"]
+   #     point_data = cookie_manager["Data"][UTM_saved]["point_data"]
+   #     data_point = cookie_manager["Data"][UTM_saved]["data_point"]
 
+   # if ( UTM_saved and UTM_saved in st.session_state["Data"] ) :
+   #     poly_data = st.session_state["Data"][UTM_saved]["poly_data"]
+   #     point_data = st.session_state["Data"][UTM_saved]["point_data"]
+   #     data_point = st.session_state["Data"][UTM_saved]["data_point"]
+   # 
+   # if ( UTM_saved and UTM_saved in st.session_state["Data"] ) or ( UTM_saved and UTM_saved in cookie_manager["Data"] ):
     if ( UTM_saved and UTM_saved in st.session_state["Data"] ) :
-        poly_data = st.session_state["Data"][UTM_saved]["poly_data"]
-        point_data = st.session_state["Data"][UTM_saved]["point_data"]
-        data_point = st.session_state["Data"][UTM_saved]["data_point"]
-    
-    if ( UTM_saved and UTM_saved in st.session_state["Data"] ) or ( UTM_saved and UTM_saved in cookie_manager["Data"] ):
         polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
         points = [shape(feat["geometry"]) for feat in point_data["features"]]
         
