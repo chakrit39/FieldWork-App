@@ -23,23 +23,25 @@ import requests
 import matplotlib.font_manager as fm
 from streamlit_cookies_manager import EncryptedCookieManager
 
-cookies = EncryptedCookieManager(prefix="my_app",password="my_secrets_key")
-if not cookies.ready():
-    st.stop()
-cookies = cookies._cookie_manager["session_id"]
-
-@st.cache_data()
-def get_cookies(cookies):
-    if "cookies" not in st.session_state:
-        st.session_state["cookies"] = {}
-    if cookies not in st.session_state["cookies"]:
-        st.session_state["cookies"][cookies] = {}
-    return cookies
-
-cookies_id = get_cookies(cookies)
-cookies_id
+cookie_manager = None
+try:
+    cookie_manager = EncryptedCookieManager(prefix="my_app", password="my_secrets_key")
+    if cookie_manager.ready():
+        session_cookie_id = cookie_manager.get("session_id") or None
+        if session_cookie_id is None:
+            session_cookie_id = str(uuid.uuid4())
+            cookie_manager.set("session_id", session_cookie_id)
+            cookie_manager.save()
+    else:
+        # Not ready yet -> stop (streamlit cookie manager pattern)
+        st.stop()
+except Exception:
+    # fallback: use server-side session id
+    session_cookie_id = st.session_state.get("_session_id", None)
+    if session_cookie_id is None:
+        session_cookie_id = str(uuid.uuid4())
+        st.session_state["_session_id"] = session_cookie_id
 st.session_state
-
 if "Search" not in st.session_state:
     st.session_state["Search"] = False
     
