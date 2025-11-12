@@ -42,8 +42,6 @@ except Exception:
     if session_cookie_id is None:
         session_cookie_id = str(uuid.uuid4())
         st.session_state["_session_id"] = session_cookie_id
-cookie_manager.set("Data")
-"Data" not in cookie_manage  
 "session_id" not in cookie_manage
 if "Search" not in st.session_state:
     st.session_state["Search"] = False
