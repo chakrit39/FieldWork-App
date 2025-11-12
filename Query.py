@@ -149,7 +149,6 @@ if st.session_state["verity"]:
             if len(id) == 0 :
                 st.warning("ไม่พบรูปแปลงที่ดิน")
                 st.session_state["Search"] = False
-                st.session_state["Search_"] = False
             else:
                 id_poly = id[id['Type']=='Polygon']['ID'].iloc[0]
                 id_point = id[id['Type']=='Point']['ID'].iloc[0]
@@ -158,11 +157,9 @@ if st.session_state["verity"]:
                 point_url = "https://drive.google.com/uc?id=" + id_point + "&export%3Fformat=geojson"
                 poly_data,point_data,data_point = get_data(UTM_Name,poly_url,point_url)
                 st.session_state["Search"] = True
-                st.session_state["Search_"] = True
         else:
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
             st.session_state["Search"] = False
-            st.session_state["Search_"] = False
     else:
         st.session_state["Search"] = False
     
