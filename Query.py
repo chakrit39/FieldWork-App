@@ -170,10 +170,10 @@ if st.session_state["verity"]:
         #if "UTM_Name" not in st.session_state["cookies"][cookies] :
             #st.session_state["cookies"][cookies]["UTM_Name"] = ""
         #st.session_state["cookies"]
-        if  cookie_id in st.session_state["cookies"] :
-            if "UTM_Name" in st.session_state["cookies"][cookies]:
-                if st.session_state["cookies"][cookies]["UTM_Name"] in st.session_state["Data"] :
-                    UTM_Name_ = st.session_state["cookies"][cookies]["UTM_Name"]
+        if  cookies_id in st.session_state["cookies"] :
+            if "UTM_Name" in st.session_state["cookies"][cookies_id]:
+                if st.session_state["cookies"][cookies_id]["UTM_Name"] in st.session_state["Data"] :
+                    UTM_Name_ = st.session_state["cookies"][cookies_id]["UTM_Name"]
                     poly_data = st.session_state["Data"][UTM_Name_]["poly_data"]
                     point_data = st.session_state["Data"][UTM_Name_]["point_data"]
                     data_point = st.session_state["Data"][UTM_Name_]["data_point"]
