@@ -42,8 +42,7 @@ except Exception:
         session_cookie_id = str(uuid.uuid4())
         st.session_state["_session_id"] = session_cookie_id
 
-
-st.session_state   
+   
 
 if "Search" not in st.session_state:
     st.session_state["Search"] = False
@@ -60,7 +59,8 @@ if "cookies" not in st.session_state:
 # store cookie-specific dict server-side (avoids direct low-level api usage)
 if session_cookie_id not in st.session_state["cookies"]:
     st.session_state["cookies"][session_cookie_id] = {}
- 
+
+st.session_state["cookies"]
 scope = ['https://www.googleapis.com/auth/drive',
          'https://www.googleapis.com/auth/drive.file',
          'https://www.googleapis.com/auth/spreadsheets',
