@@ -184,7 +184,7 @@ if st.session_state["verity"]:
 
     UTM_saved = cookie_manager.get("last_search", "")
     UTM_saved 
-    st.session_state["Data"][UTM_saved]
+    st.session_state["Data"]
     poly_data
     point_data
     data_point
