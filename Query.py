@@ -60,8 +60,7 @@ if "cookies" not in st.session_state:
 if session_cookie_id not in st.session_state["cookies"]:
     st.session_state["cookies"][session_cookie_id] = {}
 cookie_manager
-if "last_search" in cookie_manager:
-    cookie_manager["last_search"]
+
 else:
     st.write("ไม่มี")
 st.session_state
@@ -149,7 +148,7 @@ if st.session_state["verity"]:
             UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
             #if "UTM_Name" in st.session_state["cookies"][session_cookie_id] :
             #    set_utm_name_for_session.clear()
-            set_utm_name_for_session(session_cookie_id, UTM)
+            #set_utm_name_for_session(session_cookie_id, UTM)
             cookie_manager["last_search"] = UTM
             cookie_manager.save()
             id = df[df['Name']==UTM]
@@ -187,8 +186,8 @@ if st.session_state["verity"]:
             --------------
     """
     
-    #UTM_saved = cookie_manager["last_search"]        
-    UTM_saved = get_utm_name_for_session(session_cookie_id)
+    if "last_search" in cookie_manager:
+        UTM_saved = cookie_manager["last_search"]
     if UTM_saved and UTM_saved in st.session_state["Data"]:
         poly_data = st.session_state["Data"][UTM_saved]["poly_data"]
         point_data = st.session_state["Data"][UTM_saved]["point_data"]
