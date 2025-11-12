@@ -143,7 +143,7 @@ if st.session_state["verity"]:
                 
             # === Path ไปยังไฟล์ของคุณ ===
             UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
-            if "UTM_Name" in st.session_state["cookies"][session_id] :
+            if "UTM_Name" in st.session_state["cookies"][session_cookie_id] :
                 set_utm_name_for_session.clear()
             set_utm_name_for_session(session_cookie_id, UTM)
             
