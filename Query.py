@@ -38,8 +38,7 @@ def get_cookies(cookies):
 
 cookies_id = get_cookies(cookies)
 st.session_state
-if "Data" not in st.session_state :
-    st.session_state["Data"] = {}
+
 if "Search" not in st.session_state:
     st.session_state["Search"] = False
     
@@ -139,6 +138,7 @@ if st.session_state["verity"]:
                 
             # === Path ไปยังไฟล์ของคุณ ===
             UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
+            
             UTM_Name = get_UTM_Name(UTM)
             
             id = df[df['Name']==UTM]
