@@ -90,12 +90,12 @@ SCOPE = [
 ]
 
 @st.cache_resource
-def get_service_and_sheet(secrets_dict):
+def get_service_and_sheet():
     """
     Return: (creds, gspread_client, drive_service, gspread_spreadsheet, worksheet)
     Cached as resource to avoid reauth each rerun.
     """
-    creds = ServiceAccountCredentials.from_json_keyfile_dict(secrets_dict, SCOPE)
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], SCOPE)
     gc = gspread.authorize(creds)
     drive_service = build("drive", "v3", credentials=creds)
     sh = gc.open('DOLCAD')
@@ -161,7 +161,7 @@ if not st.session_state["verity"]:
 # ------------------------------
 if st.session_state["verity"]:
     # get google service + sheet
-    creds, gc, drive_service, sh, wks = get_service_and_sheet(st.secrets["dol-mtd5-fieldwork"])
+    creds, gc, drive_service, sh, wks = get_service_and_sheet()
     df = load_sheet_as_df(wks)
     sc = load_utm_map_csv()
 
