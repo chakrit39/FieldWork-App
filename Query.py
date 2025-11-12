@@ -175,6 +175,7 @@ if st.session_state["verity"]:
 
     UTM_saved = cookie_manager.get("last_search", "")
     UTM_saved 
+    st.session_state["Data"][UTM_saved]["poly_data"]
     #if UTM_saved and st.session_state["Data"] = {}:
     #    st.session_state["Data"][UTM_saved] = {
     #        "poly_data": cookie_manager.get("poly_data", ""),
