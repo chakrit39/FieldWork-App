@@ -98,14 +98,6 @@ def get_List():
 def pop_up():
     if st.button("ตกลง"):
         st.rerun()
-                  
-def set_utm_name_for_session(session_id, utm_name):
-    st.session_state["cookies"].setdefault(session_id, {})
-    st.session_state["cookies"][session_id]["UTM_Name"] = utm_name
-
-def get_utm_name_for_session(session_id):
-    return st.session_state["cookies"].get(session_id, {}).get("UTM_Name", "")
-    
 
 if st.session_state["verity"] == False:
     placeholder = st.empty()
@@ -180,7 +172,6 @@ if st.session_state["verity"]:
     """
 
     UTM_saved = cookie_manager.get("last_search", "")
-    UTM_saved 
 
     if UTM_saved and UTM_saved not in st.session_state["Data"]:
         id = df[df['Name']==UTM_saved]
