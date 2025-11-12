@@ -60,7 +60,6 @@ if "cookies" not in st.session_state:
 if session_cookie_id not in st.session_state["cookies"]:
     st.session_state["cookies"][session_cookie_id] = {}
 
-cookie_manager
 #if "data_" not in cookie_manager:
 #    cookie_manager["data_"]="123"
     #cookie_manager.save()
