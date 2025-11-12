@@ -160,9 +160,9 @@ if st.session_state["verity"]:
                 else:
                     # store in session cache for reuse in same session
                     st.session_state["Data"][UTM] = {
-                        "poly_data": poly_json,
-                        "point_data": point_json,
-                        "data_point": gdf_points,
+                        "poly_data": poly_data,
+                        "point_data": point_data,
+                        "data_point": data_point,
                     }
                         
                 st.session_state["Search"] = True
