@@ -22,6 +22,7 @@ import math
 import requests
 import matplotlib.font_manager as fm
 from streamlit_cookies_manager import EncryptedCookieManager
+import uuid
 
 cookie_manager = None
 try:
