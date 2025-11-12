@@ -82,12 +82,8 @@ def get_data(poly_url,point_url):
     poly_data = requests.get(poly_url).json()
     point_data = requests.get(point_url).json()
     data_point = gpd.read_file(point_url)[:-1]
-    st.session_state["Data"][UTM] = {
-        "poly_data": poly_data,
-        "point_data": point_data,
-        "data_point": data_point,
-    }
-    return st.session_state["Data"][UTM]["poly_data"], st.session_state["Data"][UTM]["point_data"], st.session_state["Data"][UTM]["data_point"]
+
+    return poly_data, point_data, data_point
     
 @st.cache_data    
 def get_List():
@@ -144,7 +140,6 @@ if st.session_state["verity"]:
     land_no = col_6.text_input("เลขที่ดิน","")
     
     if st.button("Search"):
-        st.session_state["Search"] = True   
         if UTMMAP1 and UTMMAP3 and land_no:
             # === Path ไปยังไฟล์ของคุณ ===
             UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
@@ -164,10 +159,17 @@ if st.session_state["verity"]:
                     poly_data,point_data,data_point = get_data(poly_url,point_url)
                 except Exception as e:
                     st.error(f"โหลดข้อมูลล้มเหลว: {e}")
+                else:
+                    st.session_state["Data"][UTM] = {
+                        "poly_data": poly_data,
+                        "point_data": point_data,
+                        "data_point": data_point,
+                    }
+                    cookie_manager["Data"][UTM]  = st.session_state["Data"][UTM]
+                    cookie_manager.save()
         else:
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
-    else:
-        st.session_state["Search"] = False
+
     
     """
             --------------
@@ -175,19 +177,18 @@ if st.session_state["verity"]:
 
     UTM_saved = cookie_manager.get("last_search", "")
     UTM_saved 
-    st.session_state["Data"][UTM_saved]["poly_data"]
-    #if UTM_saved and st.session_state["Data"] = {}:
-    #    st.session_state["Data"][UTM_saved] = {
-    #        "poly_data": cookie_manager.get("poly_data", ""),
-    #        "point_data": cookie_manager.get("point_data", ""),
-    #        "data_point": cookie_manager.get("data_point", ""),
-    #    }
 
-    if UTM_saved and UTM_saved in st.session_state["Data"]:
+    if UTM_saved and UTM_saved in cookie_manager["Data"]
+        poly_data =  cookie_manager["Data"][UTM_saved]["poly_data"]
+        point_data = cookie_manager["Data"][UTM_saved]["point_data"]
+        data_point = cookie_manager["Data"][UTM_saved]["data_point"]
+
+    if ( UTM_saved and UTM_saved in st.session_state["Data"] ) :
         poly_data = st.session_state["Data"][UTM_saved]["poly_data"]
         point_data = st.session_state["Data"][UTM_saved]["point_data"]
         data_point = st.session_state["Data"][UTM_saved]["data_point"]
-                    
+    
+    if ( UTM_saved and UTM_saved in st.session_state["Data"] ) or ( UTM_saved and UTM_saved in cookie_manager["Data"] ):
         polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
         points = [shape(feat["geometry"]) for feat in point_data["features"]]
         
