@@ -99,8 +99,7 @@ def get_List():
 def pop_up():
     if st.button("ตกลง"):
         st.rerun()
-        
-#@st.cache_data            
+                  
 def set_utm_name_for_session(session_id, utm_name):
     st.session_state["cookies"].setdefault(session_id, {})
     st.session_state["cookies"][session_id]["UTM_Name"] = utm_name
