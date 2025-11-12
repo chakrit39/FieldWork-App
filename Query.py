@@ -184,11 +184,11 @@ if st.session_state["verity"]:
    #     point_data = cookie_manager["Data"][UTM_saved]["point_data"]
    #     data_point = cookie_manager["Data"][UTM_saved]["data_point"]
 
-   # if ( UTM_saved and UTM_saved in st.session_state["Data"] ) :
-   #     poly_data = st.session_state["Data"][UTM_saved]["poly_data"]
-   #     point_data = st.session_state["Data"][UTM_saved]["point_data"]
-   #     data_point = st.session_state["Data"][UTM_saved]["data_point"]
-   # 
+    if ( UTM_saved and UTM_saved in st.session_state["Data"] ) :
+        poly_data = st.session_state["Data"][UTM_saved]["poly_data"]
+        point_data = st.session_state["Data"][UTM_saved]["point_data"]
+        data_point = st.session_state["Data"][UTM_saved]["data_point"]
+    
    # if ( UTM_saved and UTM_saved in st.session_state["Data"] ) or ( UTM_saved and UTM_saved in cookie_manager["Data"] ):
     if ( UTM_saved and UTM_saved in st.session_state["Data"] ) :
         polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
