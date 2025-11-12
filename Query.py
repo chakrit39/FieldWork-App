@@ -151,7 +151,7 @@ if st.session_state["verity"]:
             id = df[df['Name']==UTM]
             if len(id) == 0 :
                 st.warning("ไม่พบรูปแปลงที่ดิน")
-                st.session_state["Search"] = False
+                #st.session_state["Search"] = False
             else:
                 id_poly = id[id['Type']=='Polygon']['ID'].iloc[0]
                 id_point = id[id['Type']=='Point']['ID'].iloc[0]
