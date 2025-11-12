@@ -37,6 +37,7 @@ def get_cookies(cookies):
     return st.session_state["cookies"][cookies]
 
 cookies_id = get_cookies(cookies)
+cookies_id
 st.session_state
 
 if "Search" not in st.session_state:
@@ -167,7 +168,6 @@ if st.session_state["verity"]:
     """
             --------------
     """
-    st.session_state
     if "cookies" in st.session_state:
         if  cookies in st.session_state["cookies"] :
             if "UTM_Name" in st.session_state["cookies"][cookies]:
