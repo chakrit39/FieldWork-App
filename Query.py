@@ -60,9 +60,9 @@ if "cookies" not in st.session_state:
 # store cookie-specific dict server-side (avoids direct low-level api usage)
 if session_cookie_id not in st.session_state["cookies"]:
     st.session_state["cookies"][session_cookie_id] = {}
-if "Data" not in cookie_manager:
-    cookie_manager.set("session_id", {})
-    cookie_manager.save()
+#if "Data" not in cookie_manager:
+#    cookie_manager.set("session_id", {})
+#    cookie_manager.save()
 cookie_manager
 st.session_state
 scope = ['https://www.googleapis.com/auth/drive',
