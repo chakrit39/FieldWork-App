@@ -179,18 +179,32 @@ if st.session_state["verity"]:
     UTM_saved = cookie_manager.get("last_search", "")
     UTM_saved 
 
-   # if UTM_saved and UTM_saved in cookie_manager["Data"]:
-   #     poly_data =  cookie_manager["Data"][UTM_saved]["poly_data"]
-   #     point_data = cookie_manager["Data"][UTM_saved]["point_data"]
-   #     data_point = cookie_manager["Data"][UTM_saved]["data_point"]
+    if UTM_saved and UTM_saved not in st.session_state["Data"]:
+        id = df[df['Name']==UTM_saved]
+        if len(id) == 0 :
+            pass
+        else:
+            id_poly = id[id['Type']=='Polygon']['ID'].iloc[0]
+            id_point = id[id['Type']=='Point']['ID'].iloc[0]
+    
+            poly_url = "https://drive.google.com/uc?id=" + id_poly + "&export%3Fformat=geojson"
+            point_url = "https://drive.google.com/uc?id=" + id_point + "&export%3Fformat=geojson"
+            
+            try:
+                poly_data,point_data,data_point = get_data(poly_url,point_url)
+            except Exception as e:
+                st.error(f"โหลดข้อมูลล้มเหลว: {e}")
+            else:
+                st.session_state["Data"][UTM] = {
+                    "poly_data": poly_data,
+                    "point_data": point_data,
+                    "data_point": data_point,
+                }
 
     if ( UTM_saved and UTM_saved in st.session_state["Data"] ) :
         poly_data = st.session_state["Data"][UTM_saved]["poly_data"]
         point_data = st.session_state["Data"][UTM_saved]["point_data"]
         data_point = st.session_state["Data"][UTM_saved]["data_point"]
-    
-   # if ( UTM_saved and UTM_saved in st.session_state["Data"] ) or ( UTM_saved and UTM_saved in cookie_manager["Data"] ):
-    if ( UTM_saved and UTM_saved in st.session_state["Data"] ) :
         polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
         points = [shape(feat["geometry"]) for feat in point_data["features"]]
         
