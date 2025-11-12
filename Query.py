@@ -183,9 +183,7 @@ if st.session_state["verity"]:
             --------------
     """
     
-    if "last_search" in cookie_manager:
-        UTM_saved = cookie_manager["last_search"]
-    if UTM_saved and UTM_saved in st.session_state["Data"]:
+    if cookie_manager["last_search"] and cookie_manager["last_search"] in st.session_state["Data"]:
         poly_data = st.session_state["Data"][UTM_saved]["poly_data"]
         point_data = st.session_state["Data"][UTM_saved]["point_data"]
         data_point = st.session_state["Data"][UTM_saved]["data_point"]
