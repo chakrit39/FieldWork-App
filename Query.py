@@ -139,8 +139,8 @@ if st.session_state["verity"]:
     land_no = col_6.text_input("เลขที่ดิน","")
     
     if st.button("Search"):
+        st.session_state["Search"] = True   
         if UTMMAP1 and UTMMAP3 and land_no:
-            st.session_state["Search"] = True    
             # === Path ไปยังไฟล์ของคุณ ===
             UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
             cookie_manager["last_search"] = UTM
@@ -167,10 +167,9 @@ if st.session_state["verity"]:
                         "data_point": data_point,
                     }
         else:
-            st.session_state["Search"] = True
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
     else:
-        st.session_state["Search"] = True  
+        st.session_state["Search"] = False
     
     """
             --------------
