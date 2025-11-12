@@ -28,7 +28,7 @@ if not cookies.ready():
     st.stop()
 cookies = cookies._cookie_manager["session_id"]
 
-@st.cache_data(ttl=3600)    
+@st.cache_data()    
 def get_cookies(cookies):
     if "cookies" not in st.session_state:
         st.session_state["cookies"] = {}
