@@ -175,7 +175,7 @@ if st.session_state["verity"]:
     UTM_saved
     if UTM_saved and UTM_saved not in st.session_state["Data"]:
         id = df[df['Name']==UTM_saved]
-        df
+        df[df['Name']==UTM_saved]
         if len(id) == 0 :
             pass
         else:
