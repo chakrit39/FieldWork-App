@@ -43,7 +43,7 @@ except Exception:
         session_cookie_id = str(uuid.uuid4())
         st.session_state["_session_id"] = session_cookie_id
         
-"session_id" not in cookie_manager
+"GDF" not in cookie_manager
 
 if "Search" not in st.session_state:
     st.session_state["Search"] = False
