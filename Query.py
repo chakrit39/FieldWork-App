@@ -185,6 +185,7 @@ if st.session_state["verity"]:
             point_url = "https://drive.google.com/uc?id=" + id_point + "&export%3Fformat=geojson"
             
             try:
+                get_data.clear()
                 poly_data,point_data,data_point = get_data(poly_url,point_url)
             except Exception as e:
                 st.error(f"โหลดข้อมูลล้มเหลว: {e}")
