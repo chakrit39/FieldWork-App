@@ -169,7 +169,8 @@ if st.session_state["verity"]:
         else:
             st.session_state["Search"] = True
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
-
+    else:
+        st.session_state["Search"] = True  
     
     """
             --------------
