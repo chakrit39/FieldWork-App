@@ -42,8 +42,7 @@ except Exception:
     if session_cookie_id is None:
         session_cookie_id = str(uuid.uuid4())
         st.session_state["_session_id"] = session_cookie_id
-        
-"GDF" not in cookie_manager
+
 
 if "Search" not in st.session_state:
     st.session_state["Search"] = False
@@ -60,9 +59,9 @@ if "cookies" not in st.session_state:
 # store cookie-specific dict server-side (avoids direct low-level api usage)
 if session_cookie_id not in st.session_state["cookies"]:
     st.session_state["cookies"][session_cookie_id] = {}
-#if "Data" not in cookie_manager:
-#    cookie_manager.set("session_id", {})
-#    cookie_manager.save()
+if "Data_" not in cookie_manager:
+    cookie_manager["Data_"]={}
+    cookie_manager.save()
 cookie_manager
 st.session_state
 scope = ['https://www.googleapis.com/auth/drive',
