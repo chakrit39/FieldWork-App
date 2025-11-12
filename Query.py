@@ -77,7 +77,7 @@ def get_service():
     wks = sh.worksheet('Raw')
     return creds,gc,service,sh,wks
     
-@st.cache_data(ttl=3600)
+#@st.cache_data(ttl=3600)
 def get_data(poly_url,point_url):
     poly_data = requests.get(poly_url).json()
     point_data = requests.get(point_url).json()
