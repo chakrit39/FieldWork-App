@@ -61,7 +61,7 @@ if session_cookie_id not in st.session_state["cookies"]:
     st.session_state["cookies"][session_cookie_id] = {}
 cookie_manager
 st.session_state
-test = cookies.get("last_search", "")
+test = cookie_manager.get("last_search", "")
 test
 scope = ['https://www.googleapis.com/auth/drive',
          'https://www.googleapis.com/auth/drive.file',
