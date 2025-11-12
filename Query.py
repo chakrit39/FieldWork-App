@@ -57,7 +57,7 @@ if "cookies" not in st.session_state:
 # store cookie-specific dict server-side (avoids direct low-level api usage)
 if session_cookie_id not in st.session_state["cookies"]:
     st.session_state["cookies"][session_cookie_id] = {}
-st.session_state    
+ 
 scope = ['https://www.googleapis.com/auth/drive',
          'https://www.googleapis.com/auth/drive.file',
          'https://www.googleapis.com/auth/spreadsheets',
@@ -140,7 +140,8 @@ if st.session_state["verity"]:
                 
             # === Path ไปยังไฟล์ของคุณ ===
             UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
-            
+            if "UTM_Name" in st.session_state["cookies"][session_id]
+                set_utm_name_for_session.clear()
             set_utm_name_for_session(session_cookie_id, UTM)
             
             id = df[df['Name']==UTM]
@@ -179,6 +180,7 @@ if st.session_state["verity"]:
     """
                 
     UTM_saved = get_utm_name_for_session(session_cookie_id)
+    UTM_saved
     if UTM_saved and UTM_saved in st.session_state["Data"]:
         poly_data = st.session_state["Data"][UTM_saved]["poly_data"]
         point_data = st.session_state["Data"][UTM_saved]["point_data"]
@@ -295,4 +297,4 @@ if st.session_state["verity"]:
             number = c1.number_input("ระยะที่วัดได้",value=float(),step=0.001,format="%0.3f" )
             if number != 0:
                 Diff = c2.text_input("ค่าต่าง",abs(round(length-float(number),3)))
-
+st.session_state   
