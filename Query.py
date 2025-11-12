@@ -73,15 +73,15 @@ def get_service():
     return creds,gc,service,sh,wks
     
 @st.cache_data(ttl=3600)
-def get_data(UTM_Name,poly_url,point_url):
+def get_data(poly_url,point_url):
     if "Data" not in st.session_state :
         st.session_state["Data"] = {}
     if UTM_Name not in st.session_state["Data"] :
         st.session_state["Data"][UTM_Name] = {}
-    st.session_state["Data"][UTM_Name]["poly_data"] = requests.get(poly_url).json()
-    st.session_state["Data"][UTM_Name]["point_data"] = requests.get(point_url).json()
-    st.session_state["Data"][UTM_Name]["data_point"] = gpd.read_file(point_url)[:-1]
-    return st.session_state["Data"][UTM_Name]["poly_data"],st.session_state["Data"][UTM_Name]["point_data"],st.session_state["Data"][UTM_Name]["data_point"]
+    poly_data = requests.get(poly_url).json()
+    point_data = requests.get(point_url).json()
+    data_point = gpd.read_file(point_url)[:-1]
+    return poly_data,point_data,data_point
     
 @st.cache_data    
 def get_List():
@@ -89,20 +89,18 @@ def get_List():
     sc = pd.read_csv('./UTMMAP4.csv',header=0,dtype={'UTMMAP4': str})
     return df,sc
     
-
-    
-@st.cache_data(ttl=3600)    
-def get_UTM_Name(UTM):
-    if "UTM_Name" not in st.session_state["cookies"][cookies] :
-        st.session_state["cookies"][cookies]["UTM_Name"] = ""
-    st.session_state["cookies"][cookies]["UTM_Name"] = UTM
-    return st.session_state["cookies"][cookies]["UTM_Name"]
-    
 @st.dialog("รหัสผ่านไม่ถูกต้อง !!", width="small")
 def pop_up():
     if st.button("ตกลง"):
         st.rerun()
+        
+def set_utm_name_for_session(session_id, utm_name):
+    st.session_state["cookies"].setdefault(session_id, {})
+    st.session_state["cookies"][session_id]["UTM_Name"] = utm_name
 
+def get_utm_name_for_session(session_id):
+    return st.session_state["cookies"].get(session_id, {}).get("UTM_Name", "")
+    
 
 if st.session_state["verity"] == False:
     placeholder = st.empty()
@@ -144,7 +142,8 @@ if st.session_state["verity"]:
                 
             # === Path ไปยังไฟล์ของคุณ ===
             UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
-            UTM_Name = get_UTM_Name(UTM)
+            
+            set_utm_name_for_session(session_cookie_id, UTM)
             
             id = df[df['Name']==UTM]
             if len(id) == 0 :
@@ -156,7 +155,20 @@ if st.session_state["verity"]:
     
                 poly_url = "https://drive.google.com/uc?id=" + id_poly + "&export%3Fformat=geojson"
                 point_url = "https://drive.google.com/uc?id=" + id_point + "&export%3Fformat=geojson"
-                poly_data,point_data,data_point = get_data(UTM_Name,poly_url,point_url)
+                
+                try:
+                    poly_data,point_data,data_point = get_data(poly_url,point_url)
+                except Exception as e:
+                    st.error(f"โหลดข้อมูลล้มเหลว: {e}")
+                    st.session_state["Search"] = False
+                else:
+                    # store in session cache for reuse in same session
+                    st.session_state["Data"][UTM] = {
+                        "poly_data": poly_json,
+                        "point_data": point_json,
+                        "data_point": gdf_points,
+                    }
+                        
                 st.session_state["Search"] = True
         else:
             st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
@@ -168,130 +180,121 @@ if st.session_state["verity"]:
             --------------
     """
                 
-    if "cookies" in st.session_state:
-        st.write("cookies")
-        if  cookies in st.session_state["cookies"] :
-            st.write(cookies)
-            if "UTM_Name" in st.session_state["cookies"][cookies]:
-                st.write("UTM_Name")
-                if st.session_state["cookies"][cookies]["UTM_Name"] != UTM:
-                    get_UTM_Name.clear()
-                    UTM_Name = get_UTM_Name(UTM)
-                if st.session_state["cookies"][cookies]["UTM_Name"] in st.session_state["Data"] :
-                    UTM_Name_ = st.session_state["cookies"][cookies]["UTM_Name"]
-                    poly_data = st.session_state["Data"][UTM_Name_]["poly_data"]
-                    point_data = st.session_state["Data"][UTM_Name_]["point_data"]
-                    data_point = st.session_state["Data"][UTM_Name_]["data_point"]
+    UTM_saved = get_utm_name_for_session(session_cookie_id)
+    if UTM_saved and UTM_saved in st.session_state["Data"]:
+        poly_data = st.session_state["Data"][UTM_saved]["poly_data"]
+        point_data = st.session_state["Data"][UTM_saved]["point_data"]
+        data_point = st.session_state["Data"][UTM_saved]["data_point"]
                     
-                    polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
-                    points = [shape(feat["geometry"]) for feat in point_data["features"]]
-                    
-                    sc = polygons[0].length/120
-                    
-                    # === หาชื่อคอลัมน์ point ===
-                    name_col = None
-                    if len(point_data["features"]) > 0:
-                        for k in point_data["features"][0]["properties"].keys():
-                            if any(word in k.lower() for word in ["name", "label", "id", "point"]):
-                                name_col = k
-                                break
-                    
-                    fig, ax = plt.subplots(figsize=(10, 10))
-                    
-                    # === วาด polygon + label ระยะ ===
-                    for poly in polygons:
-                        x, y = poly.exterior.xy
-                        ax.plot(x, y, color="black", linewidth=1)
-                        ax.fill(x, y, alpha=0.1, fc="lightblue")
-                    
-                        coords = list(poly.exterior.coords)
-                        for i in range(len(coords) - 1):
-                            x1, y1 = coords[i]
-                            x2, y2 = coords[i + 1]
-                            dist = Point(x1, y1).distance(Point(x2, y2))
-                            mx, my = (x1 + x2) / 2, (y1 + y2) / 2
-                    
-                            # มุมทางคณิตศาสตร์
-                            angle_math = math.degrees(math.atan2(y2 - y1, x2 - x1))
-                            azimuth = (90 - angle_math) % 360
-                            
-                            if azimuth > 180 :
-                                angle_math = angle_math + 180
-                                
-                            # เวกเตอร์ตั้งฉาก
-                            nx = math.cos(math.radians(angle_math + 90))
-                            ny = math.sin(math.radians(angle_math + 90))
-                    
-                            # offset ออกนอก polygon
-                            offset = sc
-                            ox, oy = nx * offset, ny * offset
-                            mid_point = Point(mx + ox, my + oy)
-                            if mid_point.within(poly):
-                                ox, oy = -ox, -oy
-                    
-                            # วางข้อความระยะ (ไม่มี azimuth)
-                            ax.text(mx + ox, my + oy, f"{dist:.3f} m",
-                                    fontsize=8, ha='center', va='center',
-                                    rotation=angle_math, rotation_mode='anchor')
-                    
-                    # === วาดจุด + ชื่อพร้อม offset ฉลาด ===
-                    for i, feat in enumerate(point_data["features"]):
-                        geom = shape(feat["geometry"])
-                        ax.plot(geom.x, geom.y, "ro", markersize=5)
-                    
-                        label = str(feat["properties"].get(name_col, f"P{i+1}")) if name_col else f"P{i+1}"
-                        point = Point(geom.x, geom.y)
-                        offset_dist = sc*2  # ระยะ offset ออกนอก
-                        ox, oy = 0, offset_dist
-                    
-                        # หาทิศทางออกจาก polygon โดยใช้ centroid เป็นศูนย์กลาง
-                        for poly in polygons:
-                            cx, cy = poly.centroid.x, poly.centroid.y
-                            dx, dy = geom.x - cx, geom.y - cy
-                            length = math.hypot(dx, dy)
-                            if length != 0:
-                                if dx < 0:
-                                    dx = -1
-                                else:
-                                    dx = 1
-                                if dy < 0:
-                                    dy = -1
-                                else:
-                                    dy = 1        
-                                ox, oy = dx  * offset_dist, dy * offset_dist
-                                #ox, oy = (dx / length) * offset_dist, (dy / length) * offset_dist
-                        # วาด label offset ออกนอก polygon
-                        ax.text(geom.x + ox, geom.y + oy, label,
-                                fontsize=9, color="red", ha="center", va="center")
-                    
-                    ax.set_title('\n' + UTM_Name_ + " " + poly_data['features'][0]['properties']['SURVEY_UNITNAME'] + '\n')
-                    ax.axis("equal")
-                    st.pyplot(fig)
-                    
-                    """
-                        --------------
-                    """
-                    
-                    h = len(data_point)
-                    st.dataframe(data=data_point[['PCM_BNDNAME' , 'PCM_NORTH' , 'PCM_EAST']],width="stretch",height=35*(h+1))
-                    """
-                        --------------
-                    """
-                    c01, c02, c03 = st.columns([0.35,0.35,0.3])
-                    Name_list = data_point["PCM_BNDNAME"].to_list()
-                    point1 = c01.selectbox("หมุดหลักเขต 1",Name_list)
-                    point2 = c02.selectbox("หมุดหลักเขต 2",Name_list)
-                    if point1 == point2:
-                        length = 0
-                    else:
-                        point1_ = data_point.loc[data_point['PCM_BNDNAME']==point1,'geometry'].iloc[0]
-                        point2_ = data_point.loc[data_point['PCM_BNDNAME']==point2,'geometry'].iloc[0]
-                        length = round(point1_.distance(point2_),3)
-                    length_ = c03.selectbox("ระยะ",str(length))
-                    
-                    if length > 0 :
-                        c1, c2 = st.columns([0.50,0.50])
-                        number = c1.number_input("ระยะที่วัดได้",value=float(),step=0.001,format="%0.3f" )
-                        if number != 0:
-                            Diff = c2.text_input("ค่าต่าง",abs(round(length-float(number),3)))
+        polygons = [shape(feat["geometry"]) for feat in poly_data["features"]]
+        points = [shape(feat["geometry"]) for feat in point_data["features"]]
         
+        sc = polygons[0].length/120
+        
+        # === หาชื่อคอลัมน์ point ===
+        name_col = None
+        if len(point_data["features"]) > 0:
+            for k in point_data["features"][0]["properties"].keys():
+                if any(word in k.lower() for word in ["name", "label", "id", "point"]):
+                    name_col = k
+                    break
+        
+        fig, ax = plt.subplots(figsize=(10, 10))
+        
+        # === วาด polygon + label ระยะ ===
+        for poly in polygons:
+            x, y = poly.exterior.xy
+            ax.plot(x, y, color="black", linewidth=1)
+            ax.fill(x, y, alpha=0.1, fc="lightblue")
+        
+            coords = list(poly.exterior.coords)
+            for i in range(len(coords) - 1):
+                x1, y1 = coords[i]
+                x2, y2 = coords[i + 1]
+                dist = Point(x1, y1).distance(Point(x2, y2))
+                mx, my = (x1 + x2) / 2, (y1 + y2) / 2
+        
+                # มุมทางคณิตศาสตร์
+                angle_math = math.degrees(math.atan2(y2 - y1, x2 - x1))
+                azimuth = (90 - angle_math) % 360
+                
+                if azimuth > 180 :
+                    angle_math = angle_math + 180
+                    
+                # เวกเตอร์ตั้งฉาก
+                nx = math.cos(math.radians(angle_math + 90))
+                ny = math.sin(math.radians(angle_math + 90))
+        
+                # offset ออกนอก polygon
+                offset = sc
+                ox, oy = nx * offset, ny * offset
+                mid_point = Point(mx + ox, my + oy)
+                if mid_point.within(poly):
+                    ox, oy = -ox, -oy
+        
+                # วางข้อความระยะ (ไม่มี azimuth)
+                ax.text(mx + ox, my + oy, f"{dist:.3f} m",
+                        fontsize=8, ha='center', va='center',
+                        rotation=angle_math, rotation_mode='anchor')
+        
+        # === วาดจุด + ชื่อพร้อม offset ฉลาด ===
+        for i, feat in enumerate(point_data["features"]):
+            geom = shape(feat["geometry"])
+            ax.plot(geom.x, geom.y, "ro", markersize=5)
+        
+            label = str(feat["properties"].get(name_col, f"P{i+1}")) if name_col else f"P{i+1}"
+            point = Point(geom.x, geom.y)
+            offset_dist = sc*2  # ระยะ offset ออกนอก
+            ox, oy = 0, offset_dist
+        
+            # หาทิศทางออกจาก polygon โดยใช้ centroid เป็นศูนย์กลาง
+            for poly in polygons:
+                cx, cy = poly.centroid.x, poly.centroid.y
+                dx, dy = geom.x - cx, geom.y - cy
+                length = math.hypot(dx, dy)
+                if length != 0:
+                    if dx < 0:
+                        dx = -1
+                    else:
+                        dx = 1
+                    if dy < 0:
+                        dy = -1
+                    else:
+                        dy = 1        
+                    ox, oy = dx  * offset_dist, dy * offset_dist
+                    #ox, oy = (dx / length) * offset_dist, (dy / length) * offset_dist
+            # วาด label offset ออกนอก polygon
+            ax.text(geom.x + ox, geom.y + oy, label,
+                    fontsize=9, color="red", ha="center", va="center")
+        
+        ax.set_title('\n' + UTM_Name_ + " " + poly_data['features'][0]['properties']['SURVEY_UNITNAME'] + '\n')
+        ax.axis("equal")
+        st.pyplot(fig)
+        
+        """
+            --------------
+        """
+        
+        h = len(data_point)
+        st.dataframe(data=data_point[['PCM_BNDNAME' , 'PCM_NORTH' , 'PCM_EAST']],width="stretch",height=35*(h+1))
+        """
+            --------------
+        """
+        c01, c02, c03 = st.columns([0.35,0.35,0.3])
+        Name_list = data_point["PCM_BNDNAME"].to_list()
+        point1 = c01.selectbox("หมุดหลักเขต 1",Name_list)
+        point2 = c02.selectbox("หมุดหลักเขต 2",Name_list)
+        if point1 == point2:
+            length = 0
+        else:
+            point1_ = data_point.loc[data_point['PCM_BNDNAME']==point1,'geometry'].iloc[0]
+            point2_ = data_point.loc[data_point['PCM_BNDNAME']==point2,'geometry'].iloc[0]
+            length = round(point1_.distance(point2_),3)
+        length_ = c03.selectbox("ระยะ",str(length))
+        
+        if length > 0 :
+            c1, c2 = st.columns([0.50,0.50])
+            number = c1.number_input("ระยะที่วัดได้",value=float(),step=0.001,format="%0.3f" )
+            if number != 0:
+                Diff = c2.text_input("ค่าต่าง",abs(round(length-float(number),3)))
+
