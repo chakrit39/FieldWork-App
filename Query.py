@@ -60,7 +60,10 @@ if "cookies" not in st.session_state:
 if session_cookie_id not in st.session_state["cookies"]:
     st.session_state["cookies"][session_cookie_id] = {}
 cookie_manager
-cookie_manager["last_search"]
+if "last_search" in cookie_manager:
+    cookie_manager["last_search"]
+else:
+    st.write("ไม่มี")
 st.session_state
 scope = ['https://www.googleapis.com/auth/drive',
          'https://www.googleapis.com/auth/drive.file',
@@ -183,7 +186,8 @@ if st.session_state["verity"]:
     """
             --------------
     """
-    cookie_manager.get("last_search", "")            
+    
+    #UTM_saved = cookie_manager["last_search"]        
     UTM_saved = get_utm_name_for_session(session_cookie_id)
     if UTM_saved and UTM_saved in st.session_state["Data"]:
         poly_data = st.session_state["Data"][UTM_saved]["poly_data"]
