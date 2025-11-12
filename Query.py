@@ -139,7 +139,7 @@ if st.session_state["verity"]:
             # === Path ไปยังไฟล์ของคุณ ===
             UTM = str(UTMMAP1) + " " + str(UTMMAP2) + " " + str(UTMMAP3) + "-" + str(UTMMAP4) + "(" + str(Scale) + ")_" + str(land_no)
             UTM_Name = get_UTM_Name(UTM)
-            if UTM_Name != UTM:
+            if st.session_state["cookies"][cookies]["UTM_Name"] != UTM:
                 get_UTM_Name.clear()
                 UTM_Name = get_UTM_Name(UTM)
             
