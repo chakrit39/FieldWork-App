@@ -321,7 +321,7 @@ if st.session_state["verity"]:
         
         # ปุ่มดาวน์โหลด
         st.download_button(
-            label="⬇️ ดาวน์โหลด CSV",
+            label="⬇️ ดาวน์โหลด CSV (Name,N,E,Elevation)",
             data=csv,
             file_name=UTM_saved+".csv",
             mime="text/csv"
