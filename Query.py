@@ -309,4 +309,15 @@ if st.session_state["verity"]:
             number = c1.number_input("ระยะที่วัดได้",value=float(),step=0.001,format="%0.3f" )
             if number != 0:
                 Diff = c2.text_input("ค่าต่าง",abs(round(length-float(number),3)))
-
+        csv_ = data_point[['PCM_BNDNAME' , 'PCM_NORTH' , 'PCM_EAST']]
+        csv_ = csv_.rename({'PCM_BNDNAME':"Name",'PCM_NORTH':"N", 'PCM_EAST':"E"})
+        csv_ = csv_[["Name","N","E"]]
+        csv = csv_.to_csv(index=False, encoding='utf-8-sig')
+        
+        # ปุ่มดาวน์โหลด
+        st.download_button(
+            label="⬇️ ดาวน์โหลด CSV",
+            data=csv,
+            file_name="output.csv",
+            mime="text/csv"
+        )
