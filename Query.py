@@ -115,6 +115,8 @@ if st.session_state["verity"] == False:
 creds,gc,service,sh,wks = get_service()
 df,sc = get_List()  
 
+cookie_manager
+
 if st.session_state["verity"]:
     st.set_page_config(page_title="Query")
     
