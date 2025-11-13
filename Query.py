@@ -114,7 +114,7 @@ if st.session_state["verity"] == False:
         
 creds,gc,service,sh,wks = get_service()
 df,sc = get_List()  
-uuid.uuid4()
+st.wrtie(str(uuid.uuid4()))
 cookie_manager
 
 if st.session_state["verity"]:
