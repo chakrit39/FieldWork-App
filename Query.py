@@ -114,9 +114,9 @@ if st.session_state["verity"] == False:
         
 creds,gc,service,sh,wks = get_service()
 df,sc = get_List()  
-st.write(str(uuid.uuid4()))
-cookie_manager
-st.session_state
+#st.write(str(uuid.uuid4()))
+#cookie_manager
+#st.session_state
 if st.session_state["verity"]:
     st.set_page_config(page_title="Query")
     
