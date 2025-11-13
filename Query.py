@@ -115,6 +115,7 @@ if st.session_state["verity"] == False:
 creds,gc,service,sh,wks = get_service()
 df,sc = get_List()  
 st.write(str(uuid.uuid4()))
+cookie_manager.set("session_id", "13245")
 cookie_manager
 
 if st.session_state["verity"]:
