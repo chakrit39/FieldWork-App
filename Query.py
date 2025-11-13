@@ -42,11 +42,7 @@ except Exception:
     if session_cookie_id is None:
         session_cookie_id = str(uuid.uuid4())
         st.session_state["_session_id"] = session_cookie_id
-query_params = st.query_params        
-session_id = str(uuid.uuid4())
-query_params["sid"] = session_id
-st.query_params.update(query_params)
-query_params
+
 if "Search" not in st.session_state:
     st.session_state["Search"] = False
 if "Search_" not in st.session_state:
