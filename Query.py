@@ -311,7 +311,6 @@ if st.session_state["verity"]:
                 Diff = c2.text_input("ค่าต่าง",abs(round(length-float(number),3)))
         csv_ = data_point[['PCM_BNDNAME' , 'PCM_NORTH' , 'PCM_EAST']]
         csv_ = csv_.rename({'PCM_BNDNAME':"Name",'PCM_NORTH':"N", 'PCM_EAST':"E"})
-        csv_ = csv_[["Name","N","E"]]
         csv = csv_.to_csv(index=False, encoding='utf-8-sig')
         
         # ปุ่มดาวน์โหลด
