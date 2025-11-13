@@ -27,6 +27,10 @@ import uuid
 cookie_manager = None
 try:
     cookie_manager = EncryptedCookieManager(prefix="my_app", password="my_secrets_key")
+    for _ in range(10):
+        if cookie_manager.ready():
+            break
+        time.sleep(0.2)
     if cookie_manager.ready():
         session_cookie_id = cookie_manager.get("session_id") or None
         if session_cookie_id is None:
@@ -115,7 +119,7 @@ if st.session_state["verity"] == False:
 creds,gc,service,sh,wks = get_service()
 df,sc = get_List()  
 #st.write(str(uuid.uuid4()))
-#cookie_manager
+cookie_manager
 #st.session_state
 if st.session_state["verity"]:
     st.set_page_config(page_title="Query")
