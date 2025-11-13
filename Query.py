@@ -27,10 +27,6 @@ import uuid
 cookie_manager = None
 try:
     cookie_manager = EncryptedCookieManager(prefix="my_app", password="my_secrets_key")
-    for _ in range(10):
-        if cookie_manager.ready():
-            break
-        time.sleep(0.2)
     if cookie_manager.ready():
         session_cookie_id = cookie_manager.get("session_id") or None
         if session_cookie_id is None:
@@ -46,8 +42,11 @@ except Exception:
     if session_cookie_id is None:
         session_cookie_id = str(uuid.uuid4())
         st.session_state["_session_id"] = session_cookie_id
-
-
+        
+session_id = str(uuid.uuid4())
+query_params["sid"] = session_id
+st.query_params.update(query_params)
+query_params
 if "Search" not in st.session_state:
     st.session_state["Search"] = False
 if "Search_" not in st.session_state:
