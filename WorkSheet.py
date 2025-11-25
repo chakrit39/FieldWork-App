@@ -320,6 +320,9 @@ if st.session_state["Login"]:
         sql = f'SELECT * FROM "public"."BND_' + office_choice + '"'
         gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
         gdf_postgis_new = gdf_postgis[['Name','Code','N','E','h','Remark','Date']] #[gdf_postgis['ผู้รังวัด']==Name]
+        sql = f'SELECT * FROM "public"."L2_' + office_choice + '"'
+        gdf_L2 = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
+        st.write(gdf_L2["Code_N"].value_counts())
         if BND_NAME != "" :
             data_point = gdf_postgis_new[['Name','Code','N','E','h','Remark','Date']][gdf_postgis_new.Code==BND_NAME]
             data_point = data_point.reset_index(drop=True)
