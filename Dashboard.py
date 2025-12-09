@@ -203,8 +203,8 @@ with tab2:
         df_name_['จำนวนแปลง'][j] = len(gdf_L2_temp)
         gdf_BND_temp = gdf_BND[gdf_BND["Surveyer"]==df_name_["Name"].iloc[j]]
         df_name_['จำนวนหมุด'][j] = round((len(gdf_BND_temp)/3)-0.5,0)    
+    df_name_.index = df_name_["ลำดับ"]
     df_name_ = df_name_[["Name","จำนวนแปลง","จำนวนหมุด"]]
-    df_name_.index = df_name_.index + 1
     st.dataframe(
         df_name_,
         width="stretch",
