@@ -205,10 +205,11 @@ with tab2:
         df_name_['จำนวนหมุด'][j] = round((len(gdf_BND_temp)/3)-0.5,0)    
     df_name_.index = df_name_["ลำดับ"]
     df_name_ = df_name_[["Name","จำนวนแปลง","จำนวนหมุด"]]
+    hh = len(df_name_)
     st.dataframe(
         df_name_,
         width="stretch",
-        height=35*(h+1)
+        height=35*(hh+1)
     )
         
     if st.button("Refresh", type="primary"):
