@@ -202,7 +202,7 @@ with tab2:
         df_name_['จำนวนหมุด'][i] = round((len(gdf_BND_temp)/3)-0.5,0)    
         
     st.dataframe(
-        df,
+        df_name_,
         width="stretch",
         height=35*(h+1)
     )
