@@ -198,7 +198,7 @@ with tab2:
     df_name_['จำนวนแปลง'] = 0
     df_name_['จำนวนหมุด'] = 0
     for j in range(len(df_name_)):
-        k = df_name_["ลำดับ"][j]
+        k = df_name_["ลำดับ"].iloc[j]
         gdf_L2_temp = gdf_L2[gdf_L2["CODE_N"]==k]
         df_name_['จำนวนแปลง'][j] = len(gdf_L2_temp)
         gdf_BND_temp = gdf_BND[gdf_BND["Surveyer"]==df_name_["Name"][j]]
