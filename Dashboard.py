@@ -18,7 +18,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 st.set_page_config(page_title="Dashboard")
 
 #st.markdown("# Dashboard")
-st.sidebar.header("Dashboard")
+#st.sidebar.header("Dashboard")
 if "Login" not in st.session_state:
     st.session_state["Login"] = False
 else:
@@ -196,7 +196,7 @@ with tab2:
     df_name_['จำนวนแปลง'] = 0
     df_name_['จำนวนหมุด'] = 0
     for i in range(len(df_name_)):
-        gdf_L2_temp = gdf_L2[(gdf_L2["NAME"]==df_name_["NAME"][i]) & gdf_L2["FINISH"]==1)]
+        gdf_L2_temp = gdf_L2[(gdf_L2["NAME"]==df_name_["NAME"][i]) & (gdf_L2["FINISH"]==1)]
         df_name_['จำนวนแปลง'][i] = len(gdf_L2_temp)
         gdf_BND_temp = gdf_BND[gdf_BND["Surveyer"]==df_name_["NAME"][i]]
         df_name_['จำนวนหมุด'][i] = round((len(gdf_BND_temp)/3)-0.5,0)    
