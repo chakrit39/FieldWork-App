@@ -200,7 +200,7 @@ with tab2:
     df_name_
     df_name_["ลำดับ"][i]
     for i in range(len(df_name_)):
-        gdf_L2_temp = gdf_L2[(gdf_L2["CODE_N"]==df_name_["ลำดับ"][i]) & (gdf_L2["FINISH"]==1)]
+        gdf_L2_temp = gdf_L2[(gdf_L2["CODE_N"]==int(df_name_["ลำดับ"][i])) & (gdf_L2["FINISH"]==1)]
         df_name_['จำนวนแปลง'][i] = len(gdf_L2_temp)
         gdf_BND_temp = gdf_BND[gdf_BND["Surveyer"]==df_name_["Name"][i]]
         df_name_['จำนวนหมุด'][i] = round((len(gdf_BND_temp)/3)-0.5,0)    
