@@ -197,11 +197,8 @@ with tab2:
     df_name_ = df_name_[["ลำดับ","Name"]]
     df_name_['จำนวนแปลง'] = 0
     df_name_['จำนวนหมุด'] = 0
-    df_name_
-    j = 0
-    df_name_["ลำดับ"][j]
     for j in range(len(df_name_)):
-        gdf_L2_temp = gdf_L2[(gdf_L2["CODE_N"]==df_name_["ลำดับ"][j]) & (gdf_L2["FINISH"]==1)]
+        gdf_L2_temp = gdf_L2[gdf_L2["CODE_N"]==df_name_["ลำดับ"][j]]
         df_name_['จำนวนแปลง'][j] = len(gdf_L2_temp)
         gdf_BND_temp = gdf_BND[gdf_BND["Surveyer"]==df_name_["Name"][j]]
         df_name_['จำนวนหมุด'][j] = round((len(gdf_BND_temp)/3)-0.5,0)    
