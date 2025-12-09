@@ -212,6 +212,6 @@ with tab2:
     if st.button("Refresh", type="primary"):
         st.session_state["Refresh"] = True
         get_postgis().clear()
-        engine = get_postgis()
+        #engine = get_postgis()
     else:
         st.session_state["Refresh"] = False   
