@@ -199,11 +199,11 @@ with tab2:
     df_name_['จำนวนหมุด'] = 0
     df_name_
     df_name_["ลำดับ"][i]
-    for i in range(len(df_name_)):
-        gdf_L2_temp = gdf_L2[(gdf_L2["CODE_N"]==int(df_name_["ลำดับ"][i])) & (gdf_L2["FINISH"]==1)]
-        df_name_['จำนวนแปลง'][i] = len(gdf_L2_temp)
-        gdf_BND_temp = gdf_BND[gdf_BND["Surveyer"]==df_name_["Name"][i]]
-        df_name_['จำนวนหมุด'][i] = round((len(gdf_BND_temp)/3)-0.5,0)    
+    for j in range(len(df_name_)):
+        gdf_L2_temp = gdf_L2[(gdf_L2["CODE_N"]==int(df_name_["ลำดับ"][j])) & (gdf_L2["FINISH"]==1)]
+        df_name_['จำนวนแปลง'][j] = len(gdf_L2_temp)
+        gdf_BND_temp = gdf_BND[gdf_BND["Surveyer"]==df_name_["Name"][j]]
+        df_name_['จำนวนหมุด'][j] = round((len(gdf_BND_temp)/3)-0.5,0)    
     df_name_ = df_name_[["Name","จำนวนแปลง","จำนวนหมุด"]]    
     st.dataframe(
         df_name_,
