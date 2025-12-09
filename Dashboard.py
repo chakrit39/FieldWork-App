@@ -194,7 +194,7 @@ with tab2:
     creds,gc,sh,wks,wks_result = get_service()
     df_name = pd.read_csv("https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv",header=0)
     df_name_ = df_name[df_name["รอบที่ 1"]==True]
-    df_name_ = df_name_["Name"]
+    df_name_ = df_name_[["ลำดับ","Name"]]
     df_name_['จำนวนแปลง'] = 0
     df_name_['จำนวนหมุด'] = 0
     for i in range(len(df_name_)):
@@ -202,7 +202,7 @@ with tab2:
         df_name_['จำนวนแปลง'][i] = len(gdf_L2_temp)
         gdf_BND_temp = gdf_BND[gdf_BND["Surveyer"]==df_name_["Name"][i]]
         df_name_['จำนวนหมุด'][i] = round((len(gdf_BND_temp)/3)-0.5,0)    
-        
+    df_name_ = df_name_[["Name","จำนวนแปลง","จำนวนหมุด"]]    
     st.dataframe(
         df_name_,
         width="stretch",
