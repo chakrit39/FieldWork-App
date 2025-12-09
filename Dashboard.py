@@ -81,84 +81,135 @@ def get_Refresh():
     map = get_map()
 def get_Refresh2():    
     get_map.clear()
+    
+@st.cache_resource(ttl=21600)      
+def get_postgis():
+    HOSTNAME = st.secrets["HOSTNAME"]
+    USER = st.secrets["USER"]
+    PASSWD = st.secrets["PASSWD"]
+    engine = create_engine( f"postgresql://{USER}:{PASSWD}@{HOSTNAME}:5432/Data1")
+    return engine
+    
+tab1, tab2 = st.tabs(["Report Dashboard", "QField Dashboard"])
 
-st.title("Dashboard")
-creds,gc,sh,wks,wks_result = get_service()
-
-Round_ = st.selectbox("เลือกรอบ ",["รอบที่ 1","รอบที่ 2","รอบที่ 3","รอบที่ 4", "ทั้งหมด"],on_change=get_Refresh2())
-if Round_ == "ทั้งหมด":
-    Round = ""
-else:
-    Round = Round_
-df_ =  pd.DataFrame(wks_result.get_all_records())  
-df = df_[['Name','จำนวนหมุดหลักเขต ' + Round, 'จำนวนแปลง ' + Round, 'หมุดเป้าหมาย ' + Round, 'แปลงเป้าหมาย ' + Round]]
-df = df[df['แปลงเป้าหมาย ' + Round]!=0]
-df = df.reset_index(drop=True)
-df['Progress'] = 0
-h = len(df)
-for i in range(h):
-    if round(100/ df['แปลงเป้าหมาย ' + Round][i] * df['จำนวนแปลง ' + Round][i],2) < round(100/ df['หมุดเป้าหมาย ' + Round][i] * df['จำนวนหมุดหลักเขต ' + Round][i],2):
-        df['Progress'][i] = round(100/ df['แปลงเป้าหมาย ' + Round][i] * df['จำนวนแปลง ' + Round][i],2)
+with tab1:
+    st.header("Report Dashboard")
+    #st.title("Dashboard")
+    creds,gc,sh,wks,wks_result = get_service()
+    
+    Round_ = st.selectbox("เลือกรอบ ",["รอบที่ 1","รอบที่ 2","รอบที่ 3","รอบที่ 4", "ทั้งหมด"],on_change=get_Refresh2())
+    if Round_ == "ทั้งหมด":
+        Round = ""
     else:
-        df['Progress'][i] = round(100/ df['หมุดเป้าหมาย ' + Round][i] * df['จำนวนหมุดหลักเขต ' + Round][i],2)
-df = df.rename(columns={'แปลงเป้าหมาย ' + Round : 'แปลงเป้าหมาย', 'จำนวนแปลง ' + Round : 'จำนวนแปลง' , 'หมุดเป้าหมาย ' + Round : 'หมุดเป้าหมาย' , 'จำนวนหมุดหลักเขต ' + Round : 'จำนวนหมุดหลักเขต'}, errors="raise")
-#df_ = df.tail(1).copy()
-#df = df.drop([df_.index[0]])
-st.dataframe(
-    df,
-    column_config={
-        "Progress": st.column_config.ProgressColumn(
-            "Progress",
-            help="The sales volume in USD",
-            format="%f %%",
-            min_value=0,
-            max_value=100,
-        ),
-    },
-    #hide_index=True,
-    width="stretch",
-    height=35*(h+1)
-)
-
-
-#st.header('Map')
-#map = get_map()
-
-#Name_list_ = df["Name"].to_list()
-#Name_list_ = Name_list_[0:len(Name_list_)-1]
-#Name_list = ["ทั้งหมด"]
-#Name_list.extend(Name_list_)
-#Name = st.selectbox("ผู้รังวัด",Name_list,on_change=get_Refresh())
-if st.button("Refresh"):
-    st.session_state["Refresh"] = True
-    #get_map.clear()
-    get_service.clear()
+        Round = Round_
+    df_ =  pd.DataFrame(wks_result.get_all_records())  
+    df = df_[['Name','จำนวนหมุดหลักเขต ' + Round, 'จำนวนแปลง ' + Round, 'หมุดเป้าหมาย ' + Round, 'แปลงเป้าหมาย ' + Round]]
+    df = df[df['แปลงเป้าหมาย ' + Round]!=0]
+    df = df.reset_index(drop=True)
+    df['Progress'] = 0
+    h = len(df)
+    for i in range(h):
+        if round(100/ df['แปลงเป้าหมาย ' + Round][i] * df['จำนวนแปลง ' + Round][i],2) < round(100/ df['หมุดเป้าหมาย ' + Round][i] * df['จำนวนหมุดหลักเขต ' + Round][i],2):
+            df['Progress'][i] = round(100/ df['แปลงเป้าหมาย ' + Round][i] * df['จำนวนแปลง ' + Round][i],2)
+        else:
+            df['Progress'][i] = round(100/ df['หมุดเป้าหมาย ' + Round][i] * df['จำนวนหมุดหลักเขต ' + Round][i],2)
+    df = df.rename(columns={'แปลงเป้าหมาย ' + Round : 'แปลงเป้าหมาย', 'จำนวนแปลง ' + Round : 'จำนวนแปลง' , 'หมุดเป้าหมาย ' + Round : 'หมุดเป้าหมาย' , 'จำนวนหมุดหลักเขต ' + Round : 'จำนวนหมุดหลักเขต'}, errors="raise")
+    #df_ = df.tail(1).copy()
+    #df = df.drop([df_.index[0]])
+    st.dataframe(
+        df,
+        column_config={
+            "Progress": st.column_config.ProgressColumn(
+                "Progress",
+                help="The sales volume in USD",
+                format="%f %%",
+                min_value=0,
+                max_value=100,
+            ),
+        },
+        #hide_index=True,
+        width="stretch",
+        height=35*(h+1)
+    )
+    
+    
+    #st.header('Map')
     #map = get_map()
-    #creds,gc,sh,wks,wks_result = get_service()
-else:
-    st.session_state["Refresh"] = False
-#gdf_ong = pd.DataFrame(gc.open('องครักษ์').worksheet('Raw').get_all_records())   
-#gdf_lum = pd.DataFrame(gc.open('ลำลูกกา').worksheet('Raw').get_all_records())  
-#gdf_thun = pd.DataFrame(gc.open('ธัญบุรี').worksheet('Raw').get_all_records())  
-#gdf_khlong = pd.DataFrame(gc.open('คลองหลวง').worksheet('Raw').get_all_records())  
-#gdf_pathum = pd.DataFrame(gc.open('ปทุมธานี').worksheet('Raw').get_all_records())  
-#gdf_ = gpd.GeoDataFrame(pd.concat([gdf_ong,gdf_lum,gdf_thun,gdf_khlong,gdf_pathum]))
-#if Round_ != "ทั้งหมด":
-#    gdf = gdf_[gdf_["รอบ"]==Round]
-#    gdf = gdf.reset_index(drop=True)
-#else:
-#    gdf = gdf_
-#if len(gdf)!=0:  
-#    if Name != "ทั้งหมด":
-#        gdf = gdf[gdf['ผู้รังวัด']==Name]
-#    gdf = gdf.set_geometry(gpd.points_from_xy(gdf.E,gdf.N),crs='EPSG:24047')
-    #st.dataframe(data=gdf)
-#    gdf = gdf.to_crs(epsg=4326)
-    #st.dataframe(data=gdf)
-    #gdf.crs
-    #lat = gdf.geometry.y
-    #lon = gdf.geometry.x
-    #fo.CircleMarker([lat,lon],radius = 3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
-#    for lat,lon in zip(gdf.geometry.y,gdf.geometry.x):
-#        fo.CircleMarker([lat,lon],radius=3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
-#folium_static(map)
+    
+    #Name_list_ = df["Name"].to_list()
+    #Name_list_ = Name_list_[0:len(Name_list_)-1]
+    #Name_list = ["ทั้งหมด"]
+    #Name_list.extend(Name_list_)
+    #Name = st.selectbox("ผู้รังวัด",Name_list,on_change=get_Refresh())
+    if st.button("Refresh"):
+        st.session_state["Refresh"] = True
+        #get_map.clear()
+        get_service.clear()
+        #map = get_map()
+        #creds,gc,sh,wks,wks_result = get_service()
+    else:
+        st.session_state["Refresh"] = False
+    #gdf_ong = pd.DataFrame(gc.open('องครักษ์').worksheet('Raw').get_all_records())   
+    #gdf_lum = pd.DataFrame(gc.open('ลำลูกกา').worksheet('Raw').get_all_records())  
+    #gdf_thun = pd.DataFrame(gc.open('ธัญบุรี').worksheet('Raw').get_all_records())  
+    #gdf_khlong = pd.DataFrame(gc.open('คลองหลวง').worksheet('Raw').get_all_records())  
+    #gdf_pathum = pd.DataFrame(gc.open('ปทุมธานี').worksheet('Raw').get_all_records())  
+    #gdf_ = gpd.GeoDataFrame(pd.concat([gdf_ong,gdf_lum,gdf_thun,gdf_khlong,gdf_pathum]))
+    #if Round_ != "ทั้งหมด":
+    #    gdf = gdf_[gdf_["รอบ"]==Round]
+    #    gdf = gdf.reset_index(drop=True)
+    #else:
+    #    gdf = gdf_
+    #if len(gdf)!=0:  
+    #    if Name != "ทั้งหมด":
+    #        gdf = gdf[gdf['ผู้รังวัด']==Name]
+    #    gdf = gdf.set_geometry(gpd.points_from_xy(gdf.E,gdf.N),crs='EPSG:24047')
+        #st.dataframe(data=gdf)
+    #    gdf = gdf.to_crs(epsg=4326)
+        #st.dataframe(data=gdf)
+        #gdf.crs
+        #lat = gdf.geometry.y
+        #lon = gdf.geometry.x
+        #fo.CircleMarker([lat,lon],radius = 3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
+    #    for lat,lon in zip(gdf.geometry.y,gdf.geometry.x):
+    #        fo.CircleMarker([lat,lon],radius=3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
+    #folium_static(map)
+
+with tab2:
+    st.header("QField Dashboard")
+    if "Refresh" not in st.session_state:
+        st.session_state["Refresh"] = False
+    Office = ['นครนายก'] 
+    office_select = st.selectbox("สำนักงานที่ดิน",Office)
+    office_ = pd.DataFrame([["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],["นครนายก","NAKHONNAYOK"]],columns=["th","eng"])
+    office_choice = office_['eng'][office_['th']==office_select].iloc[0]
+    engine = get_postgis()
+    sql = f'SELECT * FROM "public"."L2_' + office_choice + '"'
+    gdf_L2 = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
+    sql = f'SELECT * FROM "public"."BND_' + office_choice + '"'
+    gdf_BND = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
+
+
+    creds,gc,sh,wks,wks_result = get_service()
+    df_name_ = df_name[df_name["รอบที่ 1"]==True]
+    df_name_ = df_name_["Name"]
+    df_name_['จำนวนแปลง'] = 0
+    df_name_['จำนวนหมุด'] = 0
+    for i in range(len(df_name_)):
+        gdf_L2_temp = gdf_L2[(gdf_L2["NAME"]==df_name_["NAME"][i]) & gdf_L2["FINISH"]==1)]
+        df_name_['จำนวนแปลง'][i] = len(gdf_L2_temp)
+        gdf_BND_temp = gdf_BND[gdf_BND["Surveyer"]==df_name_["NAME"][i]]
+        df_name_['จำนวนหมุด'][i] = round((len(gdf_BND_temp)/3)-0.5,0)    
+        
+    st.dataframe(
+        df,
+        width="stretch",
+        height=35*(h+1)
+    )
+        
+    if st.button("Refresh", type="primary"):
+        st.session_state["Refresh"] = True
+        get_postgis().clear()
+        engine = get_postgis()
+    else:
+        st.session_state["Refresh"] = False   
