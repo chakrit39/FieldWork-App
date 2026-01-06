@@ -81,7 +81,7 @@ def upload_image(service, parents, image_file,
                      
 @st.cache_resource(ttl=21600) 
 def get_service():
-    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scope,subject="lands.fieldwork@gmail.com")
     return creds
     
 @st.cache_resource(ttl=21600)   
