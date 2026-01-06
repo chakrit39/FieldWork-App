@@ -389,7 +389,7 @@ if st.session_state["Login"]:
     service,chk_name = get_drive_service(Name)
     if chk_name != Name:
         get_drive_service.clear()
-        service,chk_name = get_drive_service(Name)
+        #service,chk_name = get_drive_service(Name)
         
     c001, c002 = st.columns([0.12,0.88])
     if c002.button("Refresh", type="primary"):
@@ -397,9 +397,9 @@ if st.session_state["Login"]:
         get_drive_service.clear()
         get_wks.clear()
         get_reg.clear()
-        wks,chk_wks = get_wks(office_select)
-        df_reg,chk_reg = get_reg(office_select)
-        service,chk_name = get_drive_service(Name)
+        #wks,chk_wks = get_wks(office_select)
+        #df_reg,chk_reg = get_reg(office_select)
+        #service,chk_name = get_drive_service(Name)
     else:
         st.session_state["Refresh"] = False   
     
