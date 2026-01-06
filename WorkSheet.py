@@ -101,7 +101,8 @@ def get_wks(office_select):
         gc = gspread.authorize(creds)
         sh = gc.open(office_select)
         st.session_state[office_select]["wks"] = sh.worksheet('Raw')
-        chk_wks = office_select
+        st.session_state[office_select]["office_select"] = office_select
+        chk_wks = st.session_state[office_select]["office_select"]
     return st.session_state[office_select]["wks"], chk_wks
     
 @st.cache_data(ttl=86400)  
