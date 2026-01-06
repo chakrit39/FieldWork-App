@@ -152,7 +152,7 @@ with placeholder.form("login"):
         st.session_state["Login_alert"] = True
         
 if st.session_state["Login"]:
-    office_select = office_select
+    #office_select = office_select
     round_ = "รอบที่ " + round_
     placeholder.empty()
     if st.session_state["Login_alert"] == True:
