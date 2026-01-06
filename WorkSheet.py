@@ -72,7 +72,8 @@ def upload_image(service, parents, image_file,
     file = service.files().create(
         body=file_metadata,
         media_body=media,
-        fields="id"
+        fields="id",
+        #supportsAllDrives=True
     ).execute()
                      
     img.close()
@@ -81,20 +82,7 @@ def upload_image(service, parents, image_file,
                      
 @st.cache_resource(ttl=21600) 
 def get_service():
-    #creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scopes=scope )
-    flow = InstalledAppFlow.from_client_config(
-        {
-            "installed": {
-                "client_id": st.secrets["google"]["client_id"],
-                "client_secret": st.secrets["google"]["client_secret"],
-                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                "token_uri": "https://oauth2.googleapis.com/token",
-            }
-        },
-        scope,
-        )
-
-    creds = flow.run_local_server(port=0)
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scopes=scope )
     return creds
     
 @st.cache_resource(ttl=21600)   
