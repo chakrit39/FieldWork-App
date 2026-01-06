@@ -103,7 +103,7 @@ def get_wks(office_select):
         st.session_state[office_select]["wks"] = sh.worksheet('Raw')
         st.session_state[office_select]["office_name"] = office_select
         chk_wks = st.session_state[office_select]["office_name"]
-    return st.session_state[office_select]["wks"], chk_wks
+    return st.session_state[office_select]["wks"], st.session_state[office_select]["office_name"]
     
 @st.cache_data(ttl=86400)  
 def get_reg(office_select):
