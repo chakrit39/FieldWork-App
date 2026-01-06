@@ -65,13 +65,14 @@ def upload_image(service, parents, image_file,
     img_bytes.seek(0)
 
     # ✅ อัปโหลดโดยใช้ MediaIoBaseUpload
-    file_metadata = {"name": file_name, "parents": [parents]}
-    media = MediaIoBaseUpload(img_bytes, mimetype="image/jpeg")
+    file_metadata = {"name": file_name, "parents": [parents] }
+    media = MediaIoBaseUpload(img_bytes, mimetype="image/jpeg" ,resumable=False)
 
     file = service.files().create(
         body=file_metadata,
         media_body=media,
-        fields="id"
+        fields="id",
+        supportsAllDrives=True
     ).execute()
                      
     img.close()
@@ -80,7 +81,7 @@ def upload_image(service, parents, image_file,
                      
 @st.cache_resource(ttl=21600) 
 def get_service():
-    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scopes=scope )
     return creds
     
 @st.cache_resource(ttl=21600)   
