@@ -3,6 +3,7 @@ import pandas as pd
 #import numpy as np
 #from streamlit_folium import folium_static
 import geopandas as gpd
+from google_auth_oauthlib.flow import InstalledAppFlow
 #from requests.auth import HTTPBasicAuth
 #import time
 #import datetime
@@ -80,7 +81,20 @@ def upload_image(service, parents, image_file,
                      
 @st.cache_resource(ttl=21600) 
 def get_service():
-    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scopes=scope )
+    #creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scopes=scope )
+    flow = InstalledAppFlow.from_client_config(
+        {
+            "installed": {
+                "client_id": st.secrets["google"]["client_id"],
+                "client_secret": st.secrets["google"]["client_secret"],
+                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                "token_uri": "https://oauth2.googleapis.com/token",
+            }
+        },
+        scope,
+        )
+
+    creds = flow.run_local_server(port=0)
     return creds
     
 @st.cache_resource(ttl=21600)   
