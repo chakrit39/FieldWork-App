@@ -448,8 +448,8 @@ if st.session_state["Login"]:
                         st.warning("โปรดเลือกรูปภาพให้ครบ 3 รูป")
                 except MemoryError:
                     st.error("❌ หน่วยความจำไม่เพียงพอขณะประมวลผลรูป")
-                except Exception as e:
-                    st.error(f"เกิดข้อผิดพลาดขณะบันทึก โปรดลองใหม่อีกครั้ง")
+                #except Exception as e:
+                    #st.error(f"เกิดข้อผิดพลาดขณะบันทึก โปรดลองใหม่อีกครั้ง")
             else:
                 st.warning("มีค่าพิกัด NE ต่างกันเกิน 4 cm.")
         else:
