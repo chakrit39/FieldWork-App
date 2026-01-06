@@ -152,7 +152,7 @@ with placeholder.form("login"):
         st.session_state["Login_alert"] = True
         
 if st.session_state["Login"]:
-    #office_select = office_select
+    office_select = office_select
     round_ = "รอบที่ " + round_
     placeholder.empty()
     if st.session_state["Login_alert"] == True:
@@ -402,7 +402,7 @@ if st.session_state["Login"]:
         service,chk_name = get_drive_service(Name)
     else:
         st.session_state["Refresh"] = False   
-    st.session_state  
+    #st.session_state  
     if c001.button("Submit"):
         #import time 
         #start = time.time()
@@ -448,8 +448,8 @@ if st.session_state["Login"]:
                         st.warning("โปรดเลือกรูปภาพให้ครบ 3 รูป")
                 except MemoryError:
                     st.error("❌ หน่วยความจำไม่เพียงพอขณะประมวลผลรูป")
-                except Exception as e:
-                    st.error(f"เกิดข้อผิดพลาดขณะบันทึก โปรดลองใหม่อีกครั้ง")
+               # except Exception as e:
+               #     st.error(f"เกิดข้อผิดพลาดขณะบันทึก โปรดลองใหม่อีกครั้ง")
             else:
                 st.warning("มีค่าพิกัด NE ต่างกันเกิน 4 cm.")
         else:
@@ -457,7 +457,7 @@ if st.session_state["Login"]:
     else:
         st.session_state["Submit"] = False
      
-st.session_state         
+#st.session_state         
 #else:    
 #    st.error("Login failed")
 #    st.session_state["Login"] = False
