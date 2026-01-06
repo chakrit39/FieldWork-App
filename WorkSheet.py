@@ -72,7 +72,7 @@ def upload_image(service, parents, image_file,
     file = service.files().create(
         body=file_metadata,
         media_body=media,
-        fields="id",
+        fields="id"
         #supportsAllDrives=True
     ).execute()
                      
