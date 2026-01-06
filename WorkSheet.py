@@ -397,9 +397,9 @@ if st.session_state["Login"]:
         get_drive_service.clear()
         get_wks.clear()
         get_reg.clear()
-        #wks,chk_wks = get_wks(office_select)
-        #df_reg,chk_reg = get_reg(office_select)
-        #service,chk_name = get_drive_service(Name)
+        wks,chk_wks = get_wks(office_select)
+        df_reg,chk_reg = get_reg(office_select)
+        service,chk_name = get_drive_service(Name)
     else:
         st.session_state["Refresh"] = False   
     
@@ -457,7 +457,7 @@ if st.session_state["Login"]:
     else:
         st.session_state["Submit"] = False
      
-#st.session_state         
+st.session_state         
 #else:    
 #    st.error("Login failed")
 #    st.session_state["Login"] = False
