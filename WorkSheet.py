@@ -66,13 +66,12 @@ def upload_image(service, parents, image_file,
 
     # ✅ อัปโหลดโดยใช้ MediaIoBaseUpload
     file_metadata = {"name": file_name, "parents": [parents] }
-    media = MediaIoBaseUpload(img_bytes, mimetype="image/jpeg" ,resumable=False)
+    media = MediaIoBaseUpload(img_bytes, mimetype="image/jpeg" )
 
     file = service.files().create(
         body=file_metadata,
         media_body=media,
-        fields="id",
-        supportsAllDrives=True
+        fields="id"
     ).execute()
                      
     img.close()
