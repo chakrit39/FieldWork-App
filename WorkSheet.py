@@ -459,7 +459,7 @@ if st.session_state["Login"]:
                             file_id = upload_image(
                             GAS_URL,
                             folder_id[i],
-                            uploaded_file,
+                            images[i],
                             UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4,
                             Scale, land_no, BND_NAME
                             )
