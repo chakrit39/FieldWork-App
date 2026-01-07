@@ -41,8 +41,15 @@ scope = ['https://www.googleapis.com/auth/drive',
          'https://www.googleapis.com/auth/drive.file',
          'https://www.googleapis.com/auth/spreadsheets',
         ]
-def upload_image(service, parents, image_file,
-                 UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME):
+#def upload_image(service, parents, image_file,
+#                 UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME):
+GAS_URL = "https://script.google.com/macros/s/AKfycbwPqmDAj7yPGB4lDIdHtypmfrHgN1CrtI_71OTzcy5lBL9m91-3y3ZiTDUo2A6Gq6cn/exec"
+def upload_image(
+    GAS_URL,
+    parents,
+    image_file,
+    UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4,
+    Scale, land_no, BND_NAME):
     # ✅ ตั้งชื่อไฟล์
     file_name = f"{UTMMAP1}{UTMMAP2}{UTMMAP3}-{UTMMAP4}-{Scale}-{land_no}_{BND_NAME}.jpeg"
 
@@ -60,29 +67,48 @@ def upload_image(service, parents, image_file,
     if img.mode != "RGB":
         img = img.convert("RGB")
     
-    # ✅ เขียนไฟล์ลง memory (ไม่ต้อง save ลง disk)
+    # ✅ เขียนไฟล์ลง memory (ไม่ต้อง save ลง disk)              
     img_bytes = BytesIO()
     img.save(img_bytes, format="JPEG")
     img_bytes.seek(0)
-
-    # ✅ อัปโหลดโดยใช้ MediaIoBaseUpload
-    file_metadata = {"name": file_name, "parents": [parents] }
-    media = MediaIoBaseUpload(img_bytes, mimetype="image/jpeg" )
-
-    file = service.files().create(
-        body=file_metadata,
-        media_body=media,
-        fields="id"
-        #supportsAllDrives=True
-    ).execute()
                      
+    b64 = base64.b64encode(img_bytes.read()).decode("utf-8")
+    payload = {
+        "filename": file_name,
+        "mimeType": "image/jpeg",
+        "image": b64,
+        "parents": parents   # ส่ง folderId ไปให้ GAS
+        }
+    r = requests.post(GAS_URL, json=payload, timeout=30)
+                    
+    # ✅ อัปโหลดโดยใช้ MediaIoBaseUpload
+    #file_metadata = {"name": file_name, "parents": [parents] }
+    #media = MediaIoBaseUpload(img_bytes, mimetype="image/jpeg" )
+
+    #file = service.files().create(
+    #    body=file_metadata,
+    #    media_body=media,
+    #    fields="id"
+    #    #supportsAllDrives=True
+    #).execute()
+                     
+    #img.close()
+    #img_bytes.close() 
+    while True:
+        r = requests.post(GAS_URL, json=payload, timeout=30)
+        res = r.json()
+        if res.get("status") == "success":
+            break
+
     img.close()
-    img_bytes.close()                 
-    return file.get('id')
+    img_bytes.close()
+
+    return res["fileId"]
+    #return file.get('id')
                      
 @st.cache_resource(ttl=21600) 
 def get_service():
-    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scopes=scope )
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scope )
     return creds
     
 @st.cache_resource(ttl=21600)   
@@ -423,14 +449,22 @@ if st.session_state["Login"]:
                         images = [image_1, image_2, image_3]
                         #service1 = build("drive", "v3", credentials=creds)
                         for i in range(3):
+                            #file_id = upload_image(
+                            #    service,
+                            #    folder_id[i],
+                            #    images[i],
+                            #    UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME
+                            #)
+                            #image_id.append(file_id)
                             file_id = upload_image(
-                                service,
-                                folder_id[i],
-                                images[i],
-                                UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME
+                            GAS_URL,
+                            folder_id[i],
+                            uploaded_file,
+                            UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4,
+                            Scale, land_no, BND_NAME
                             )
                             image_id.append(file_id)
-                        
+                            
                         row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, Name, round_, Diff, BND_NAME, N, E, H, Method, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
                         row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
                         #gid = row_update['updates']['updatedRange'][5:].split(":")[0]
