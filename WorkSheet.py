@@ -81,7 +81,6 @@ def upload_image(
         "image": b64,
         "parents": parents   # ส่ง folderId ไปให้ GAS
         }
-    r = requests.post(GAS_URL, json=payload, timeout=30)
                     
     # ✅ อัปโหลดโดยใช้ MediaIoBaseUpload
     #file_metadata = {"name": file_name, "parents": [parents] }
