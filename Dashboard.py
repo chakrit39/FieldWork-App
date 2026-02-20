@@ -193,7 +193,7 @@ with tab2:
     creds,gc,sh,wks,wks_result = get_service()
     # Load Names
     df_name = pd.read_csv("https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv")
-    df_active = df_name[df_name["รอบที่ 1"] == True][["ลำดับ", "Name"]].copy()
+    df_active = df_name[["ลำดับ", "Name"]].copy()
 
     # Optimized Counting using Value Counts (No Loops!)
     parcel_counts = gdf_L2[gdf_L2["FINISH"] == 1]["CODE_N"].value_counts()
@@ -203,6 +203,7 @@ with tab2:
     df_active['จำนวนหมุด'] = df_active['Name'].map(marker_counts).apply(lambda x: round((x/3)-0.5, 0) if pd.notnull(x) else 0) 
     df_active.index = df_active["ลำดับ"]
     df_active = df_active[["Name","จำนวนแปลง","จำนวนหมุด"]]
+    df_active = df_active[df_active['จำนวนแปลง']>0]
     hh = len(df_active)
     st.dataframe(
         df_active,
