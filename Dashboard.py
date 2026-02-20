@@ -109,11 +109,10 @@ with tab1:
     df = df.reset_index(drop=True)
     df['Progress'] = 0
     h = len(df)
-    for i in range(h):
-        if round(100/ df['แปลงเป้าหมาย ' + Round][i] * df['จำนวนแปลง ' + Round][i],2) < round(100/ df['หมุดเป้าหมาย ' + Round][i] * df['จำนวนหมุดหลักเขต ' + Round][i],2):
-            df['Progress'][i] = round(100/ df['แปลงเป้าหมาย ' + Round][i] * df['จำนวนแปลง ' + Round][i],2)
-        else:
-            df['Progress'][i] = round(100/ df['หมุดเป้าหมาย ' + Round][i] * df['จำนวนหมุดหลักเขต ' + Round][i],2)
+    prog_parcel = (100 / df['แปลงเป้าหมาย ' + Round] * df['จำนวนแปลง ' + Round]).round(2)
+    prog_marker = (100 / df['หมุดเป้าหมาย ' + Round] * df['จำนวนหมุดหลักเขต ' + Round]).round(2)
+    df['Progress'] = np.where(prog_parcel < prog_marker, prog_parcel, prog_marker)
+    
     df = df.rename(columns={'แปลงเป้าหมาย ' + Round : 'แปลงเป้าหมาย', 'จำนวนแปลง ' + Round : 'จำนวนแปลง' , 'หมุดเป้าหมาย ' + Round : 'หมุดเป้าหมาย' , 'จำนวนหมุดหลักเขต ' + Round : 'จำนวนหมุดหลักเขต'}, errors="raise")
     #df_ = df.tail(1).copy()
     #df = df.drop([df_.index[0]])
@@ -192,18 +191,17 @@ with tab2:
 
 
     creds,gc,sh,wks,wks_result = get_service()
-    df_name = pd.read_csv("https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv",header=0)
-    df_name_ = df_name[df_name["รอบที่ 1"]==True]
-    df_name_ = df_name_.reset_index()
-    df_name_ = df_name_[["ลำดับ","Name"]]
-    df_name_['จำนวนแปลง'] = 0
-    df_name_['จำนวนหมุด'] = 0
-    for j in range(len(df_name_)):
-        gdf_L2_temp = gdf_L2[(gdf_L2["CODE_N"]==df_name_["ลำดับ"].iloc[j]) & gdf_L2["FINISH"]==1]
-        df_name_['จำนวนแปลง'][j] = len(gdf_L2_temp)
-        gdf_BND_temp = gdf_BND[gdf_BND["Surveyer"]==df_name_["Name"].iloc[j]]
-        df_name_['จำนวนหมุด'][j] = round((len(gdf_BND_temp)/3)-0.5,0)    
-    df_name_.index = df_name_["ลำดับ"]
+    # Load Names
+    df_name = pd.read_csv("https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv")
+    df_active = df_name[df_name["รอบที่ 1"] == True][["ลำดับ", "Name"]].copy()
+
+    # Optimized Counting using Value Counts (No Loops!)
+    parcel_counts = gdf_L2[gdf_L2["FINISH"] == 1]["CODE_N"].value_counts()
+    marker_counts = gdf_BND["Surveyer"].value_counts()
+
+    df_active['จำนวนแปลง'] = df_active['ลำดับ'].map(parcel_counts).fillna(0)
+    df_active['จำนวนหมุด'] = df_active['Name'].map(marker_counts).apply(lambda x: round((x/3)-0.5, 0) if pd.notnull(x) else 0) 
+    df_name_.index = df_name["ลำดับ"]
     df_name_ = df_name_[["Name","จำนวนแปลง","จำนวนหมุด"]]
     hh = len(df_name_)
     st.dataframe(
