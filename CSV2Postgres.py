@@ -45,7 +45,7 @@ def pop_up():
 #["องครักษ์", "ลำลูกกา", "ธัญบุรี", "คลองหลวง", "ปทุมธานี"]
 st.title("Upload CSV file to PostGIS")
 office = pd.DataFrame([["นครนายก","NAKHONNAYOK"],["ศรีราชา","SRIRACHA"],["บางละมุง","BANGLAMUNG"],["สัตหีบ","SATTAHIP"]],columns=["th","eng"])
-office_choice = st.selectbox("เลือกสำนักงานที่ดิน",["นครนายก","ศรีราชา","บางละมุง","สัตหีบ"],)
+office_choice = st.selectbox("เลือกสำนักงานที่ดิน",["ศรีราชา","บางละมุง","สัตหีบ"],)
 office_select = office['eng'][office['th']==office_choice].iloc[0]
 Noneheader = st.checkbox("None header")
 Point = st.file_uploader("Upload a CSV file (Name,Code,N,E,h)", accept_multiple_files=False, type=['csv'],key=f"upload_{st.session_state.uploader_key}")
