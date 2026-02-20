@@ -169,12 +169,12 @@ def pop_up():
         #st.session_state.vote = {"item": item, "reason": reason}
         st.rerun()    
         
-Office = ['นครนายก']        
+Office = ['ศรีราชา','บางละมุง','สัตหีบ']        
 placeholder = st.empty()
 with placeholder.form("login"):
     st.markdown("#### โปรดเลือก")
     office_select = st.selectbox("สำนักงานที่ดิน",Office)
-    round_ = st.selectbox("รอบที่",["1"])
+    round_ = st.selectbox("รอบที่",["2"])
     Login = st.form_submit_button("Login")
     if Login:
         st.session_state["Login"] = True
@@ -345,7 +345,7 @@ if st.session_state["Login"]:
             else:
                 st.warning("โปรดใส่ชื่อหมุดหลักเขต")
     elif upload_method == "Import from PostGIS":
-        office_ = pd.DataFrame([["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],["นครนายก","NAKHONNAYOK"]],columns=["th","eng"])
+        office_ = pd.DataFrame([["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],["นครนายก","NAKHONNAYOK"],["ศรีราชา","SRIRACHA"],["บางละมุง","BANGLAMUNG"],["สัตหีบ","SATTAHIP"]],columns=["th","eng"])
         office_choice = office_['eng'][office_['th']==office_select].iloc[0]
         sql = f'SELECT * FROM "public"."BND_' + office_choice + '"'
         gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
