@@ -179,7 +179,7 @@ with tab2:
     st.header("QField Dashboard")
     if "Refresh" not in st.session_state:
         st.session_state["Refresh"] = False
-    Office = ['นครนายก'] 
+    Office = ['ศรีราชา','บางละมุง','สัตหีบ'] 
     office_select = st.selectbox("สำนักงานที่ดิน",Office)
     office_ = pd.DataFrame([["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],["นครนายก","NAKHONNAYOK"],["ศรีราชา","SRIRACHA"],["บางละมุง","BANGLAMUNG"],["สัตหีบ","SATTAHIP"]],columns=["th","eng"])
     office_choice = office_['eng'][office_['th']==office_select].iloc[0]
