@@ -201,8 +201,8 @@ with tab2:
 
     df_active['จำนวนแปลง'] = df_active['ลำดับ'].map(parcel_counts).fillna(0)
     df_active['จำนวนหมุด'] = df_active['Name'].map(marker_counts).apply(lambda x: round((x/3)-0.5, 0) if pd.notnull(x) else 0) 
-    df_name_.index = df_name["ลำดับ"]
-    df_name_ = df_name_[["Name","จำนวนแปลง","จำนวนหมุด"]]
+    df_name.index = df_name["ลำดับ"]
+    df_name_ = df_name[["Name","จำนวนแปลง","จำนวนหมุด"]]
     hh = len(df_name_)
     st.dataframe(
         df_name_,
