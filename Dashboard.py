@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-#import numpy as np
+import numpy as np
 #from streamlit_folium import folium_static
 ##import folium as fo
 import geopandas as gpd
