@@ -182,7 +182,7 @@ with tab2:
         st.session_state["Refresh"] = False
     Office = ['นครนายก'] 
     office_select = st.selectbox("สำนักงานที่ดิน",Office)
-    office_ = pd.DataFrame([["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],["นครนายก","NAKHONNAYOK"]],columns=["th","eng"])
+    office_ = pd.DataFrame([["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],["นครนายก","NAKHONNAYOK"],["ศรีราชา","SRIRACHA"],["บางละมุง","BANGLAMUNG"],["สัตหีบ","SATTAHIP"]],columns=["th","eng"])
     office_choice = office_['eng'][office_['th']==office_select].iloc[0]
     engine = get_postgis()
     sql = f'SELECT * FROM "public"."L2_' + office_choice + '"'
