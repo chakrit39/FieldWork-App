@@ -161,7 +161,7 @@ with tab1:
     )
 
     # 6. ปุ่ม Refresh (ล้าง Cache เฉพาะจุด)
-    if st.button("Refresh Report Data"):
+    if st.button("Refresh Report Data",type="primary"):
         fetch_gsheet_data.clear()
         st.rerun()
         
