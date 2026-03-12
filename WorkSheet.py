@@ -73,7 +73,20 @@ def load_static_data():
     df_name = pd.read_csv("https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv")
     df_fol = pd.read_csv("https://docs.google.com/spreadsheets/d/1j0m_zhMDIXrqjsqyRMCczHjm6quwVS4Km0M7WqZ_s2M/export?gid=0&format=csv")
     return sc, df_name, df_fol
-
+    
+@st.cache_data(ttl=86400) # แคชไว้ 24 ชั่วโมง
+def get_registry_data(office_name):
+    """ดึงข้อมูลทะเบียน (REG) และแคชไว้ตามชื่อสำนักงาน"""
+    try:
+        # ใช้ creds จากฟังก์ชัน get_creds() ที่ทำไว้ก่อนหน้า
+        gc = gspread.authorize(get_creds())
+        sh = gc.open(office_name)
+        wks_reg = sh.worksheet('REG')
+        data = wks_reg.get_all_records(numericise_ignore=['all'])
+        return pd.DataFrame(data)
+    except Exception as e:
+        st.error(f"ไม่สามารถโหลดข้อมูลทะเบียนของ {office_name} ได้: {e}")
+        return pd.DataFrame()
 # --- Main App ---
 
 st.sidebar.header("Work Sheets")
@@ -101,14 +114,7 @@ else:
     office_select = st.session_state["office"]
     round_name = st.session_state["round"]
 
-    # Google Sheets Connection (cached)
-    gc = gspread.authorize(creds)
-    sh = gc.open(office_select)
-    wks = sh.worksheet('Raw')
-    
-    # Get Registry Data
-    wks_reg = sh.worksheet('REG')
-    df_reg = pd.DataFrame(wks_reg.get_all_records(numericise_ignore=['all']))
+    df_reg = get_registry_data(office_select)
 
     st.title(f"แบบกรอกข้อมูลภาคสนาม สาขา {office_select}")
 
@@ -140,10 +146,10 @@ else:
                 tam = col_m5.text_input("ตำบล", value=df_match.at[0, 'TAMBOL'])
             else:
                 # กรณีไม่พบข้อมูล: ให้ผู้ใช้กรอกเองได้ แต่แจ้งเตือนไว้
-                st.warning(f"❓ ไม่พบ {utm_key} ในทะเบียน (คุณสามารถกรอกข้อมูลเองด้านล่างได้)")
+                st.warning(f"❓ ไม่พบ {utm_key} ในทะเบียน")
         else:
             # กรณีข้อมูลยังไม่ครบ: แสดงช่องว่างรอไว้
-            st.info("💡 กรุณากรอกข้อมูลระวางและเลขที่ดินให้ครบเพื่อดึงข้อมูลทะเบียน")
+            st.info("💡 กรุณากรอกระวางและเลขที่ดินให้ครบ")
             col_m1, col_m2 = st.columns(2)
             p_no = col_m1.text_input("เลขที่โฉนด", value="", disabled=True)
             s_no = col_m2.text_input("หน้าสำรวจ", value="", disabled=True)
