@@ -96,88 +96,75 @@ def get_postgis():
     
 tab1, tab2 = st.tabs(["Report Dashboard", "QField Dashboard"])
 
+
 with tab1:
     st.header("Report Dashboard")
-    #st.title("Dashboard")
-    creds,gc,sh,wks,wks_result = get_service()
     
-    Round_ = st.selectbox("เลือกรอบ ",["รอบที่ 1","รอบที่ 2","รอบที่ 3","รอบที่ 4", "ทั้งหมด"],on_change=get_Refresh2())
-    if Round_ == "ทั้งหมด":
-        Round = ""
-    else:
-        Round = Round_
-    df_ =  pd.DataFrame(wks_result.get_all_records())  
-    df = df_[['Name','จำนวนหมุดหลักเขต ' + Round, 'จำนวนแปลง ' + Round, 'หมุดเป้าหมาย ' + Round, 'แปลงเป้าหมาย ' + Round]]
-    df = df[df['แปลงเป้าหมาย ' + Round]!=0]
-    df = df.reset_index(drop=True)
-    df['Progress'] = 0
-    h = len(df)
-    prog_parcel = (100 / df['แปลงเป้าหมาย ' + Round] * df['จำนวนแปลง ' + Round]).round(2)
-    prog_marker = (100 / df['หมุดเป้าหมาย ' + Round] * df['จำนวนหมุดหลักเขต ' + Round]).round(2)
-    df['Progress'] = np.where(prog_parcel < prog_marker, prog_parcel, prog_marker)
+    # ดึง Service (ใช้ Resource Cache)
+    creds, gc, sh, wks, wks_result = get_service()
+
+    # 1. ปรับการเลือก รอบ (ใช้ index เพื่อจำค่าเดิมได้ดีขึ้น)
+    round_options = ["รอบที่ 1", "รอบที่ 2", "รอบที่ 3", "รอบที่ 4", "ทั้งหมด"]
+    selected_round = st.selectbox("เลือกรอบ", round_options)
     
-    df = df.rename(columns={'แปลงเป้าหมาย ' + Round : 'แปลงเป้าหมาย', 'จำนวนแปลง ' + Round : 'จำนวนแปลง' , 'หมุดเป้าหมาย ' + Round : 'หมุดเป้าหมาย' , 'จำนวนหมุดหลักเขต ' + Round : 'จำนวนหมุดหลักเขต'}, errors="raise")
-    #df_ = df.tail(1).copy()
-    #df = df.drop([df_.index[0]])
+    suffix = "" if selected_round == "ทั้งหมด" else selected_round
+
+    # 2. ใช้ Cache ในการดึงข้อมูลจาก Worksheet (เพื่อความรวดเร็ว)
+    @st.cache_data(ttl=600) # เก็บ Cache ไว้ 10 นาที
+    def fetch_gsheet_data(_wks_result):
+        return pd.DataFrame(_wks_result.get_all_records())
+
+    df_raw = fetch_gsheet_data(wks_result)
+
+    # 3. กรอง Column ตามรอบที่เลือก
+    col_marker_cnt = 'จำนวนหมุดหลักเขต ' + suffix
+    col_parcel_cnt = 'จำนวนแปลง ' + suffix
+    col_marker_tgt = 'หมุดเป้าหมาย ' + suffix
+    col_parcel_tgt = 'แปลงเป้าหมาย ' + suffix
+
+    # เลือกเฉพาะคอลัมน์ที่ใช้งาน
+    df = df_raw[['Name', col_marker_cnt, col_parcel_cnt, col_marker_tgt, col_parcel_tgt]].copy()
+    
+    # กรองเฉพาะแถวที่มีเป้าหมาย > 0 เพื่อไม่ให้กราฟ/ตารางรก
+    df = df[df[col_parcel_tgt] != 0].reset_index(drop=True)
+
+    # 4. คำนวณ Progress แบบปลอดภัย (Handling Division by Zero)
+    def calc_progress(row):
+        # กันเหนียวถ้าเป้าหมายเป็น 0 ให้ progress เป็น 0
+        p_parcel = (row[col_parcel_cnt] / row[col_parcel_tgt] * 100) if row[col_parcel_tgt] > 0 else 0
+        p_marker = (row[col_marker_cnt] / row[col_marker_tgt] * 100) if row[col_marker_tgt] > 0 else 0
+        return round(min(p_parcel, p_marker), 2)
+
+    df['Progress'] = df.apply(calc_progress, axis=1)
+
+    # เปลี่ยนชื่อ Column ให้ดูง่ายในตาราง
+    df_display = df.rename(columns={
+        col_parcel_tgt: 'แปลงเป้าหมาย',
+        col_parcel_cnt: 'จำนวนแปลง',
+        col_marker_tgt: 'หมุดเป้าหมาย',
+        col_marker_cnt: 'จำนวนหมุดหลักเขต'
+    })
+
+    # 5. แสดงตาราง
     st.dataframe(
-        df,
+        df_display,
         column_config={
             "Progress": st.column_config.ProgressColumn(
-                "Progress",
-                help="The sales volume in USD",
-                format="%f %%",
+                "ความคืบหน้า (%)",
+                format="%.2f%%",
                 min_value=0,
                 max_value=100,
             ),
         },
-        #hide_index=True,
-        width="stretch",
-        height=35*(h+1)
+        use_container_width=True,
+        height=35 * (len(df_display) + 1)
     )
-    
-    
-    #st.header('Map')
-    #map = get_map()
-    
-    #Name_list_ = df["Name"].to_list()
-    #Name_list_ = Name_list_[0:len(Name_list_)-1]
-    #Name_list = ["ทั้งหมด"]
-    #Name_list.extend(Name_list_)
-    #Name = st.selectbox("ผู้รังวัด",Name_list,on_change=get_Refresh())
-    if st.button("Refresh"):
-        st.session_state["Refresh"] = True
-        #get_map.clear()
-        get_service.clear()
-        #map = get_map()
-        #creds,gc,sh,wks,wks_result = get_service()
-    else:
-        st.session_state["Refresh"] = False
-    #gdf_ong = pd.DataFrame(gc.open('องครักษ์').worksheet('Raw').get_all_records())   
-    #gdf_lum = pd.DataFrame(gc.open('ลำลูกกา').worksheet('Raw').get_all_records())  
-    #gdf_thun = pd.DataFrame(gc.open('ธัญบุรี').worksheet('Raw').get_all_records())  
-    #gdf_khlong = pd.DataFrame(gc.open('คลองหลวง').worksheet('Raw').get_all_records())  
-    #gdf_pathum = pd.DataFrame(gc.open('ปทุมธานี').worksheet('Raw').get_all_records())  
-    #gdf_ = gpd.GeoDataFrame(pd.concat([gdf_ong,gdf_lum,gdf_thun,gdf_khlong,gdf_pathum]))
-    #if Round_ != "ทั้งหมด":
-    #    gdf = gdf_[gdf_["รอบ"]==Round]
-    #    gdf = gdf.reset_index(drop=True)
-    #else:
-    #    gdf = gdf_
-    #if len(gdf)!=0:  
-    #    if Name != "ทั้งหมด":
-    #        gdf = gdf[gdf['ผู้รังวัด']==Name]
-    #    gdf = gdf.set_geometry(gpd.points_from_xy(gdf.E,gdf.N),crs='EPSG:24047')
-        #st.dataframe(data=gdf)
-    #    gdf = gdf.to_crs(epsg=4326)
-        #st.dataframe(data=gdf)
-        #gdf.crs
-        #lat = gdf.geometry.y
-        #lon = gdf.geometry.x
-        #fo.CircleMarker([lat,lon],radius = 3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
-    #    for lat,lon in zip(gdf.geometry.y,gdf.geometry.x):
-    #        fo.CircleMarker([lat,lon],radius=3,color='#f56042',fill=True,fill_opacity=1).add_to(map)
-    #folium_static(map)
 
+    # 6. ปุ่ม Refresh (ล้าง Cache เฉพาะจุด)
+    if st.button("Refresh Report Data"):
+        fetch_gsheet_data.clear()
+        st.rerun()
+        
 with tab2:
     st.header("QField Dashboard")
     
