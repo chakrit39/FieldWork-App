@@ -2,501 +2,218 @@ import streamlit as st
 import pandas as pd
 import base64
 import requests
-#import numpy as np
-#from streamlit_folium import folium_static
-import geopandas as gpd
-#from google_auth_oauthlib.flow import InstalledAppFlow
-#from requests.auth import HTTPBasicAuth
-#import time
-#import datetime
-#import os
 import gspread
+import geopandas as gpd
 from sqlalchemy import create_engine
 from oauth2client.service_account import ServiceAccountCredentials
 from googleapiclient.discovery import build
-#from googleapiclient.errors import HttpError
-#from googleapiclient.http import MediaFileUpload
 from PIL import Image
 from pillow_heif import register_heif_opener
 from io import BytesIO
-from googleapiclient.http import MediaIoBaseUpload
+
 register_heif_opener()
-st.set_page_config(page_title="WorkSheet")
+
+# --- Config & Const ---
+GAS_URL = "https://script.google.com/macros/s/AKfycbwPqmDAj7yPGB4lDIdHtypmfrHgN1CrtI_71OTzcy5lBL9m91-3y3ZiTDUo2A6Gq6cn/exec"
+OFFICES = ['ศรีราชา', 'บางละมุง', 'สัตหีบ']
+SCOPE = [
+    'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/drive.file',
+    'https://www.googleapis.com/auth/spreadsheets',
+]
+
+# --- Helper Functions ---
+
+def upload_image_to_gas(image_file, parents, file_metadata):
+    """จัดการรูปภาพและส่งไปยัง Google Apps Script"""
+    try:
+        file_name = f"{file_metadata['prefix']}_{file_metadata['bnd']}.jpeg"
+        
+        with Image.open(image_file) as img:
+            # ปรับขนาดภาพเพื่อประหยัด RAM และ Bandwidth
+            img.thumbnail((2000, 2000))
+            if img.mode != "RGB":
+                img = img.convert("RGB")
+            
+            img_bytes = BytesIO()
+            img.save(img_bytes, format="JPEG", quality=80) # ลด quality เหลือ 80% เพื่อลดขนาดไฟล์
+            img_bytes.seek(0)
+            b64 = base64.b64encode(img_bytes.read()).decode("utf-8")
+
+        payload = {
+            "filename": file_name,
+            "mimeType": "image/jpeg",
+            "image": b64,
+            "parents": parents
+        }
+        
+        # Retry logic
+        for _ in range(3):
+            r = requests.post(GAS_URL, json=payload, timeout=30)
+            res = r.json()
+            if res.get("status") == "success":
+                return res["fileId"]
+        return None
+    except Exception as e:
+        st.error(f"Image Upload Error: {e}")
+        return None
+
+@st.cache_resource(ttl=21600)
+def get_creds():
+    return ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], SCOPE)
+
+@st.cache_resource(ttl=21600)
+def get_postgis_engine():
+    s = st.secrets
+    return create_engine(f"postgresql://{s['USER']}:{s['PASSWD']}@{s['HOSTNAME']}:5432/Data1")
+
+@st.cache_data(ttl=86400)
+def load_static_data():
+    sc = pd.read_csv('./UTMMAP4.csv', header=0, dtype={'UTMMAP4': str})
+    df_name = pd.read_csv("https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv")
+    df_fol = pd.read_csv("https://docs.google.com/spreadsheets/d/1j0m_zhMDIXrqjsqyRMCczHjm6quwVS4Km0M7WqZ_s2M/export?gid=0&format=csv")
+    return sc, df_name, df_fol
+
+# --- Main App ---
 
 st.sidebar.header("Work Sheets")
-st.sidebar.markdown("แอปพลิเคชันสร้างรายงานจากข้อมูลภาคสนาม")
-if "Submit" not in st.session_state:
-    st.session_state["Submit"] = False
-if "Search" not in st.session_state:
-    st.session_state["Search"] = False
-if "Search_" not in st.session_state:
-    st.session_state["Search_"] = False
-if "Login" not in st.session_state:
-    st.session_state["Login"] = False
-if "Login_alert" not in st.session_state:
-    st.session_state["Login_alert"] = False
-if "uploader_key" not in st.session_state:
-    st.session_state.uploader_key = 0
-if "Refresh" not in st.session_state:
-    st.session_state["Refresh"] = False
-scope = ['https://www.googleapis.com/auth/drive',
-         'https://www.googleapis.com/auth/drive.file',
-         'https://www.googleapis.com/auth/spreadsheets',
-        ]
-#def upload_image(service, parents, image_file,
-#                 UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME):
-GAS_URL = "https://script.google.com/macros/s/AKfycbwPqmDAj7yPGB4lDIdHtypmfrHgN1CrtI_71OTzcy5lBL9m91-3y3ZiTDUo2A6Gq6cn/exec"
-def upload_image(
-    GAS_URL,
-    parents,
-    image_file,
-    UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4,
-    Scale, land_no, BND_NAME):
-    # ✅ ตั้งชื่อไฟล์
-    file_name = f"{UTMMAP1}{UTMMAP2}{UTMMAP3}-{UTMMAP4}-{Scale}-{land_no}_{BND_NAME}.jpeg"
 
-    # ✅ เปิดภาพจาก Streamlit uploader
-    img = Image.open(image_file)
+# Initialize Session States
+for key in ["Login", "uploader_key", "Submit"]:
+    if key not in st.session_state:
+        st.session_state[key] = 0 if key == "uploader_key" else False
 
-    # ✅ ปรับขนาด (ถ้าจำเป็น)
-    max_size = max(img.size)
-    if max_size > 2000:
-        sc = max_size / 2000
-        new_size = (int(round(img.size[0] / sc)), int(round(img.size[1] / sc)))
-        img = img.resize(new_size)
+if not st.session_state["Login"]:
+    with st.form("login_form"):
+        st.markdown("#### โปรดเลือก")
+        office_select = st.selectbox("สำนักงานที่ดิน", OFFICES)
+        round_val = st.selectbox("รอบที่", ["2"])
+        if st.form_submit_button("Login"):
+            st.session_state["Login"] = True
+            st.session_state["office"] = office_select
+            st.session_state["round"] = f"รอบที่ {round_val}"
+            st.rerun()
 
-    # ✅ แปลงเป็น RGB เสมอ
-    if img.mode != "RGB":
-        img = img.convert("RGB")
-    
-    # ✅ เขียนไฟล์ลง memory (ไม่ต้อง save ลง disk)              
-    img_bytes = BytesIO()
-    img.save(img_bytes, format="JPEG")
-    img_bytes.seek(0)
-                     
-    b64 = base64.b64encode(img_bytes.read()).decode("utf-8")
-    payload = {
-        "filename": file_name,
-        "mimeType": "image/jpeg",
-        "image": b64,
-        "parents": parents   # ส่ง folderId ไปให้ GAS
-        }
-                    
-    # ✅ อัปโหลดโดยใช้ MediaIoBaseUpload
-    #file_metadata = {"name": file_name, "parents": [parents] }
-    #media = MediaIoBaseUpload(img_bytes, mimetype="image/jpeg" )
+else:
+    # Load Data
+    creds = get_creds()
+    sc, df_name, df_fol = load_static_data()
+    office_select = st.session_state["office"]
+    round_name = st.session_state["round"]
 
-    #file = service.files().create(
-    #    body=file_metadata,
-    #    media_body=media,
-    #    fields="id"
-    #    #supportsAllDrives=True
-    #).execute()
-                     
-    #img.close()
-    #img_bytes.close() 
-    while True:
-        r = requests.post(GAS_URL, json=payload, timeout=30)
-        res = r.json()
-        if res.get("status") == "success":
-            break
+    # Google Sheets Connection (cached)
+    gc = gspread.authorize(creds)
+    sh = gc.open(office_select)
+    wks = sh.worksheet('Raw')
+    
+    # Get Registry Data
+    wks_reg = sh.worksheet('REG')
+    df_reg = pd.DataFrame(wks_reg.get_all_records(numericise_ignore=['all']))
 
-    img.close()
-    img_bytes.close()
+    st.title(f"แบบกรอกข้อมูลภาคสนาม สาขา {office_select}")
 
-    return res["fileId"]
-    #return file.get('id')
-                     
-@st.cache_resource(ttl=21600) 
-def get_service():
-    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["dol-mtd5-fieldwork"], scope )
-    return creds
-    
-@st.cache_resource(ttl=21600)   
-def get_drive_service(user_id: str):
-    """สร้าง/เรียกคืน Google Drive service สำหรับแต่ละผู้ใช้"""
-    if "drive_services" not in st.session_state:
-        st.session_state["drive_services"] = {}
-    if user_id not in st.session_state["drive_services"]:
-        service = build("drive", "v3", credentials=creds)
-        st.session_state["drive_services"][user_id] = service
-    return st.session_state["drive_services"][user_id] ,user_id
-    
-@st.cache_resource(ttl=21600) 
-def get_wks(office_select):
-    if office_select not in st.session_state:
-        st.session_state[office_select] = {}
-    if "wks" not in st.session_state[office_select]:
-        gc = gspread.authorize(creds)
-        sh = gc.open(office_select)
-        st.session_state[office_select]["wks"] = sh.worksheet('Raw')
-        
-        chk_wks = office_select
-    return st.session_state[office_select]["wks"], chk_wks
-    
-@st.cache_data(ttl=86400)  
-def get_reg(office_select):
-    if office_select not in st.session_state:
-        st.session_state[office_select] = {}
-    if "df_reg" not in st.session_state[office_select]:
-        gc = gspread.authorize(creds)
-        sh = gc.open(office_select)
-        wks_reg = sh.worksheet('REG')
-        st.session_state[office_select]["df_reg"] = pd.DataFrame(wks_reg.get_all_records(numericise_ignore=['all']))
-        chk_reg = office_select
-    return st.session_state[office_select]["df_reg"] , chk_reg
-    
-@st.cache_resource(ttl=21600)  
-def get_postgis():
-    HOSTNAME = st.secrets["HOSTNAME"]
-    USER = st.secrets["USER"]
-    PASSWD = st.secrets["PASSWD"]
-    engine = create_engine( f"postgresql://{USER}:{PASSWD}@{HOSTNAME}:5432/Data1")
-    return engine
-    
-@st.cache_data
-def get_data():
-    sc = pd.read_csv('./UTMMAP4.csv',header=0,dtype={'UTMMAP4': str})
-    df_name = pd.read_csv("https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv",header=0)
-    df_fol = pd.read_csv("https://docs.google.com/spreadsheets/d/1j0m_zhMDIXrqjsqyRMCczHjm6quwVS4Km0M7WqZ_s2M/export?gid=0&format=csv",header=0)
-    return sc,df_name,df_fol
-    
-@st.dialog("สำเร็จ !!", width="small")
-def pop_up():
-    #st.write(f"Why is {item} your favorite?")
-    #reason = st.text_input("Because...")
-    if st.button("ตกลง"):
-        #st.session_state.vote = {"item": item, "reason": reason}
-        st.rerun()    
-        
-Office = ['ศรีราชา','บางละมุง','สัตหีบ']        
-placeholder = st.empty()
-with placeholder.form("login"):
-    st.markdown("#### โปรดเลือก")
-    office_select = st.selectbox("สำนักงานที่ดิน",Office)
-    round_ = st.selectbox("รอบที่",["2"])
-    Login = st.form_submit_button("Login")
-    if Login:
-        st.session_state["Login"] = True
-        st.session_state["Login_alert"] = True
-        
-if st.session_state["Login"]:
-    office_select = office_select
-    round_ = "รอบที่ " + round_
-    placeholder.empty()
-    if st.session_state["Login_alert"] == True:
-        st.success("Login successful")
-    
- 
-    sc,df_name,df_fol = get_data()
-    engine = get_postgis()
-    df_name_ = df_name[df_name[round_]==True]
-    df_fol_ = df_fol[df_fol.Name==office_select]
-    df_fol_ = df_fol_.reset_index(drop=True)
-    folder_id = [df_fol_.iloc[0,1], df_fol_.iloc[0,2],df_fol_.iloc[0,3]]
-        
-    creds = get_service()
-    wks,chk_wks = get_wks(office_select)
-    df_reg,chk_reg = get_reg(office_select)
-    
-    if chk_wks != office_select or chk_reg != office_select :
-        get_wks.clear()
-        get_reg.clear()
-        wks,chk_wks = get_wks(office_select)
-        df_reg,chk_reg = get_reg(office_select)
-        
-    st.title("แบบกรอกข้อมูลงานภาคสนาม")
-    st.title("สาขา"+office_select)  
-    col_1, col_2, col_3, col_4, col_5 , col_6 = st.columns([0.18,0.13,0.18,0.18,0.13,0.15])
-    UTMMAP1 = col_1.text_input("UTMMAP1","")
-    UTMMAP2 = col_2.selectbox("UTMMAP2",["I", "II", "III", "IV"],)
-    UTMMAP3 = col_3.text_input("UTMMAP3","")
-    Scale = col_4.selectbox("Scale",pd.unique(sc.SCALE),)
-    UTMMAP4 = col_5.selectbox("UTMMAP4",pd.unique(sc.UTMMAP4[sc.SCALE==Scale]),)
-    land_no = col_6.text_input("เลขที่ดิน","")
-    
-    #if st.button("Search"):
-    #    if UTMMAP1 != "" and UTMMAP2 != "" and UTMMAP3 != "" and UTMMAP4 != "" and Scale != "" and land_no != "" :
-    #        st.session_state["Search_"] = True
-    #    else:
-    #        st.session_state["Search_"] = False
-    #        st.warning("โปรดกรอกข้อมูลในครบถ้วน")
+    # --- Section 1: Search & Metadata ---
+    with st.container(border=True):
+        c1, c2, c3, c4, c5, c6 = st.columns([2, 1.5, 2, 2, 1.5, 1.5])
+        u1 = c1.text_input("UTMMAP1")
+        u2 = c2.selectbox("UTMMAP2", ["I", "II", "III", "IV"])
+        u3 = c3.text_input("UTMMAP3")
+        scale = c4.selectbox("Scale", sc['SCALE'].unique())
+        u4 = c5.selectbox("UTMMAP4", sc[sc['SCALE'] == scale]['UTMMAP4'].unique())
+        l_no = c6.text_input("เลขที่ดิน")
+
+        # Auto Search Logic
+        utm_key = f"{u1}{u2}{u3}{u4}{scale}{l_no}"
+        df_match = df_reg[df_reg['REG_JOIN'] == utm_key].reset_index(drop=True)
+
+        if not df_match.empty:
+            col_m1, col_m2 = st.columns(2)
+            p_no = col_m1.text_input("เลขที่โฉนด", df_match.at[0, 'PARCEL_NO'])
+            s_no = col_m2.text_input("หน้าสำรวจ", df_match.at[0, 'SURVEY_NO'])
             
-    if UTMMAP1 != "" and UTMMAP2 != "" and UTMMAP3 != "" and UTMMAP4 != "" and Scale != "" and land_no != "" :
-        UTM_Search = str(UTMMAP1) + str(UTMMAP2) + str(UTMMAP3) + str(UTMMAP4) + str(Scale) + str(land_no)
-        df_reg_ = df_reg[df_reg['REG_JOIN']==UTM_Search]
-        df_reg_ = df_reg_.reset_index(drop=True)
-        if len(df_reg_) == 1:
-            c01, c02 = st.columns([0.50,0.50])
-            parcel_no = c01.text_input("เลขที่โฉนด",df_reg_['PARCEL_NO'][0])
-            survey_no = c02.text_input("หน้าสำรวจ",df_reg_['SURVEY_NO'][0])
-        
-            col1, col2, col3 = st.columns([0.35,0.35,0.3])
-            province = col1.selectbox("จังหวัด",df_reg_['PROVINCE'][0])
-            amphoe = col2.selectbox("อำเภอ",df_reg_['AMPHUR'][0])
-            tambon = col3.selectbox("ตำบล",df_reg_['TAMBOL'][0])
-
-            
+            col_m3, col_m4, col_m5 = st.columns(3)
+            prov = col_m3.text_input("จังหวัด", df_match.at[0, 'PROVINCE'])
+            amp = col_m4.text_input("อำเภอ", df_match.at[0, 'AMPHUR'])
+            tam = col_m5.text_input("ตำบล", df_match.at[0, 'TAMBOL'])
         else:
-            st.warning("ไม่พบข้อมูลในทะเบียน")
-    else:
-        st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
+            st.warning("โปรดระบุข้อมูลที่ดินให้ถูกต้องเพื่อดึงข้อมูลทะเบียน")
+            p_no, s_no, prov, amp, tam = "", "", "", "", ""
 
-    #c01, c02 = st.columns([0.50,0.50])
-    #parcel_no = c01.text_input("เลขที่โฉนด","")
-    #survey_no = c02.text_input("หน้าสำรวจ","")
+    # --- Section 2: Measurement Data ---
+    with st.container(border=True):
+        cc1, cc2 = st.columns(2)
+        bnd_name = cc1.text_input("ชื่อหลักเขต (BND_NAME)")
+        method = cc2.selectbox("เครื่องมือการรังวัด", ["RTK GNSS", "Total Station"])
+        
+        in_method = st.selectbox("วิธีการนำเข้าพิกัด", ["ป้อนค่าพิกัด", "Import from PostGIS"])
+        
+        coords = {"N": [], "E": [], "H": []}
+        chk_diff = False
 
-    #col1, col2, col3 = st.columns([0.35,0.35,0.3])
-    #province = col1.selectbox("จังหวัด",pd.unique(df_P_A_T.P_NAME_T))
-    #amphoe = col2.selectbox("อำเภอ",pd.unique(df_P_A_T.A_NAME_T[df_P_A_T.P_NAME_T==province]))
-    #tambon = col3.selectbox("ตำบล",pd.unique(df_P_A_T.T_NAME_T[df_P_A_T.A_NAME_T==amphoe]))
-    
-    """
-    --------------
-    """
-    cc1, cc2 = st.columns([0.5,0.5])
-    BND_NAME = cc1.text_input("ชื่อหลักเขต","")
-    Method = cc2.selectbox("เครื่องมือการรังวัด",["RTK GNSS","Total Station"])
-    chk1, chk2 = st.columns([0.5,0.5])
-    upload_method = chk1.selectbox("เลือกวิธีการนำเข้า",["ป้อนค่าพิกัด","Upload a CSV file (Name,Code,N,E,h)","Import from PostGIS"])
-    Diff = chk2.text_input("ค่าต่างสูงสุด (m.)","")
-    chk_diff = False
-    if upload_method == "ป้อนค่าพิกัด":
-        c1, c2, c3 = st.columns([0.4,0.4,0.2])
-        N1 = c1.text_input("N1","")
-        N2 = c1.text_input("N2","")
-        N3 = c1.text_input("N3","")
-    
-        E1 = c2.text_input("E1","")
-        E2 = c2.text_input("E2","")
-        E3 = c2.text_input("E3","")
-    
-        H1 = c3.text_input("H1","")
-        H2 = c3.text_input("H2","")
-        H3 = c3.text_input("H3","")
-        if N1!="" and N2!="" and N3!="" and E1!="" and E2!="" and E3!="" and N3!="" and E1!="" and E2!="" and E3!="" and H1!="" and H2!=""and H3!="" :
-            data_point = pd.DataFrame([[N1,E1],[N2,E2],[N3,E3]],columns=['N', 'E'])
-            Diff_N = 0
-            Diff_E = 0
-            for i in range(3):
-                for j in range(3):
-                    Diff_N_ = round(abs(float(data_point.iloc[i,0]) - float(data_point.iloc[j,0])),3)
-                    Diff_E_ = round(abs(float(data_point.iloc[i,1]) - float(data_point.iloc[j,1])),3)
-                    if Diff_N_ > Diff_N :
-                        Diff_N = Diff_N_
-                    if Diff_E_ > Diff_E :
-                        Diff_E = Diff_E_
-            if Diff_N > 0.04 :
-                st.warning("ค่า N ต่างกันเกิน 4 cm.")
-            if Diff_E > 0.04 :
-                st.warning("ค่า E ต่างกันเกิน 4 cm.")
-            if Diff_N < 0.041 and Diff_E < 0.041:    
+        if in_method == "ป้อนค่าพิกัด":
+            c_n, c_e, c_h = st.columns([4, 4, 2])
+            for i in range(1, 4):
+                coords["N"].append(c_n.text_input(f"N{i}", key=f"n{i}"))
+                coords["E"].append(c_e.text_input(f"E{i}", key=f"e{i}"))
+                coords["H"].append(c_h.text_input(f"H{i}", key=f"h{i}"))
+
+        # --- Coordinate Validation ---
+        if all(coords["N"]) and all(coords["E"]):
+            n_vals = [float(x) for x in coords["N"]]
+            e_vals = [float(x) for x in coords["E"]]
+            diff_n = max(n_vals) - min(n_vals)
+            diff_e = max(e_vals) - min(e_vals)
+            
+            if diff_n > 0.04 or diff_e > 0.04:
+                st.error(f"⚠️ ค่าพิกัดต่างกันเกินเกณฑ์ (N: {diff_n:.3f}, E: {diff_e:.3f})")
+            else:
+                st.success("✅ ค่าพิกัดอยู่ในเกณฑ์มาตรฐาน")
                 chk_diff = True
-    elif upload_method == "Upload a CSV file (Name,Code,N,E,h)":
-        chk2.write("")
-        chk2.write("")
-        Noneheader = chk1.checkbox("None header")
-        Point = st.file_uploader("เลือกไฟล์ CSV", accept_multiple_files=False, type=['csv'])
-        if Point is not None:
-            if Noneheader == True:
-                data = pd.read_csv(Point,header=None)
-                data = data.rename(columns={0: "Name", 1: "Code", 2: "N", 3: "E", 4: "h"})
-            else:
-                data = pd.read_csv(Point)
-            #st.dataframe(data=data['Code'].unique(),use_container_width=False)
-            if BND_NAME != "" :
-                data_point = data[['Code','N','E','h']][data.Code==BND_NAME]
-                data_point = data_point.reset_index(drop=True)
-                if len(data_point)==3:
-                    st.dataframe(data=data_point,width="stretch")
-                    c1, c2, c3 = st.columns([0.4,0.4,0.2])
-                    N1 = c1.text_input("N1",data_point.iloc[0,1])
-                    N2 = c1.text_input("N2",data_point.iloc[1,1])
-                    N3 = c1.text_input("N3",data_point.iloc[2,1])
-    
-                    E1 = c2.text_input("E1",data_point.iloc[0,2])
-                    E2 = c2.text_input("E2",data_point.iloc[1,2])
-                    E3 = c2.text_input("E3",data_point.iloc[2,2])
-    
-                    H1 = c3.text_input("H1",data_point.iloc[0,3])
-                    H2 = c3.text_input("H2",data_point.iloc[1,3])
-                    H3 = c3.text_input("H3",data_point.iloc[2,3])
-                    Diff_N = 0
-                    Diff_E = 0
-                    for i in range(3):
-                        for j in range(3):
-                            Diff_N_ = round(abs(float(data_point.iloc[i,1]) - float(data_point.iloc[j,1])),3)
-                            Diff_E_ = round(abs(float(data_point.iloc[i,2]) - float(data_point.iloc[j,2])),3)
-                            if Diff_N_ > Diff_N :
-                                Diff_N = Diff_N_
-                            if Diff_E_ > Diff_E :
-                                Diff_E = Diff_E_
-                    if Diff_N > 0.04 :
-                        st.warning("ค่า N ต่างกันเกิน 4 cm.")
-                    if Diff_E > 0.04 :
-                        st.warning("ค่า E ต่างกันเกิน 4 cm.")
-                    if Diff_N < 0.041 and Diff_E < 0.041:    
-                        chk_diff = True
-                elif len(data_point)==0:
-                    st.warning("ไม่พบชื่อหมุดหลักเขต")
-                else:
-                    st.dataframe(data=data_point,width="stretch")
-                    st.warning("จำนวนค่าพิกัดหมุดหลักเขตไม่ครบหรือเกิน 3 ค่า")
-            else:
-                st.warning("โปรดใส่ชื่อหมุดหลักเขต")
-    elif upload_method == "Import from PostGIS":
-        office_ = pd.DataFrame([["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],["นครนายก","NAKHONNAYOK"],["ศรีราชา","SRIRACHA"],["บางละมุง","BANGLAMUNG"],["สัตหีบ","SATTAHIP"]],columns=["th","eng"])
-        office_choice = office_['eng'][office_['th']==office_select].iloc[0]
-        sql = f'SELECT * FROM "public"."BND_' + office_choice + '"'
-        gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
-        gdf_postgis_new = gdf_postgis[['Name','Code','N','E','h','Remark','Date']] #[gdf_postgis['ผู้รังวัด']==Name]
-        #sql = f'SELECT * FROM "public"."L2_' + office_choice + '"'
-        #gdf_L2 = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
-        #st.write(gdf_L2["CODE_N"].value_counts())
-        if BND_NAME != "" :
-            data_point = gdf_postgis_new[['Name','Code','N','E','h','Remark','Date']][gdf_postgis_new.Code==BND_NAME]
-            data_point = data_point.reset_index(drop=True)
-            if len(data_point)==3:
-                st.dataframe(data=data_point,width="stretch")
-                c1, c2, c3 = st.columns([0.4,0.4,0.2])
-                N1 = c1.text_input("N1",data_point.iloc[0,2])
-                N2 = c1.text_input("N2",data_point.iloc[1,2])
-                N3 = c1.text_input("N3",data_point.iloc[2,2])
-                E1 = c2.text_input("E1",data_point.iloc[0,3])
-                E2 = c2.text_input("E2",data_point.iloc[1,3])
-                E3 = c2.text_input("E3",data_point.iloc[2,3])
-                H1 = c3.text_input("H1",data_point.iloc[0,4])
-                H2 = c3.text_input("H2",data_point.iloc[1,4])
-                H3 = c3.text_input("H3",data_point.iloc[2,4])
-                Diff_N = 0
-                Diff_E = 0
-                for i in range(3):
-                    for j in range(3):
-                        Diff_N_ = round(abs(float(data_point.iloc[i,2]) - float(data_point.iloc[j,2])),3)
-                        Diff_E_ = round(abs(float(data_point.iloc[i,3]) - float(data_point.iloc[j,3])),3)
-                        if Diff_N_ > Diff_N :
-                            Diff_N = Diff_N_
-                        if Diff_E_ > Diff_E :
-                            Diff_E = Diff_E_
-                if Diff_N > 0.04 :
-                    st.warning("ค่า N ต่างกันเกิน 4 cm.")
-                if Diff_E > 0.04 :
-                    st.warning("ค่า E ต่างกันเกิน 4 cm.")
-                if Diff_N < 0.041 and Diff_E < 0.041:    
-                    chk_diff = True
-            elif len(data_point)==0:
-                 st.warning("ไม่พบชื่อหมุดหลักเขต")
-            else:
-                 st.dataframe(data=data_point,width="stretch")
-                 st.warning("จำนวนค่าพิกัดหมุดหลักเขตไม่ครบหรือเกิน 3 ค่า")
-        else:
-            st.dataframe(data=gdf_postgis_new,width="stretch")
-            st.warning("โปรดใส่ชื่อหมุดหลักเขต")
-    else:
-        st.warning("โปรดเลือกวิธีนำเข้า")   
-    """
-    --------------
-    """
-    
-    image_1 = st.file_uploader("เลือกรูปขณะรับสัญญาณ", accept_multiple_files=False, type=['png', 'jpeg', 'jpg', 'HEIC'],key=f"image_1-{st.session_state.uploader_key}")
-    image_2 = st.file_uploader("เลือกรูปหมุดหลักเขต", accept_multiple_files=False, type=['png', 'jpeg', 'jpg', 'HEIC'],key=f"image_2-{st.session_state.uploader_key}")
-    image_3 = st.file_uploader("เลือกรูปตำแหน่งรับสัญญาณ", accept_multiple_files=False, type=['png', 'jpeg', 'jpg', 'HEIC'],key=f"image_3-{st.session_state.uploader_key}")
-    
-    """
-    -----------------
-    """
-    Name_list = df_name_["Name"].to_list()
-    Name = st.selectbox("ผู้รังวัด",Name_list)
-    #f_name = df_name["F_Name-th"][df_name.Name==Name].iloc[0]
-    #l_name = df_name["L_Name-th"][df_name.Name==Name].iloc[0]
-    #full_name = "(" + f_name + "  " + l_name + ")"
-    Sig = df_name["Signature"][df_name.Name==Name].iloc[0]
-    
-    date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
-    remark = st.text_input("หมายเหตุ","")
-    
-    service,chk_name = get_drive_service(Name)
-    if chk_name != Name:
-        get_drive_service.clear()
-        #service,chk_name = get_drive_service(Name)
-        
-    c001, c002 = st.columns([0.12,0.88])
-    if c002.button("Refresh", type="primary"):
-        st.session_state["Refresh"] = True
-        get_drive_service.clear()
-        get_wks.clear()
-        get_reg.clear()
-        wks,chk_wks = get_wks(office_select)
-        df_reg,chk_reg = get_reg(office_select)
-        service,chk_name = get_drive_service(Name)
-    else:
-        st.session_state["Refresh"] = False   
-    #st.session_state  
-    if c001.button("Submit"):
-        #import time 
-        #start = time.time()
-        st.session_state["Submit"] = True
-        st.session_state["Login_alert"] = False
-        if N1!="" and N2!="" and N3!="" and E1!="" and E2!="" and E3!="" and N3!="" and E1!="" and E2!="" and E3!="" and H1!="" and H2!=""and H3!="" and parcel_no!="" and survey_no!="" and land_no!="" and UTMMAP1!="" and UTMMAP3!="" and BND_NAME!="" :
-            #if sh_report.title != Name+'-Report':
-                #sh_report = gc.open(Name+'-Report_'+office_select)
-            if chk_diff == True:
-                N = round((float(N1)+float(N2)+float(N3))/3,3)
-                E = round((float(E1)+float(E2)+float(E3))/3,3)
-                H = round((float(H1)+float(H2)+float(H3))/3,3)
-                try:
-                    if image_1 and image_2 and image_3:
-                        image_id = []
-                        images = [image_1, image_2, image_3]
-                        #service1 = build("drive", "v3", credentials=creds)
-                        for i in range(3):
-                            #file_id = upload_image(
-                            #    service,
-                            #    folder_id[i],
-                            #    images[i],
-                            #    UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, BND_NAME
-                            #)
-                            #image_id.append(file_id)
-                            file_id = upload_image(
-                            GAS_URL,
-                            folder_id[i],
-                            images[i],
-                            UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4,
-                            Scale, land_no, BND_NAME
-                            )
-                            image_id.append(file_id)
-                            
-                        row = [parcel_no, survey_no, province, amphoe, tambon, UTMMAP1, UTMMAP2, UTMMAP3, UTMMAP4, Scale, land_no, Name, round_, Diff, BND_NAME, N, E, H, Method, date.strftime('%d/%m/%Y'), remark, N1, E1, H1, N2, E2, H2, N3, E3, H3,image_id[0],image_id[1],image_id[2]]
-                        row_update = wks.append_row(values=row,value_input_option="USER_ENTERED")
-                        #gid = row_update['updates']['updatedRange'][5:].split(":")[0]
-                        #DATE_temp = wks.acell('S'+gid).value.replace('\xa0',' ').split()
-                        #wks.update_acell('AH'+gid,gid)
-                        #DATE = DATE_temp[0] + " " + DATE_temp[1] + " " + str(int(DATE_temp[2])+543)
-                        del st.session_state[f"image_1-{st.session_state.uploader_key}"]
-                        del st.session_state[f"image_2-{st.session_state.uploader_key}"]
-                        del st.session_state[f"image_3-{st.session_state.uploader_key}"]
-                        st.session_state.uploader_key += 1
-                        #st.rerun()
-                        #st.success('สำเร็จ!', icon="✅")
-                        #end = time.time()
-                        #end - start
-                        pop_up()
-                    else:
-                        st.warning("โปรดเลือกรูปภาพให้ครบ 3 รูป")
-                except MemoryError:
-                    st.error("❌ หน่วยความจำไม่เพียงพอขณะประมวลผลรูป")
-                #except Exception as e:
-                    #st.error(f"เกิดข้อผิดพลาดขณะบันทึก โปรดลองใหม่อีกครั้ง")
-            else:
-                st.warning("มีค่าพิกัด NE ต่างกันเกิน 4 cm.")
-        else:
-            st.warning("โปรดกรอกข้อมูลให้ครบถ้วน")
-    else:
-        st.session_state["Submit"] = False
-     
-#st.session_state         
-#else:    
-#    st.error("Login failed")
-#    st.session_state["Login"] = False
- 
 
+    # --- Section 3: Photos ---
+    with st.container(border=True):
+        st.subheader("อัปโหลดรูปภาพ")
+        img_keys = [f"img_{i}_{st.session_state.uploader_key}" for i in range(3)]
+        up_imgs = [st.file_uploader(f"รูปที่ {i+1}", type=['jpg','jpeg','png','heic'], key=k) for i, k in enumerate(img_keys)]
+
+    # --- Section 4: Surveyor & Submit ---
+    surveyor = st.selectbox("ผู้รังวัด", df_name[df_name[round_name]==True]["Name"])
+    obs_date = st.date_input("วันที่รังวัด", format="DD/MM/YYYY")
+    remark = st.text_input("หมายเหตุ")
+
+    if st.button("Submit Data", type="primary"):
+        if not all(up_imgs):
+            st.error("โปรดอัปโหลดรูปภาพให้ครบ 3 รูป")
+        elif not chk_diff:
+            st.error("ค่าพิกัดไม่ผ่านเกณฑ์หรือกรอกข้อมูลไม่ครบ")
+        else:
+            with st.spinner("กำลังบันทึกข้อมูลและอัปโหลดรูปภาพ..."):
+                # 1. Upload Images
+                df_fol_office = df_fol[df_fol.Name == office_select].iloc[0]
+                folder_ids = [df_fol_office['Folder1'], df_fol_office['Folder2'], df_fol_office['Folder3']]
+                
+                meta = {"prefix": f"{u1}{u2}{u3}-{u4}-{scale}-{l_no}", "bnd": bnd_name}
+                img_ids = []
+                for img_file, f_id in zip(up_imgs, folder_ids):
+                    fid = upload_image_to_gas(img_file, f_id, meta)
+                    img_ids.append(fid)
+
+                if None not in img_ids:
+                    # 2. Prepare Row Data
+                    avg_n = round(sum([float(x) for x in coords["N"]])/3, 3)
+                    avg_e = round(sum([float(x) for x in coords["E"]])/3, 3)
+                    avg_h = round(sum([float(x) for x in coords["H"]])/3, 3)
+                    
+                    final_row = [
+                        p_no, s_no, prov, amp, tam, u1, u2, u3, u4, scale, l_no,
+                        surveyor, round_name, "", bnd_name, avg_n, avg_e, avg_h, 
+                        method, obs_date.strftime('%d/%m/%Y'), remark
+                    ] + coords["N"] + coords["E"] + coords["H"] + img_ids
+                    
+                    wks.append_row(final_row, value_input_option="USER_ENTERED")
+                    
+                    st.success("บันทึกข้อมูลสำเร็จ!")
+                    st.session_state.uploader_key += 1 # Reset uploader
+                    st.rerun()
+                else:
+                    st.error("การอัปโหลดรูปภาพล้มเหลว โปรดลองอีกครั้ง")
