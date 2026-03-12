@@ -158,34 +158,61 @@ else:
             
     # --- Section 2: Measurement Data ---
     with st.container(border=True):
-        cc1, cc2 = st.columns(2)
-        bnd_name = cc1.text_input("ชื่อหลักเขต (BND_NAME)")
-        method = cc2.selectbox("เครื่องมือการรังวัด", ["RTK GNSS", "Total Station"])
+        def calculate_diffs(pts_df, n_col, e_col):
+                diff_n = pts_df[n_col].astype(float).max() - pts_df[n_col].astype(float).min()
+                diff_e = pts_df[e_col].astype(float).max() - pts_df[e_col].astype(float).min()
+                return round(diff_n, 3), round(diff_e, 3)
         
-        in_method = st.selectbox("วิธีการนำเข้าพิกัด", ["ป้อนค่าพิกัด", "Import from PostGIS"])
-        
-        coords = {"N": [], "E": [], "H": []}
-        chk_diff = False
-
-        if in_method == "ป้อนค่าพิกัด":
-            c_n, c_e, c_h = st.columns([4, 4, 2])
-            for i in range(1, 4):
-                coords["N"].append(c_n.text_input(f"N{i}", key=f"n{i}"))
-                coords["E"].append(c_e.text_input(f"E{i}", key=f"e{i}"))
-                coords["H"].append(c_h.text_input(f"H{i}", key=f"h{i}"))
-
-        # --- Coordinate Validation ---
-        if all(coords["N"]) and all(coords["E"]):
-            n_vals = [float(x) for x in coords["N"]]
-            e_vals = [float(x) for x in coords["E"]]
-            diff_n = max(n_vals) - min(n_vals)
-            diff_e = max(e_vals) - min(e_vals)
+            cc1, cc2 = st.columns(2)
+            BND_NAME = cc1.text_input("ชื่อหลักเขต", "")
+            Method = cc2.selectbox("เครื่องมือการรังวัด", ["RTK GNSS", "Total Station"])
             
-            if diff_n > 0.04 or diff_e > 0.04:
-                st.error(f"⚠️ ค่าพิกัดต่างกันเกินเกณฑ์ (N: {diff_n:.3f}, E: {diff_e:.3f})")
-            else:
-                st.success("✅ ค่าพิกัดอยู่ในเกณฑ์มาตรฐาน")
-                chk_diff = True
+            chk1, chk2 = st.columns(2)
+            upload_method = chk1.selectbox("เลือกวิธีการนำเข้า", ["ป้อนค่าพิกัด", "Upload CSV file", "Import from PostGIS"])
+            Diff_Limit = 0.04  # ตั้งค่าเกณฑ์มาตรฐานไว้ที่นี่
+            chk_diff = False
+            
+            # ตัวแปรสำหรับเก็บข้อมูลพิกัดที่จะนำไปใช้งานต่อ
+            final_pts = None
+        
+            # --- ส่วนการนำเข้าข้อมูล ---
+            if upload_method == "ป้อนค่าพิกัด":
+                c1, c2, c3 = st.columns([0.4, 0.4, 0.2])
+                N1, N2, N3 = [c1.text_input(f"N{i}", key=f"N{i}") for i in range(1, 4)]
+                E1, E2, E3 = [c2.text_input(f"E{i}", key=f"E{i}") for i in range(1, 4)]
+                H1, H2, H3 = [c3.text_input(f"H{i}", key=f"H{i}") for i in range(1, 4)]
+                
+                if all([N1, N2, N3, E1, E2, E3, H1, H2, H3]):
+                    final_pts = pd.DataFrame({
+                        'N': [N1, N2, N3], 'E': [E1, E2, E3], 'H': [H1, H2, H3]
+                    })
+        
+            elif upload_method == "Upload CSV file":
+                no_header = chk1.checkbox("ไม่มี Header")
+                file = st.file_uploader("เลือกไฟล์ CSV", type=['csv'])
+                if file and BND_NAME:
+                    df_csv = pd.read_csv(file, header=None if no_header else 0)
+                    if no_header:
+                        df_csv.columns = ["Name", "Code", "N", "E", "h"]
+                    
+                    data_point = df_csv[df_csv['Code'] == BND_NAME].reset_index(drop=True)
+                    if len(data_point) == 3:
+                        st.dataframe(data_point, use_container_width=True)
+                        final_pts = data_point.rename(columns={'h': 'H'})[['N', 'E', 'H']]
+                    else:
+                        st.warning(f"พบข้อมูล {len(data_point)} จุด (ต้องใช้ 3 จุด)")
+        
+            elif upload_method == "Import from PostGIS":
+                offices_map = {"ศรีราชา": "SRIRACHA", "บางละมุง": "BANGLAMUNG", "สัตหีบ": "SATTAHIP"} # ขยายต่อได้
+                off_eng = offices_map.get(office_select)
+                if BND_NAME and off_eng:
+                    sql = f"SELECT \"Name\", \"Code\", \"N\", \"E\", \"h\" FROM \"public\".\"BND_{off_eng}\" WHERE \"Code\" = '{BND_NAME}'"
+                    data_db = gpd.read_postgis(sql, engine, geom_col=None) # หรือใช้ pd.read_sql
+                    if len(data_db) == 3:
+                        st.dataframe(data_db, use_container_width=True)
+                        final_pts = data_db.rename(columns={'h': 'H'})[['N', 'E', 'H']]
+                    else:
+                        st.warning(f"พบข้อมูลในระบบ {len(data_db)} จุด")
                 
     # --- Section 3: Photos ---
     with st.container(border=True):
