@@ -32,7 +32,10 @@ scope = ['https://www.googleapis.com/auth/drive',
          'https://www.googleapis.com/auth/drive.file',
          'https://www.googleapis.com/auth/spreadsheets',
         ]
-
+@st.cache_data
+def get_names_list(url):
+    return pd.read_csv(url)
+    
 @st.cache_resource 
 def get_service():
     #if "creds" not in globals() :
@@ -177,43 +180,76 @@ with tab1:
 
 with tab2:
     st.header("QField Dashboard")
-    if "Refresh" not in st.session_state:
-        st.session_state["Refresh"] = False
-    Office = ['ศรีราชา','บางละมุง','สัตหีบ'] 
-    office_select = st.selectbox("สำนักงานที่ดิน",Office)
-    office_ = pd.DataFrame([["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],["นครนายก","NAKHONNAYOK"],["ศรีราชา","SRIRACHA"],["บางละมุง","BANGLAMUNG"],["สัตหีบ","SATTAHIP"]],columns=["th","eng"])
-    office_choice = office_['eng'][office_['th']==office_select].iloc[0]
+    
+    # 1. เลือกสำนักงาน
+    office_list = ['ศรีราชา','บางละมุง','สัตหีบ'] 
+    office_select = st.selectbox("สำนักงานที่ดิน", office_list)
+    
+    office_mapping = pd.DataFrame([
+        ["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],
+        ["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],["นครนายก","NAKHONNAYOK"],
+        ["ศรีราชา","SRIRACHA"],["บางละมุง","BANGLAMUNG"],["สัตหีบ","SATTAHIP"]
+    ], columns=["th","eng"])
+    
+    office_choice = office_mapping['eng'][office_mapping['th'] == office_select].iloc[0]
+
+    # 2. เชื่อมต่อ Database และดึงเฉพาะผลสรุป (Aggregation)
+    # วิธีนี้จะดึงแค่ตารางเล็กๆ ที่มีผลรวมมา ไม่ดึงพิกัดแผนที่มาให้หนัก RAM
     engine = get_postgis()
-    sql = f'SELECT * FROM "public"."L2_' + office_choice + '"'
-    gdf_L2 = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
-    sql = f'SELECT * FROM "public"."BND_' + office_choice + '"'
-    gdf_BND = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
+    
+    # SQL นับจำนวนแปลงที่ FINISH = 1 แยกตามรายชื่อ (CODE_N)
+    sql_parcel = f"""
+        SELECT "CODE_N", COUNT(*) as count 
+        FROM "public"."L2_{office_choice}" 
+        WHERE "FINISH" = 1 
+        GROUP BY "CODE_N"
+    """
+    
+    # SQL นับจำนวนหมุด แยกตาม Surveyer
+    sql_marker = f"""
+        SELECT "Surveyer", COUNT(*) as count 
+        FROM "public"."BND_{office_choice}" 
+        GROUP BY "Surveyer"
+    """
 
+    try:
+        with st.spinner('กำลังประมวลผลข้อมูลจากฐานข้อมูล...'):
+            df_parcel_counts = pd.read_sql(sql_parcel, engine)
+            df_marker_counts = pd.read_sql(sql_marker, engine)
 
-    #creds,gc,sh,wks,wks_result = get_service()
-    # Load Names
-    df_name = pd.read_csv("https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv")
-    df_active = df_name[["ลำดับ", "Name"]].copy()
+        # 3. โหลดรายชื่อผู้รังวัด (ใช้ Cache)
+        names_url = "https://docs.google.com/spreadsheets/d/1taPadBX5zIlk80ZXc7Mn9fW-kK0VT-dgNfCcjRUskgQ/export?gid=0&format=csv"
+        df_name = get_names_list(names_url)
+        df_active = df_name[["ลำดับ", "Name"]].copy()
 
-    # Optimized Counting using Value Counts (No Loops!)
-    parcel_counts = gdf_L2[gdf_L2["FINISH"] == 1]["CODE_N"].value_counts()
-    marker_counts = gdf_BND["Surveyer"].value_counts()
+        # 4. Matching ข้อมูล
+        # แปลงผลลัพธ์จาก SQL เป็น Dictionary เพื่อ Mapping
+        parcel_dict = dict(zip(df_parcel_counts['CODE_N'].astype(str), df_parcel_counts['count']))
+        marker_dict = dict(zip(df_marker_counts['Surveyer'].astype(str), df_marker_counts['count']))
 
-    df_active['จำนวนแปลง'] = df_active['ลำดับ'].map(parcel_counts).fillna(0)
-    df_active['จำนวนหมุด'] = df_active['Name'].map(marker_counts).apply(lambda x: round((x/3)-0.5, 0) if pd.notnull(x) else 0) 
-    df_active.index = df_active["ลำดับ"]
-    df_active = df_active[["Name","จำนวนแปลง","จำนวนหมุด"]]
-    df_active = df_active[df_active['จำนวนแปลง']>0]
-    hh = len(df_active)
-    st.dataframe(
-        df_active,
-        width="stretch",
-        height=35*(hh+1)
-    )
+        df_active['จำนวนแปลง'] = df_active['ลำดับ'].astype(str).map(parcel_dict).fillna(0)
         
-    if st.button("Refresh", type="primary"):
-        st.session_state["Refresh"] = True
+        # คำนวณจำนวนหมุดตามสูตรเดิมของคุณ
+        df_active['จำนวนหมุด'] = df_active['Name'].map(marker_dict).apply(
+            lambda x: round((x/3)-0.5, 0) if pd.notnull(x) and x > 0 else 0
+        )
+
+        # 5. แสดงผล
+        df_display = df_active[df_active['จำนวนแปลง'] > 0].copy()
+        df_display = df_display[["Name", "จำนวนแปลง", "จำนวนหมุด"]]
+        
+        h_display = len(df_display)
+        st.dataframe(
+            df_display,
+            use_container_width=True,
+            height=35 * (h_display + 1)
+        )
+
+    except Exception as e:
+        st.error(f"เกิดข้อผิดพลาดในการดึงข้อมูล: {e}")
+        
+    # 6. ปุ่ม Refresh
+    if st.button("Refresh Data", type="primary", key="qfield_refresh"):
         get_postgis.clear()
-        #engine = get_postgis()
-    else:
-        st.session_state["Refresh"] = False   
+        get_names_list.clear()
+        st.rerun()
