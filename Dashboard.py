@@ -223,6 +223,7 @@ with tab2:
 
         # 5. แสดงผล
         df_display = df_active[df_active['จำนวนแปลง'] > 0].copy()
+        df_display.index = df_display["ลำดับ"]
         df_display = df_display[["Name", "จำนวนแปลง", "จำนวนหมุด"]]
         
         h_display = len(df_display)
