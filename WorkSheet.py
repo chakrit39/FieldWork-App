@@ -115,9 +115,9 @@ else:
 # --- Section 1: Search & Metadata ---
     with st.container(border=True):
         c1, c2, c3, c4, c5, c6 = st.columns([2, 1.5, 2, 2, 1.5, 1.5])
-        u1 = c1.text_input("UTMMAP1", placeholder="5234")
+        u1 = c1.text_input("UTMMAP1", )
         u2 = c2.selectbox("UTMMAP2", ["I", "II", "III", "IV"])
-        u3 = c3.text_input("UTMMAP3", placeholder="01")
+        u3 = c3.text_input("UTMMAP3", )
         scale = c4.selectbox("Scale", sc['SCALE'].unique())
         u4 = c5.selectbox("UTMMAP4", sc[sc['SCALE'] == scale]['UTMMAP4'].unique())
         l_no = c6.text_input("เลขที่ดิน")
