@@ -139,36 +139,43 @@ else:
             st.warning("โปรดระบุข้อมูลที่ดินให้ถูกต้องเพื่อดึงข้อมูลทะเบียน")
             p_no, s_no, prov, amp, tam = "", "", "", "", ""
 
-    # --- Section 2: Measurement Data ---
+# --- Section 1: Search & Metadata ---
     with st.container(border=True):
-        cc1, cc2 = st.columns(2)
-        bnd_name = cc1.text_input("ชื่อหลักเขต (BND_NAME)")
-        method = cc2.selectbox("เครื่องมือการรังวัด", ["RTK GNSS", "Total Station"])
-        
-        in_method = st.selectbox("วิธีการนำเข้าพิกัด", ["ป้อนค่าพิกัด", "Import from PostGIS"])
-        
-        coords = {"N": [], "E": [], "H": []}
-        chk_diff = False
+        c1, c2, c3, c4, c5, c6 = st.columns([2, 1.5, 2, 2, 1.5, 1.5])
+        u1 = c1.text_input("UTMMAP1", placeholder="5234")
+        u2 = c2.selectbox("UTMMAP2", ["I", "II", "III", "IV"])
+        u3 = c3.text_input("UTMMAP3", placeholder="01")
+        scale = c4.selectbox("Scale", sc['SCALE'].unique())
+        u4 = c5.selectbox("UTMMAP4", sc[sc['SCALE'] == scale]['UTMMAP4'].unique())
+        l_no = c6.text_input("เลขที่ดิน")
 
-        if in_method == "ป้อนค่าพิกัด":
-            c_n, c_e, c_h = st.columns([4, 4, 2])
-            for i in range(1, 4):
-                coords["N"].append(c_n.text_input(f"N{i}", key=f"n{i}"))
-                coords["E"].append(c_e.text_input(f"E{i}", key=f"e{i}"))
-                coords["H"].append(c_h.text_input(f"H{i}", key=f"h{i}"))
+        # --- Logic ค้นหาอัตโนมัติ ---
+        # เงื่อนไข: u1, u3 และ l_no ต้องไม่ว่าง
+        if u1.strip() != "" and u3.strip() != "" and l_no.strip() != "":
+            utm_key = f"{u1}{u2}{u3}{u4}{scale}{l_no}"
+            df_match = df_reg[df_reg['REG_JOIN'] == utm_key].reset_index(drop=True)
 
-        # --- Coordinate Validation ---
-        if all(coords["N"]) and all(coords["E"]):
-            n_vals = [float(x) for x in coords["N"]]
-            e_vals = [float(x) for x in coords["E"]]
-            diff_n = max(n_vals) - min(n_vals)
-            diff_e = max(e_vals) - min(e_vals)
-            
-            if diff_n > 0.04 or diff_e > 0.04:
-                st.error(f"⚠️ ค่าพิกัดต่างกันเกินเกณฑ์ (N: {diff_n:.3f}, E: {diff_e:.3f})")
+            if not df_match.empty:
+                # กรณีพบข้อมูล: แสดง UI และเติมค่าให้อัตโนมัติ
+                col_m1, col_m2 = st.columns(2)
+                p_no = col_m1.text_input("เลขที่โฉนด", value=str(df_match.at[0, 'PARCEL_NO']))
+                s_no = col_m2.text_input("หน้าสำรวจ", value=str(df_match.at[0, 'SURVEY_NO']))
+                
+                col_m3, col_m4, col_m5 = st.columns(3)
+                prov = col_m3.text_input("จังหวัด", value=df_match.at[0, 'PROVINCE'])
+                amp = col_m4.text_input("อำเภอ", value=df_match.at[0, 'AMPHUR'])
+                tam = col_m5.text_input("ตำบล", value=df_match.at[0, 'TAMBOL'])
             else:
-                st.success("✅ ค่าพิกัดอยู่ในเกณฑ์มาตรฐาน")
-                chk_diff = True
+                # กรณีไม่พบข้อมูล: ให้ผู้ใช้กรอกเองได้ แต่แจ้งเตือนไว้
+                st.warning(f"❓ ไม่พบ {utm_key} ในทะเบียน (คุณสามารถกรอกข้อมูลเองด้านล่างได้)")
+        else:
+            # กรณีข้อมูลยังไม่ครบ: แสดงช่องว่างรอไว้
+            st.info("💡 กรุณากรอกข้อมูลระวางและเลขที่ดินให้ครบเพื่อดึงข้อมูลทะเบียน")
+            col_m1, col_m2 = st.columns(2)
+            p_no = col_m1.text_input("เลขที่โฉนด", value="", disabled=True)
+            s_no = col_m2.text_input("หน้าสำรวจ", value="", disabled=True)
+            # เติมค่าว่างไว้สำหรับตัวแปรอื่นๆ เพื่อป้องกัน Error ตอน Submit
+            prov, amp, tam = "", "", ""
 
     # --- Section 3: Photos ---
     with st.container(border=True):
