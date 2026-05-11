@@ -71,7 +71,7 @@ if Point is not None:
 """
 -----------------
 """
-curr_round = "รอบที่ 2"
+curr_round = "รอบที่ 3"
 Name_list = df_name[df_name[curr_round]==True]["Name"].to_list()
 Name = st.selectbox("ผู้รังวัด",Name_list,)
 date = st.date_input("วันที่ทำการรังวัด",format="DD/MM/YYYY")
