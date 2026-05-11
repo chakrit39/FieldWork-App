@@ -44,7 +44,7 @@ def pop_up():
 #[["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"]]
 #["องครักษ์", "ลำลูกกา", "ธัญบุรี", "คลองหลวง", "ปทุมธานี"]
 st.title("Upload CSV file to PostGIS")
-office = pd.DataFrame([["นครนายก","NAKHONNAYOK"],["ศรีราชา","SRIRACHA"],["บางละมุง","BANGLAMUNG"],["สัตหีบ","SATTAHIP"]],columns=["th","eng"])
+office = pd.DataFrame([["บ้านบึง","ฺBANBUENG"],["พนัสนิคม","PHANATNIKHOM"]],columns=["th","eng"])
 office_choice = st.selectbox("เลือกสำนักงานที่ดิน",["ศรีราชา","บางละมุง","สัตหีบ"],)
 office_select = office['eng'][office['th']==office_choice].iloc[0]
 Noneheader = st.checkbox("None header")
