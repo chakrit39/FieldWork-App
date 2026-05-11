@@ -169,13 +169,15 @@ with tab2:
     st.header("QField Dashboard")
     
     # 1. เลือกสำนักงาน
-    office_list = ['ศรีราชา','บางละมุง','สัตหีบ'] 
+    office_list = ['บ้านบึง','พนัสนิคม','ศรีราชา','บางละมุง','สัตหีบ'] 
     office_select = st.selectbox("สำนักงานที่ดิน", office_list)
     
     office_mapping = pd.DataFrame([
         ["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],
-        ["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],["นครนายก","NAKHONNAYOK"],
-        ["ศรีราชา","SRIRACHA"],["บางละมุง","BANGLAMUNG"],["สัตหีบ","SATTAHIP"]
+        ["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],
+        ["นครนายก","NAKHONNAYOK"],
+        ["ศรีราชา","SRIRACHA"],["บางละมุง","BANGLAMUNG"],["สัตหีบ","SATTAHIP"],
+        ["บ้านบึง","ฺBANBUENG"],["พนัสนิคม","PHANATNIKHOM"]
     ], columns=["th","eng"])
     
     office_choice = office_mapping['eng'][office_mapping['th'] == office_select].iloc[0]
