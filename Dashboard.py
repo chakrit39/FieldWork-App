@@ -177,7 +177,7 @@ with tab2:
         ["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],
         ["นครนายก","NAKHONNAYOK"],
         ["ศรีราชา","SRIRACHA"],["บางละมุง","BANGLAMUNG"],["สัตหีบ","SATTAHIP"],
-        ["บ้านบึง","ฺBANBUENG"],["พนัสนิคม","PHANATNIKHOM"]
+        ["บ้านบึง","BANBUENG"],["พนัสนิคม","PHANATNIKHOM"]
     ], columns=["th","eng"])
     
     office_choice = office_mapping['eng'][office_mapping['th'] == office_select].iloc[0]
