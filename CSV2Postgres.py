@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import geopandas as gpd
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine,text
 st.set_page_config(page_title="Upload CSV to Postgis")
 
 st.sidebar.header("Upload CSV to Postgis")
@@ -92,7 +92,7 @@ if c001.button("Submit"):
     st.session_state["Submit"] = True
     if Point is not None :
         if len(data) > 0:
-            sql = f'SELECT * FROM "public"."BND_' + office_select + '"'
+            sql = text(f'SELECT * FROM "public"."BND_' + office_select + '"')
             gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
             if len(gdf_postgis) > 0:
                 gdf_postgis = gdf_postgis.sort_values(by=['Index'])
