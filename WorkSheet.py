@@ -345,7 +345,7 @@ if st.session_state["Login"]:
             else:
                 st.warning("โปรดใส่ชื่อหมุดหลักเขต")
     elif upload_method == "Import from PostGIS":
-        office_ = pd.DataFrame([["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],["นครนายก","NAKHONNAYOK"],["ศรีราชา","SRIRACHA"],["บางละมุง","BANGLAMUNG"],["สัตหีบ","SATTAHIP"],["บ้านบึง",BANBUENG"],["พนัสนิคม","PHANATNIKHOM"]],columns=["th","eng"])
+        office_ = pd.DataFrame([["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],["นครนายก","NAKHONNAYOK"],["ศรีราชา","SRIRACHA"],["บางละมุง","BANGLAMUNG"],["สัตหีบ","SATTAHIP"],["บ้านบึง","BANBUENG"],["พนัสนิคม","PHANATNIKHOM"]],columns=["th","eng"])
         office_choice = office_['eng'][office_['th']==office_select].iloc[0]
         sql = f'SELECT * FROM "public"."BND_' + office_choice + '"'
         gdf_postgis = gpd.GeoDataFrame.from_postgis(text(sql), engine, geom_col='geometry')
