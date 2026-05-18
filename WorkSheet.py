@@ -11,7 +11,7 @@ import geopandas as gpd
 #import datetime
 #import os
 import gspread
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine,text
 from oauth2client.service_account import ServiceAccountCredentials
 from googleapiclient.discovery import build
 #from googleapiclient.errors import HttpError
@@ -348,7 +348,7 @@ if st.session_state["Login"]:
         office_ = pd.DataFrame([["องครักษ์","ONGKHARAK"],["ลำลูกกา","LUMLUKKA"],["ธัญบุรี","THANYABURI"],["คลองหลวง","KHLONGLUANG"],["ปทุมธานี","PATHUMTHANI"],["นครนายก","NAKHONNAYOK"],["ศรีราชา","SRIRACHA"],["บางละมุง","BANGLAMUNG"],["สัตหีบ","SATTAHIP"],["บ้านบึง",BANBUENG"],["พนัสนิคม","PHANATNIKHOM"]],columns=["th","eng"])
         office_choice = office_['eng'][office_['th']==office_select].iloc[0]
         sql = f'SELECT * FROM "public"."BND_' + office_choice + '"'
-        gdf_postgis = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
+        gdf_postgis = gpd.GeoDataFrame.from_postgis(text(sql), engine, geom_col='geometry')
         gdf_postgis_new = gdf_postgis[['Name','Code','N','E','h','Remark','Date']] #[gdf_postgis['ผู้รังวัด']==Name]
         #sql = f'SELECT * FROM "public"."L2_' + office_choice + '"'
         #gdf_L2 = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geometry')
