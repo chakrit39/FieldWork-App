@@ -303,7 +303,7 @@ if st.session_state["Login"]:
                 data = data.rename(columns={0: "Name", 1: "Code", 2: "N", 3: "E", 4: "h"})
             else:
                 data = pd.read_csv(Point)
-            #st.dataframe(data=data['Code'].unique(),use_container_width=False)
+            #st.dataframe(data=data['Code'].unique(),width='stretch')
             if BND_NAME != "" :
                 data_point = data[['Code','N','E','h']][data.Code==BND_NAME]
                 data_point = data_point.reset_index(drop=True)
