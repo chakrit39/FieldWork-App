@@ -156,7 +156,7 @@ with tab1:
                 max_value=100,
             ),
         },
-        use_container_width=True,
+        width='stretch',
         height=35 * (len(df_display) + 1)
     )
 
@@ -231,7 +231,7 @@ with tab2:
         h_display = len(df_display)
         st.dataframe(
             df_display,
-            use_container_width=True,
+            width='stretch',
             height=35 * (h_display + 1)
         )
 
